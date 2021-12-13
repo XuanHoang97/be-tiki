@@ -24,6 +24,8 @@ let initWebRouter = (app) => {
 
     //get all code
     router.get('/api/allcode', userController.getAllCode);
+    //search code
+    router.get('/api/user', userController.handleSearchUser);
 
     return app.use('/', router);
 }
