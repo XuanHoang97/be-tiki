@@ -1,10 +1,10 @@
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 const salt = bcrypt.genSaltSync(10);
-
+import { Op } from "sequelize";
 //hash password
 let hashUserPassword = (password) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let hashPassword = await bcrypt.hashSync(password, salt);
             resolve(hashPassword);
@@ -16,7 +16,7 @@ let hashUserPassword = (password) => {
 
 //Login
 let handleUserLogin = (email, password) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let userData = {};
 
@@ -63,7 +63,7 @@ let handleUserLogin = (email, password) => {
 
 //check email login
 let checkUserEmail = (userEmail) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let user = await db.User.findOne({
                 where: { email: userEmail },
@@ -77,7 +77,7 @@ let checkUserEmail = (userEmail) => {
 
 // getAllUSers
 let getAllUsers = (userId) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let users = '';
             if (userId === 'ALL') {
@@ -104,7 +104,7 @@ let getAllUsers = (userId) => {
 
 //Create USers
 let createNewUser = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             // check email is exist ???
             let check = await checkUserEmail(data.email);
@@ -140,7 +140,7 @@ let createNewUser = (data) => {
 
 //delete Users
 let deleteUser = (userId) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let foundUser = await db.User.findOne({
             where: { id: userId }
         })
@@ -166,7 +166,7 @@ let deleteUser = (userId) => {
 
 //update Users
 let updateUserData = (data) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
                 resolve({
@@ -181,7 +181,7 @@ let updateUserData = (data) => {
             })
 
             if (user) {
-                user.email= data.email;
+                user.email = data.email;
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
@@ -213,7 +213,7 @@ let updateUserData = (data) => {
 
 //getAllCode
 let getAllCodeService = (typeInput) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             if (!typeInput) {
                 resolve({
@@ -237,14 +237,14 @@ let getAllCodeService = (typeInput) => {
 
 //get detail user
 let getDetailUserService = (userId) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             if (!userId) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing required parameter'
                 })
-            }else{
+            } else {
                 let data = await db.User.findOne({
                     where: { id: userId },
                     attributes: {
@@ -253,9 +253,9 @@ let getDetailUserService = (userId) => {
                     raw: false,
                     nest: true
                 })
-                if(!data) data = {};
+                if (!data) data = {};
                 // convert image to base64
-                if(data && data.image){
+                if (data && data.image) {
                     data.image = new Buffer(data.image, 'base64').toString('binary');
                 }
 
@@ -270,6 +270,32 @@ let getDetailUserService = (userId) => {
     })
 }
 
+const searchUser = (keyword) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(db.User);
+            console.log(keyword);
+            //search user fidle firstName
+            let user = await db.User.findAll({
+                where: {
+                    firstName: {
+                        [Op.like]: `%${keyword}%`
+                    },
+                },
+                attributes: {
+                    exclude: ['password']
+                },
+                raw: false,
+                nest: true
+            })
+            resolve(user);
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
@@ -278,4 +304,5 @@ module.exports = {
     updateUserData: updateUserData,
     getAllCodeService: getAllCodeService,
     getDetailUserService: getDetailUserService,
+    searchUser
 }

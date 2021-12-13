@@ -7,7 +7,7 @@ const sequelize = new Sequelize('tiki', 'root', null, {
     logging: false
 });
 
-let connectDB = async() => {
+let connectDB = async () => {
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
