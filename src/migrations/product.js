@@ -13,54 +13,29 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            slug: {
-                type: Sequelize.STRING
-            },
-
-            category_id: {
-                type: Sequelize.INTEGER
-            },
-
             price: {
                 type: Sequelize.INTEGER
             },
 
-            author_id: {
-                type: Sequelize.INTEGER
-            },
-
-            supplier_id: {
-                type: Sequelize.INTEGER
-            },
-
-            sale: {
-                type: Sequelize.BOOLEAN
-            },
-
-            active: {
-                type: Sequelize.BOOLEAN
-            },
-
-            hot: {
-                type: Sequelize.BOOLEAN
-            },
-
-            pay: {
-                type: Sequelize.BOOLEAN
-            },
-
-            number: {
-                type: Sequelize.BOOLEAN
-            },
-
-            warranty: {
+            slug: {
                 type: Sequelize.STRING
             },
 
-            view: {
+            sale: {
                 type: Sequelize.INTEGER
             },
 
+            status: {
+                type: Sequelize.STRING
+            },
+            number: {
+                type: Sequelize.INTEGER
+            },
+
+            warranty: {
+                type: Sequelize.INTEGER
+            },
+            
             description: {
                 type: Sequelize.STRING
             },
@@ -69,20 +44,19 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            description_seo: {
+            content: {
+                type: Sequelize.TEXT('long')
+            },
+            category_id: {
+                type: Sequelize.STRING
+            },
+
+            supplier_id: {
                 type: Sequelize.STRING
             },
 
             keyword_seo: {
                 type: Sequelize.STRING
-            },
-
-            title_seo: {
-                type: Sequelize.STRING
-            },
-
-            content: {
-                type: Sequelize.TEXT('long')
             },
 
             createdAt: {

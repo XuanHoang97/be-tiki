@@ -20,13 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Category.init({
-        name: DataTypes.STRING,
-        slug: DataTypes.STRING,
         icon: DataTypes.STRING,
+        name: DataTypes.STRING,
         avatar: DataTypes.STRING,
-        active: DataTypes.BOOLEAN,
+        active: DataTypes.STRING,
         total_product: DataTypes.INTEGER,
-        home: DataTypes.BOOLEAN,
         author_id: DataTypes.INTEGER,
     }, {
         sequelize,

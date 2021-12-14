@@ -27,13 +27,13 @@ const userController = {
             let users = await userService.searchUser(keyword);
             return res.status(200).json({
                 errCode: 0,
-                message: 'Success',
+                errMessage: 'Success',
                 users
             })
         } catch (err) {
             return res.status(500).json({
                 errCode: 1,
-                message: 'Server error',
+                errMessage: 'Server error',
                 err
             })
         }
@@ -102,7 +102,5 @@ const userController = {
         }
     }
 }
-
-
 
 module.exports = userController

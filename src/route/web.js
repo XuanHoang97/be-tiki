@@ -1,6 +1,7 @@
 import express from 'express';
 import homeController from '../controllers/homeController';
 import userController from '../controllers/userController';
+import productController from '../controllers/productController';
 
 let router = express.Router();
 
@@ -21,11 +22,16 @@ let initWebRouter = (app) => {
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/detail-user', userController.getDetailUser);
-
-    //get all code
-    router.get('/api/allcode', userController.getAllCode);
+    
     //search code
-    router.get('/api/user', userController.handleSearchUser);
+    router.get('/api/search', userController.handleSearchUser);
+    
+    //API Product
+    router.get('/api/allcode', userController.getAllCode);
+    router.get('/api/get-all-products', productController.GetAllProducts);
+    router.post('/api/create-new-product', productController.CreateNewProduct);
+    router.get('/api/get-all-category', productController.GetAllCategory);
+    router.post('/api/create-new-category', productController.CreateNewCategory);
 
     return app.use('/', router);
 }

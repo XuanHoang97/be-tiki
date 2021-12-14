@@ -9,15 +9,11 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            name: {
-                type: Sequelize.STRING
-            },
-
-            slug: {
-                type: Sequelize.STRING
-            },
-
             icon: {
+                type: Sequelize.STRING
+            },
+
+            name: {
                 type: Sequelize.STRING
             },
 
@@ -26,15 +22,11 @@ module.exports = {
             },
 
             active: {
-                type: Sequelize.BOOLEAN
+                type: Sequelize.STRING
             },
 
             total_product: {
                 type: Sequelize.INTEGER
-            },
-
-            home: {
-                type: Sequelize.BOOLEAN
             },
 
             author_id: {

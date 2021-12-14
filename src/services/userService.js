@@ -273,9 +273,7 @@ let getDetailUserService = (userId) => {
 const searchUser = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(db.User);
-            console.log(keyword);
-            //search user fidle firstName
+            //search user filter firstName
             let user = await db.User.findAll({
                 where: {
                     firstName: {
@@ -303,6 +301,6 @@ module.exports = {
     deleteUser: deleteUser,
     updateUserData: updateUserData,
     getAllCodeService: getAllCodeService,
-    getDetailUserService: getDetailUserService,
+    getDetailUserService,
     searchUser
 }
