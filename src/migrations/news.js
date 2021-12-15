@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Articles', {
+        await queryInterface.createTable('News', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            slug: {
+            image: {
                 type: Sequelize.STRING
             },
 
@@ -25,27 +25,15 @@ module.exports = {
                 type: Sequelize.TEXT('long')
             },
 
-            active: {
-                type: Sequelize.BOOLEAN
+            status: {
+                type: Sequelize.STRING
             },
 
             category_id: {
-                type: Sequelize.INTEGER
+                type: Sequelize.STRING
             },
 
             author_id: {
-                type: Sequelize.INTEGER
-            },
-
-            description_seo: {
-                type: Sequelize.STRING
-            },
-
-            title_seo: {
-                type: Sequelize.STRING
-            },
-
-            avatar: {
                 type: Sequelize.STRING
             },
 
@@ -68,6 +56,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Articles');
+        await queryInterface.dropTable('News');
     }
 };

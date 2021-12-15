@@ -2,6 +2,7 @@ import express from 'express';
 import homeController from '../controllers/homeController';
 import userController from '../controllers/userController';
 import productController from '../controllers/productController';
+import newController from '../controllers/newController';
 
 let router = express.Router();
 
@@ -32,6 +33,11 @@ let initWebRouter = (app) => {
     router.post('/api/create-new-product', productController.CreateNewProduct);
     router.get('/api/get-all-category', productController.GetAllCategory);
     router.post('/api/create-new-category', productController.CreateNewCategory);
+
+
+    //API news and event
+    router.get('/api/get-all-news', newController.GetAllNews);
+    router.post('/api/create-news', newController.CreateNews);
 
     return app.use('/', router);
 }
