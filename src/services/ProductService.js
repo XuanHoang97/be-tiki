@@ -86,10 +86,33 @@ let createNewCategory = (data) => {
     });
 };
 
+//get all product by category
+let getAllProductByCategory = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = '';
+            if(id === 'ALL') {
+                products = await db.Product.findAll({
+                });
+            }
+            if(id && id !== 'ALL') {
+                products = await db.Product.findAll({
+                    where: { category_id: id }
+                });
+            }
+            resolve(products);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+
 
 module.exports = {
     getAllProducts,
     createNewProduct,
     getAllCategory,
-    createNewCategory
+    createNewCategory,
+    getAllProductByCategory
 }

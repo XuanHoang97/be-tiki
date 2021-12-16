@@ -33,6 +33,7 @@ let initWebRouter = (app) => {
     router.post('/api/create-new-product', productController.CreateNewProduct);
     router.get('/api/get-all-category', productController.GetAllCategory);
     router.post('/api/create-new-category', productController.CreateNewCategory);
+    router.get('/api/get-all-product-by-category', productController.GetAllProductByCategory)
 
 
     //API news and event
