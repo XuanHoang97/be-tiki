@@ -61,6 +61,6 @@ module.exports = {
     queryInterface.changeColumn('Users', 'image', {
       type: Sequelize.STRING,
       allowNull: true,
-  })
+    })
   }
 };

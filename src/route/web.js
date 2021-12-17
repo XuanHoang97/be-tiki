@@ -32,6 +32,9 @@ let initWebRouter = (app) => {
     router.get('/api/get-all-products', productController.GetAllProducts);
     router.post('/api/create-new-product', productController.CreateNewProduct);
     router.get('/api/get-all-category', productController.GetAllCategory);
+    router.put('/api/edit-product', productController.EditProduct);
+    router.delete('/api/delete-product', productController.DeleteProduct);
+
     router.post('/api/create-new-category', productController.CreateNewCategory);
     router.get('/api/get-all-product-by-category', productController.GetAllProductByCategory)
 

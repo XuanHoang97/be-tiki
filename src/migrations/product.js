@@ -17,10 +17,6 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            slug: {
-                type: Sequelize.STRING
-            },
-
             sale: {
                 type: Sequelize.INTEGER
             },
@@ -35,27 +31,17 @@ module.exports = {
             warranty: {
                 type: Sequelize.INTEGER
             },
-            
-            description: {
-                type: Sequelize.STRING
+
+            image: {
+                type: Sequelize.BLOB('long'),
+                allowNull: true,
             },
 
-            avatar: {
-                type: Sequelize.STRING
-            },
-
-            content: {
-                type: Sequelize.TEXT('long')
-            },
             category_id: {
                 type: Sequelize.STRING
             },
 
             supplier_id: {
-                type: Sequelize.STRING
-            },
-
-            keyword_seo: {
                 type: Sequelize.STRING
             },
 
@@ -71,5 +57,10 @@ module.exports = {
     },
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('Products');
+
+        queryInterface.changeColumn('Products', 'image', {
+            type: Sequelize.STRING,
+            allowNull: true,
+        })
     }
 };

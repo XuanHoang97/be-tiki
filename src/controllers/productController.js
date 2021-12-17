@@ -38,6 +38,43 @@ const productController = {
         }
     },
 
+    //edit product
+    EditProduct : async(req, res) => {
+        try{
+            let product = await productService.editProduct(req.body);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                product: product
+            })
+        }catch(e){
+            console.log(e);
+        }
+    },
+
+    //delete product
+    DeleteProduct : async(req, res) => {
+        try{
+            if (!req.body.id) {
+                return res.status(200).json({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }
+    
+            let product = await productService.deleteProduct(req.body.id);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                product: product
+            })
+        }catch(e){
+            console.log(e);
+        }
+
+    },
+
+
     //get all category
     GetAllCategory: async(req, res) => {
         try{

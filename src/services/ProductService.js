@@ -1,5 +1,6 @@
 import db from "../models/index";
 import { Op } from "sequelize";
+import { raw } from "body-parser";
 
 // getAllProducts
 let getAllProducts = (id) => {
@@ -32,11 +33,9 @@ let createNewProduct = (data) => {
                 sale: data.sale,
                 warranty: data.warranty,
                 number: data.number,
-                description: data.description,
                 category_id: data.category_id,
                 supplier_id: data.supplier_id,
-                slug: data.slug,
-                avatar: data.avatar,
+                image: data.image,
                 status: data.status,
 
             });
@@ -46,6 +45,112 @@ let createNewProduct = (data) => {
         }
     })
 }
+
+//edit product
+let editProduct = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // if(!data.id) {
+            //     resolve ({
+            //         errCode: 1,
+            //         errMessage: 'Missing required parameter'
+            //     })
+            // }
+
+            // let product = await db.Product.findOne({
+            //     where: { id: data.id },
+            //     raw: false
+            // });
+
+            // if(!product) {
+            //     product.name = data.name;
+            //     product.price = data.price;
+            //     product.sale = data.sale;
+            //     product.warranty = data.warranty;
+            //     product.number = data.number;
+            //     product.category_id = data.category_id;
+            //     product.supplier_id = data.supplier_id;
+            //     product.status = data.status;
+            //     if(data.image) {
+            //         product.image = data.image;
+            //     }
+            //     await product.save();
+            //     resolve({
+            //         errCode: 0,
+            //         message: 'The product is updated'
+            //     })
+            // }else {
+            //     resolve({
+            //         errCode: 1,
+            //         errMessage: `Product's not found`
+            //     })
+            // }  
+            
+            let product = await db.Product.findOne({
+                where: { id: data.id },
+                raw: false
+            });
+
+            if(!product) {
+                resolve ({
+                    errCode: 1,
+                    errMessage: 'Product not found'
+                })
+            }else {
+                product.name = data.name;
+                product.price = data.price;
+                product.sale = data.sale;
+                product.warranty = data.warranty;
+                product.number = data.number;
+                product.category_id = data.category_id;
+                product.supplier_id = data.supplier_id;
+                product.status = data.status;
+                if(data.image) {
+                    product.image = data.image;
+                }
+                await product.save();
+                resolve({
+                    errCode: 0,
+                    message: 'The product is updated'
+                })
+            }
+        } catch (e) {   
+            reject(e);
+        }
+    });
+};
+
+//delete product
+let deleteProduct = (productid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let foundProduct = await db.Product.findOne({
+                where: { id: productid }
+            })
+    
+            if (!foundProduct) {
+                resolve({
+                    errCode: 2,
+                    errMessage: `The user isn't exist`
+                })
+            }
+    
+            await db.Product.destroy({
+                where: { id: productid }
+            });
+    
+            resolve({
+                errCode: 0,
+                message: `The product is deleted`,
+            })
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+
+
 
 //get all category
 let getAllCategory = (id) => {
@@ -114,5 +219,7 @@ module.exports = {
     createNewProduct,
     getAllCategory,
     createNewCategory,
-    getAllProductByCategory
+    getAllProductByCategory,
+    editProduct,
+    deleteProduct
 }
