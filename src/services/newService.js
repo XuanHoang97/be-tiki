@@ -45,8 +45,74 @@ let createNews = (data) => {
     })
 }
 
+//edit news
+let editNews = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let news = await db.New.findOne({
+                where: { id: data.id },
+                raw: false
+            });
+
+            if(!news) {
+                resolve ({
+                    errCode: 1,
+                    errMessage: 'News and events not found'
+                })
+            }else {
+                news.name = data.name;
+                news.description = data.description;
+                news.content = data.content;
+                news.status = data.status;
+                news.category_id = data.category_id;
+                news.author_id = data.author_id;
+                if(data.image) {
+                    news.image = data.image;
+                }
+                await news.save();
+                resolve({
+                    errCode: 0,
+                    message: 'The News and event is updated'
+                })
+            }
+        } catch (e) {   
+            reject(e);
+        }
+    });
+};
+
+//delete news and events
+let deleteNews = (NewsId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let foundNews = await db.New.findOne({
+                where: { id: NewsId }
+            })
+    
+            if (!foundNews) {
+                resolve({
+                    errCode: 2,
+                    errMessage: `The News & event isn't exist`
+                })
+            }
+    
+            await db.New.destroy({
+                where: { id: NewsId }
+            });
+    
+            resolve({
+                errCode: 0,
+                message: `The news and events is deleted`,
+            })
+        } catch (e) {
+            reject(e);
+        } 
+    })
+}
 
 module.exports = {
     getAllNews,
-    createNews
+    createNews,
+    editNews,
+    deleteNews
 }

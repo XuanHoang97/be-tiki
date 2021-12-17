@@ -49,43 +49,7 @@ let createNewProduct = (data) => {
 //edit product
 let editProduct = (data) => {
     return new Promise(async (resolve, reject) => {
-        try {
-            // if(!data.id) {
-            //     resolve ({
-            //         errCode: 1,
-            //         errMessage: 'Missing required parameter'
-            //     })
-            // }
-
-            // let product = await db.Product.findOne({
-            //     where: { id: data.id },
-            //     raw: false
-            // });
-
-            // if(!product) {
-            //     product.name = data.name;
-            //     product.price = data.price;
-            //     product.sale = data.sale;
-            //     product.warranty = data.warranty;
-            //     product.number = data.number;
-            //     product.category_id = data.category_id;
-            //     product.supplier_id = data.supplier_id;
-            //     product.status = data.status;
-            //     if(data.image) {
-            //         product.image = data.image;
-            //     }
-            //     await product.save();
-            //     resolve({
-            //         errCode: 0,
-            //         message: 'The product is updated'
-            //     })
-            // }else {
-            //     resolve({
-            //         errCode: 1,
-            //         errMessage: `Product's not found`
-            //     })
-            // }  
-            
+        try { 
             let product = await db.Product.findOne({
                 where: { id: data.id },
                 raw: false
@@ -131,7 +95,7 @@ let deleteProduct = (productid) => {
             if (!foundProduct) {
                 resolve({
                     errCode: 2,
-                    errMessage: `The user isn't exist`
+                    errMessage: `The product isn't exist`
                 })
             }
     

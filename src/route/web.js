@@ -42,6 +42,8 @@ let initWebRouter = (app) => {
     //API news and event
     router.get('/api/get-all-news', newController.GetAllNews);
     router.post('/api/create-news', newController.CreateNews);
+    router.put('/api/edit-news', newController.EditNews);
+    router.delete('/api/delete-news', newController.DeleteNews);
 
     return app.use('/', router);
 }
