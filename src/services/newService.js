@@ -34,9 +34,9 @@ let createNews = (data) => {
                 status: data.status,
                 category_id: data.category_id,
                 author_id: data.author_id,
+                date: data.date,
                 view: data.view,
                 hot: data.hot,
-
             });
             resolve(News);
         } catch (e) {
@@ -66,6 +66,7 @@ let editNews = (data) => {
                 news.status = data.status;
                 news.category_id = data.category_id;
                 news.author_id = data.author_id;
+                news.date = data.date;
                 if(data.image) {
                     news.image = data.image;
                 }

@@ -14,7 +14,8 @@ module.exports = {
             },
 
             image: {
-                type: Sequelize.STRING
+                type: Sequelize.BLOB('long'),
+                allowNull: true,
             },
 
             description: {
@@ -34,6 +35,10 @@ module.exports = {
             },
 
             author_id: {
+                type: Sequelize.STRING
+            },
+
+            date: {
                 type: Sequelize.STRING
             },
 
@@ -57,5 +62,10 @@ module.exports = {
     },
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('News');
+
+        queryInterface.changeColumn('News', 'image', {
+            type: Sequelize.STRING,
+            allowNull: true,
+        })
     }
 };

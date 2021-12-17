@@ -2,11 +2,6 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class New extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
         static associate(models) {
             // define association here
             // New.belongsTo(models.Allcode, { foreignKey: 'positionId', targetKey: 'keyMap', as: 'positionData' });
@@ -26,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         content: DataTypes.TEXT('long'),
         category_id: DataTypes.STRING,
         author_id: DataTypes.STRING,
+        date: DataTypes.STRING,
         status: DataTypes.STRING,
         view: DataTypes.INTEGER,
         hot: DataTypes.BOOLEAN,
