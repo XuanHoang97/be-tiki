@@ -13,6 +13,10 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
+            product_id: {
+                type: Sequelize.INTEGER
+            },
+
             price: {
                 type: Sequelize.INTEGER
             },

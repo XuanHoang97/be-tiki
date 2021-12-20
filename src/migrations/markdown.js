@@ -24,6 +24,10 @@ module.exports = {
                 type: Sequelize.TEXT('long')
             },
 
+            character: {
+                allowNull: true,
+                type: Sequelize.TEXT('long')
+            },
 
             productId: {
                 allowNull: true,

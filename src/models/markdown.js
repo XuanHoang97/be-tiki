@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         contentHTML: DataTypes.TEXT('long'),
         contentMarkdown: DataTypes.TEXT('long'),
         description: DataTypes.TEXT('long'),
+        character: DataTypes.TEXT('long'),
         productId: DataTypes.INTEGER,
         categoryId: DataTypes.INTEGER,
     }, {
