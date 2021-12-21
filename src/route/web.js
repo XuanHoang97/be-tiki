@@ -31,13 +31,19 @@ let initWebRouter = (app) => {
     router.get('/api/allcode', userController.getAllCode);
     router.get('/api/get-all-products', productController.GetAllProducts);
     router.post('/api/create-new-product', productController.CreateNewProduct);
-    router.get('/api/get-all-category', productController.GetAllCategory);
     router.put('/api/edit-product', productController.EditProduct);
     router.delete('/api/delete-product', productController.DeleteProduct);
 
+    router.get('/api/get-some-product', productController.getSomeProduct);
+    
+    router.get('/api/get-all-category', productController.GetAllCategory);
     router.post('/api/create-new-category', productController.CreateNewCategory);
-    router.get('/api/get-all-product-by-category', productController.GetAllProductByCategory)
+    router.put('/api/edit-category', productController.EditCategory);
+    router.delete('/api/delete-category', productController.DeleteCategory);
 
+    router.get('/api/get-all-product-by-category', productController.GetAllProductByCategory)
+    router.post('/api/save-info-product', productController.postInfoProduct)
+    router.get('/api/get-article-product', productController.getArticleProduct)
 
     //API news and event
     router.get('/api/get-all-news', newController.GetAllNews);

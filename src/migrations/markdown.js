@@ -20,12 +20,12 @@ module.exports = {
             },
 
             description: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.TEXT('long')
             },
 
             character: {
-                allowNull: true,
+                allowNull: false,
                 type: Sequelize.TEXT('long')
             },
 

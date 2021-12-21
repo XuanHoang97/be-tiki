@@ -9,28 +9,34 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            icon: {
-                type: Sequelize.STRING
+            image: {
+                type: Sequelize.BLOB('long'),
+                allowNull: true,
             },
 
             name: {
                 type: Sequelize.STRING
             },
 
-            avatar: {
+            keyMap: {
                 type: Sequelize.STRING
             },
 
-            active: {
+            type: {
                 type: Sequelize.STRING
             },
 
-            total_product: {
-                type: Sequelize.INTEGER
+            value: {
+                type: Sequelize.STRING
             },
 
-            author_id: {
-                type: Sequelize.INTEGER
+            categoryId: {
+                type: Sequelize.STRING
+            },
+
+
+            statusId: {
+                type: Sequelize.STRING
             },
 
             createdAt: {
