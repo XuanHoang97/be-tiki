@@ -3,15 +3,20 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Markdown extends Model {
         static associate(models) {
-            // define association here
-            // Markdown.belongsTo(models.User, { foreignKey: 'doctorId' })
+            Markdown.belongsTo(models.Product, {foreignKey: 'productId', as: 'productData'})
         }
     };
     Markdown.init({
-        contentHTML: DataTypes.TEXT('long'),
-        contentMarkdown: DataTypes.TEXT('long'),
-        description: DataTypes.TEXT('long'),
-        character: DataTypes.TEXT('long'),
+        characterHTML: DataTypes.TEXT('long'),
+        characterMarkdown: DataTypes.TEXT('long'),
+        accessoryHTML: DataTypes.TEXT('long'),
+        accessoryMarkdown: DataTypes.TEXT('long'),
+
+        descriptionHTML: DataTypes.TEXT('long'),
+        descriptionMarkdown: DataTypes.TEXT('long'),
+        specificationHTML: DataTypes.TEXT('long'),
+        specificationMarkdown: DataTypes.TEXT('long'),
+        
         productId: DataTypes.INTEGER,
         categoryId: DataTypes.INTEGER,
     }, {

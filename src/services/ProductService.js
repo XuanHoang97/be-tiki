@@ -117,11 +117,15 @@ let deleteProduct = (productid) => {
 let saveDetailInfoProduct = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
-            let detailProduct = await db.Markdown.create({
-                contentHTML: data.contentHTML,
-                contentMarkdown: data.contentMarkdown,
-                description: data.description,
-                character: data.character,
+            let detailProduct = await db.Markdown.create({                
+                characterHTML: data.characterHTML,
+                characterMarkdown: data.characterMarkdown,
+                accessoryHTML: data.accessoryHTML,
+                accessoryMarkdown: data.accessoryMarkdown,
+                specificationHTML: data.specificationHTML,
+                specificationMarkdown: data.specificationMarkdown,
+                descriptionHTML: data.descriptionHTML,
+                descriptionMarkdown: data.descriptionMarkdown,
                 productId: data.productId,
                 // categoryId: data.categoryId,
             });

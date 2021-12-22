@@ -36,6 +36,10 @@ module.exports = {
           type: Sequelize.STRING
       },
 
+      positionId: {
+        type: Sequelize.STRING
+      },
+
       phoneNumber: {
           type: Sequelize.STRING
       },

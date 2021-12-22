@@ -186,6 +186,7 @@ let updateUserData = (data) => {
                 user.lastName = data.lastName;
                 user.address = data.address;
                 user.roleId = data.roleId;
+                user.positionId = data.positionId;
                 user.gender = data.gender;
                 user.phoneNumber = data.phoneNumber;
                 if (data.avatar) {
