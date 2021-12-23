@@ -140,6 +140,49 @@ let saveDetailInfoProduct = (data) => {
     })
 };
 
+//get detail product
+let getDetailProduct = (inputId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else {
+                let data = await db.Product.findOne({
+                    where: { id: inputId },
+                    attributes: {
+                        exclude: ['image']
+                    },
+                    include: [
+                        {
+                            model: db.Markdown,
+                            attributes: {
+                                exclude: ['productId', 'categoryId']
+                            }
+                        },
+                        {
+                            model: db.Category,
+                            as: 'categoryData',
+                            attributes: ['name']
+                        }
+                ],
+                    raw: true,
+                    nest: true
+                });
+                resolve({
+                    errCode: 0,
+                    data: data
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+
 
 
 //get all category
@@ -202,8 +245,6 @@ let editCategory = (data) => {
                 category.keyMap = data.keyMap;
                 category.type = data.type;
                 category.value = data.value;
-                category.statusId = data.statusId;
-                category.categoryId = data.categoryId;
                 await category.save();
                 resolve({
                     errCode: 0,
@@ -244,27 +285,10 @@ let deleteCategory = (categoryid) => {
     })
 }
 
+//get product by category
 
-//get all product by category
-let getAllProductByCategory = (id) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let products = '';
-            if(id === 'ALL') {
-                products = await db.Product.findAll({
-                });
-            }
-            if(id && id !== 'ALL') {
-                products = await db.Product.findAll({
-                    where: { category_id: id }
-                });
-            }
-            resolve(products);
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
+
+
 
 //get some product by category
 let getSomeProduct = () => {
@@ -319,10 +343,10 @@ module.exports = {
     createNewCategory,
     editCategory,
     deleteCategory,
-    getAllProductByCategory,
     editProduct,
     deleteProduct,
     saveDetailInfoProduct,
     getSomeProduct,
     getArticleProduct,
+    getDetailProduct,
 }

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Product extends Model {
         static associate(models) {
             Product.belongsTo(models.Category, {foreignKey: 'category_id', targetKey: 'keyMap', as: 'categoryData'})
-            Product.hasOne(models.Markdown, {foreignKey: 'productId', as: 'markdownData'})
+            Product.hasOne(models.Markdown, {foreignKey: 'productId'})
 
         }
     };

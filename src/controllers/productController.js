@@ -125,6 +125,21 @@ const productController = {
         }
     },
 
+    //get detail product
+    getDetailProduct : async(req, res) => {
+        try {
+            let info = await productService.getDetailProduct(req.query.id);
+            return res.status(200).json(info);
+        } catch (e) {
+            console.log(e)
+            return res.status(200).json({
+                errCode: -1,
+                errMessage: 'Error from the server'
+            })
+        }
+    },
+
+
     
 
 
@@ -201,28 +216,6 @@ const productController = {
         }
     },
 
-
-    //get all product by category
-    GetAllProductByCategory: async(req, res) => {
-        try{
-            let {id} = req.query;
-            let product = await productService.getAllProductByCategory(id);
-            return res.status(200).json({
-                errCode: 0,
-                errMessage: 'OK',
-                product
-            })
-        }catch(e){
-            console.log(e);
-            if (!id) {
-                return res.status(200).json({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter',
-                    product: []
-                })
-            }
-        }
-    },
 }
 
 module.exports = productController
