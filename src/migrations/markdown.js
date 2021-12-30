@@ -9,11 +9,21 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
+            productId: {
+                allowNull: true,
+                type: Sequelize.INTEGER
+            },
+
+            categoryId: {
+                allowNull: true,
+                type: Sequelize.INTEGER
+            },
+            
             characterHTML: {
                 allowNull: false,
                 type: Sequelize.TEXT('long')
             },
-
+            
             characterMarkdown: {
                 allowNull: false,
                 type: Sequelize.TEXT('long')
@@ -49,15 +59,6 @@ module.exports = {
                 type: Sequelize.TEXT('long')
             },
 
-            productId: {
-                allowNull: true,
-                type: Sequelize.INTEGER
-            },
-
-            categoryId: {
-                allowNull: true,
-                type: Sequelize.INTEGER
-            },
 
             createdAt: {
                 allowNull: false,

@@ -126,6 +126,7 @@ let saveDetailInfoProduct = (data) => {
                 specificationMarkdown: data.specificationMarkdown,
                 descriptionHTML: data.descriptionHTML,
                 descriptionMarkdown: data.descriptionMarkdown,
+                option: data.option,
                 productId: data.productId,
                 // categoryId: data.categoryId,
             });
@@ -285,7 +286,8 @@ let deleteCategory = (categoryid) => {
     })
 }
 
-//get product by category
+
+
 
 
 

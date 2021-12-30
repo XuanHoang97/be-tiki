@@ -47,6 +47,7 @@ let initWebRouter = (app) => {
     router.delete('/api/delete-category', productController.DeleteCategory);
 
 
+
     //API news and event
     router.get('/api/get-all-news', newController.GetAllNews);
     router.post('/api/create-news', newController.CreateNews);
