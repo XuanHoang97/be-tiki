@@ -33,11 +33,14 @@ let initWebRouter = (app) => {
     router.post('/api/create-new-product', productController.CreateNewProduct);
     router.put('/api/edit-product', productController.EditProduct);
     router.delete('/api/delete-product', productController.DeleteProduct);
+    router.get('/api/similar-product', productController.getSimilarProduct);
 
+    //article product
     router.get('/api/get-some-product', productController.getSomeProduct);
     router.post('/api/save-info-product', productController.postInfoProduct);
     router.get('/api/get-article-product', productController.getArticleProduct);
     router.get('/api/get-detail-product', productController.getDetailProduct);
+    router.put('/api/edit-info-product', productController.editInfoProduct);
 
 
     //api category

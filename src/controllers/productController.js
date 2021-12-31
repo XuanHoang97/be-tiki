@@ -74,6 +74,28 @@ const productController = {
 
     },
 
+    //similar product
+    getSimilarProduct : async(req, res) => {
+        try{
+            let {id} = req.query;
+            let products = await productService.getSimilarProduct(id)
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                products
+            })
+        }catch(e){
+            console.log(e);
+            if (!id) {
+                return res.status(200).json({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter',
+                    products: []
+                })
+            }
+        }
+    },
+
     // post info product
     postInfoProduct: async(req, res) => {
         try {
@@ -85,6 +107,20 @@ const productController = {
                 errCode: -1,
                 errMessage: 'Error from the server'
             })
+        }
+    },
+
+    //edit info product
+    editInfoProduct: async(req, res) => {
+        try {
+            let response = await productService.editDetailInfoProduct(req.body);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                response
+            });
+        } catch (e) {
+            console.log(e)
         }
     },
 
@@ -138,9 +174,6 @@ const productController = {
             })
         }
     },
-
-
-    
 
 
 

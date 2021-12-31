@@ -113,6 +113,31 @@ let deleteProduct = (productid) => {
     })
 }
 
+//similar product
+let getSimilarProduct = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let product = await db.Product.findOne({
+                where: { id: id },
+                raw: false
+            });
+            let category_id = product.category_id;
+            let products = await db.Product.findAll({
+                where: {
+                    category_id: category_id,
+                    id: {
+                        [Op.ne]: id
+                    },
+                }
+            });
+            resolve(products);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+
 //save detail info of product
 let saveDetailInfoProduct = (data) => {
     return new Promise(async(resolve, reject) => {
@@ -140,6 +165,41 @@ let saveDetailInfoProduct = (data) => {
         }
     })
 };
+
+//edit info product
+let editDetailInfoProduct = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let detailProduct = await db.Markdown.findOne({
+                where: { id: data.id }
+            });
+            if(!detailProduct) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'The detail product is not exist'
+                })
+            }
+            detailProduct.characterHTML = data.characterHTML;
+            detailProduct.characterMarkdown = data.characterMarkdown;
+            detailProduct.accessoryHTML = data.accessoryHTML;
+            detailProduct.accessoryMarkdown = data.accessoryMarkdown;
+            detailProduct.specificationHTML = data.specificationHTML;
+            detailProduct.specificationMarkdown = data.specificationMarkdown;
+            detailProduct.descriptionHTML = data.descriptionHTML;
+            detailProduct.descriptionMarkdown = data.descriptionMarkdown;
+            detailProduct.productId = data.productId;
+            await detailProduct.save();
+            resolve({
+                errCode: 0,
+                errMessage: 'The detail product is updated',
+                detailProduct
+            })
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 
 //get detail product
 let getDetailProduct = (inputId) => {
@@ -182,8 +242,6 @@ let getDetailProduct = (inputId) => {
         }
     })
 }
-
-
 
 
 //get all category
@@ -288,10 +346,6 @@ let deleteCategory = (categoryid) => {
 
 
 
-
-
-
-
 //get some product by category
 let getSomeProduct = () => {
     return new Promise(async(resolve, reject) => {
@@ -347,8 +401,11 @@ module.exports = {
     deleteCategory,
     editProduct,
     deleteProduct,
+    getSimilarProduct,
     saveDetailInfoProduct,
+    editDetailInfoProduct,
     getSomeProduct,
     getArticleProduct,
     getDetailProduct,
+
 }
