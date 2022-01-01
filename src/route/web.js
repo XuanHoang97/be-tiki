@@ -3,6 +3,7 @@ import homeController from '../controllers/homeController';
 import userController from '../controllers/userController';
 import productController from '../controllers/productController';
 import newController from '../controllers/newController';
+import searchController from '../controllers/searchController';
 
 let router = express.Router();
 
@@ -24,8 +25,8 @@ let initWebRouter = (app) => {
     router.delete('/api/delete-user', userController.handleDeleteUser);
     router.get('/api/detail-user', userController.getDetailUser);
     
-    //search code
-    router.get('/api/search', userController.handleSearchUser);
+    //search
+    router.get('/api/search', searchController.handleSearch);
     
     //API Product
     router.get('/api/allcode', userController.getAllCode);
@@ -48,7 +49,6 @@ let initWebRouter = (app) => {
     router.post('/api/create-new-category', productController.CreateNewCategory);
     router.put('/api/edit-category', productController.EditCategory);
     router.delete('/api/delete-category', productController.DeleteCategory);
-
 
 
     //API news and event

@@ -20,24 +20,7 @@ const userController = {
             user: userData.user ? userData.user : {}
         })
     },
-    //search user
-    handleSearchUser: async (req, res) => {
-        const { keyword } = req.query;
-        try {
-            let users = await userService.searchUser(keyword);
-            return res.status(200).json({
-                errCode: 0,
-                errMessage: 'Success',
-                users
-            })
-        } catch (err) {
-            return res.status(500).json({
-                errCode: 1,
-                errMessage: 'Server error',
-                err
-            })
-        }
-    },
+
     handleGetAllUsers: async (req, res) => {
         let id = req.query.id //All, id
         let users = await userService.getAllUsers(id)

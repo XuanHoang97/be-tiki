@@ -272,29 +272,6 @@ let getDetailUserService = (userId) => {
     })
 }
 
-const searchUser = (keyword) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            //search user filter firstName
-            let user = await db.User.findAll({
-                where: {
-                    firstName: {
-                        [Op.like]: `%${keyword}%`
-                    },
-                },
-                attributes: {
-                    exclude: ['password']
-                },
-                raw: false,
-                nest: true
-            })
-            resolve(user);
-
-        } catch (e) {
-            reject(e);
-        }
-    })
-}
 
 module.exports = {
     handleUserLogin: handleUserLogin,
@@ -304,5 +281,4 @@ module.exports = {
     updateUserData: updateUserData,
     getAllCodeService: getAllCodeService,
     getDetailUserService,
-    searchUser
 }
