@@ -4,6 +4,7 @@ import userController from '../controllers/userController';
 import productController from '../controllers/productController';
 import newController from '../controllers/newController';
 import searchController from '../controllers/searchController';
+import slideController from '../controllers/slideController';
 
 let router = express.Router();
 
@@ -56,6 +57,18 @@ let initWebRouter = (app) => {
     router.post('/api/create-news', newController.CreateNews);
     router.put('/api/edit-news', newController.EditNews);
     router.delete('/api/delete-news', newController.DeleteNews);
+
+    //API Slide, banner, image
+    router.get('/api/get-all-slide', slideController.GetAllSlide);
+    router.post('/api/create-slide', slideController.CreateSlide);
+    router.put('/api/edit-slide', slideController.EditSlide);
+    router.delete('/api/delete-slide', slideController.DeleteSlide);
+
+    router.get('/api/get-all-specialCategory', slideController.GetAllSpecialCategory);
+    router.post('/api/create-specialCategory', slideController.CreateSpecialCategory);
+    router.put('/api/edit-specialCategory', slideController.EditSpecialCategory);
+    router.delete('/api/delete-specialCategory', slideController.DeleteSpecialCategory);
+
 
     return app.use('/', router);
 }
