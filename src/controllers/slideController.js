@@ -28,7 +28,11 @@ const slideController = {
     CreateSlide : async(req, res) => {
         try {
             let info = await slideService.CreateSlide(req.body);
-            return res.status(200).json(info);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                info
+            });
         } catch (e) {
             console.log(e)
             return res.status(200).json({
@@ -72,7 +76,7 @@ const slideController = {
     //get all Special category
     GetAllSpecialCategory : async(req, res) => {
         try{
-            let specialCategories = await slideService.GetAllSpecialCategory();
+            let specialCategories = await slideService.GetAllSpecialCategory(req.query.id);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -87,7 +91,11 @@ const slideController = {
     CreateSpecialCategory : async(req, res) => {
         try {
             let info = await slideService.CreateSpecialCategory(req.body);
-            return res.status(200).json(info);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                info
+            });
         } catch (e) {
             console.log(e)
             return res.status(200).json({
@@ -127,7 +135,7 @@ const slideController = {
             console.log(e);
         }
     }
-    
+
 
 
 }

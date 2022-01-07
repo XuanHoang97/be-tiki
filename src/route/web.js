@@ -36,12 +36,14 @@ let initWebRouter = (app) => {
     router.put('/api/edit-product', productController.EditProduct);
     router.delete('/api/delete-product', productController.DeleteProduct);
     router.get('/api/similar-product', productController.getSimilarProduct);
+    router.get('/api/get-detail-product', productController.getDetailProduct);
+    router.get('/api/get-product-by-category', productController.getProductByCategory);
+
 
     //article product
     router.get('/api/get-some-product', productController.getSomeProduct);
-    router.post('/api/save-info-product', productController.postInfoProduct);
     router.get('/api/get-article-product', productController.getArticleProduct);
-    router.get('/api/get-detail-product', productController.getDetailProduct);
+    router.post('/api/save-info-product', productController.postInfoProduct);
     router.put('/api/edit-info-product', productController.editInfoProduct);
 
 
@@ -58,7 +60,7 @@ let initWebRouter = (app) => {
     router.put('/api/edit-news', newController.EditNews);
     router.delete('/api/delete-news', newController.DeleteNews);
 
-    //API Slide, banner, image
+    //API multimedia
     router.get('/api/get-all-slide', slideController.GetAllSlide);
     router.post('/api/create-slide', slideController.CreateSlide);
     router.put('/api/edit-slide', slideController.EditSlide);

@@ -137,6 +137,28 @@ let getSimilarProduct = (id) => {
     });
 }
 
+//get product by category
+let getProductByCategory = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = await db.Product.findAll({
+                where: {
+                    category_id: id
+                },
+                attributes:{
+                    exclude: ['image']
+                },
+                raw: false
+                
+            });
+            resolve(products);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+
 
 //save detail info of product
 let saveDetailInfoProduct = (data) => {
@@ -401,6 +423,7 @@ module.exports = {
     deleteCategory,
     editProduct,
     deleteProduct,
+    getProductByCategory,
     getSimilarProduct,
     saveDetailInfoProduct,
     editDetailInfoProduct,
