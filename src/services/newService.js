@@ -32,6 +32,7 @@ let createNews = (data) => {
                 description: data.description,
                 content: data.content,
                 status: data.status,
+                productId: data.productId,
                 category_id: data.category_id,
                 author_id: data.author_id,
                 date: data.date,
@@ -64,6 +65,7 @@ let editNews = (data) => {
                 news.description = data.description;
                 news.content = data.content;
                 news.status = data.status;
+                news.productId = data.productId;
                 news.category_id = data.category_id;
                 news.author_id = data.author_id;
                 news.date = data.date;

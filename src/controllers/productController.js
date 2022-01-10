@@ -179,25 +179,6 @@ const productController = {
         }
     },
 
-    //get product by category
-    getProductByCategory : async(req, res) => {
-        try {
-            let {id} = req.query;
-            let products = await productService.getProductByCategory(id);
-            return res.status(200).json({
-                errCode: 0,
-                errMessage: 'OK',
-                products
-            })
-        } catch (e) {
-            console.log(e)
-            return res.status(200).json({
-                errCode: -1,
-                errMessage: 'Error from the server'
-            })
-        }
-    },
-    
 
 
     //get all category
@@ -271,6 +252,8 @@ const productController = {
             console.log(e);
         }
     },
+
+ 
 
     
 

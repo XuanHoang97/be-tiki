@@ -137,26 +137,6 @@ let getSimilarProduct = (id) => {
     });
 }
 
-//get product by category
-let getProductByCategory = (id) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let products = await db.Product.findAll({
-                where: {
-                    category_id: id
-                },
-                attributes:{
-                    exclude: ['image']
-                },
-                raw: false
-                
-            });
-            resolve(products);
-        } catch (e) {
-            reject(e);
-        }
-    });
-}
 
 
 
@@ -233,11 +213,8 @@ let getDetailProduct = (inputId) => {
                     errMessage: 'Missing required parameter'
                 })
             }else {
-                let data = await db.Product.findOne({
+                let detailProduct = await db.Product.findOne({
                     where: { id: inputId },
-                    attributes: {
-                        exclude: ['image']
-                    },
                     include: [
                         {
                             model: db.Markdown,
@@ -249,14 +226,24 @@ let getDetailProduct = (inputId) => {
                             model: db.Category,
                             as: 'categoryData',
                             attributes: ['name']
-                        }
-                ],
-                    raw: true,
+                        },
+                        {
+                            model: db.New,
+                            as: 'newData',
+                            attributes: ['name', 'image', 'date', 'author_id']
+                        },
+                    ],
+                    raw: false,             //convert Object not sequelize obj
                     nest: true
                 });
+
+                if(detailProduct.image) {
+                    detailProduct.image =new Buffer(detailProduct.image, 'base64').toString('binary');
+                }
+
                 resolve({
                     errCode: 0,
-                    data: data
+                    detailProduct
                 });
             }
         } catch (e) {
@@ -264,6 +251,9 @@ let getDetailProduct = (inputId) => {
         }
     })
 }
+
+//get product by category
+
 
 
 //get all category
@@ -277,15 +267,24 @@ let getAllCategory = (id) => {
             }
             if(id && id !== 'ALL') {
                 categories = await db.Category.findOne({
-                    where: { id: id }
+                    where: { id: id },
+                    include: [
+                        {
+                            model: db.Product,
+                            as: 'categoryData',
+                            attributes: ['name', 'price', 'sale', 'warranty', 'number'],
+                        }
+                    ],
                 });
             }
+
             resolve(categories);
         } catch (e) {
             reject(e);
         }
     });
 };
+
 
 //create category
 let createNewCategory = (data) => {
@@ -381,6 +380,7 @@ let getSomeProduct = () => {
 
             resolve({
                 errCode: 0,
+                errMessage: 'The product is found',
                 data: someProduct
             })
         } catch (e) {
@@ -417,13 +417,14 @@ let getArticleProduct = (id) => {
 module.exports = {
     getAllProducts,
     createNewProduct,
+    
     getAllCategory,
     createNewCategory,
     editCategory,
     deleteCategory,
+
     editProduct,
     deleteProduct,
-    getProductByCategory,
     getSimilarProduct,
     saveDetailInfoProduct,
     editDetailInfoProduct,

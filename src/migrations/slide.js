@@ -17,6 +17,10 @@ module.exports = {
                 type: Sequelize.BLOB('long')
             },
 
+            status: {
+                type: Sequelize.STRING
+            },
+
             date: {
                 type: Sequelize.STRING
             },

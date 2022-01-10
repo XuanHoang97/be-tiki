@@ -28,8 +28,7 @@ let CreateSlide = (data) => {
             let newSlide = await db.Slide.create({
                 name: data.name,
                 image: data.image,
-                active: data.active,
-                valueActive: data.valueActive,
+                status: data.status,
                 date: data.date,
                 categoryId: data.categoryId,
             });
@@ -57,8 +56,7 @@ let EditSlide = (data) => {
             }else {
                 slide.name = data.name;
                 slide.date = data.date;
-                slide.active = data.active;
-                slide.valueActive = data.valueActive;
+                slide.status = data.status;
                 slide.categoryId = data.categoryId;
                 if(data.image) {
                     slide.image = data.image;

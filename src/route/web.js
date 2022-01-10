@@ -37,7 +37,7 @@ let initWebRouter = (app) => {
     router.delete('/api/delete-product', productController.DeleteProduct);
     router.get('/api/similar-product', productController.getSimilarProduct);
     router.get('/api/get-detail-product', productController.getDetailProduct);
-    router.get('/api/get-product-by-category', productController.getProductByCategory);
+    // router.get('/api/get-product-by-category', productController.getProductByCategory);
 
 
     //article product
