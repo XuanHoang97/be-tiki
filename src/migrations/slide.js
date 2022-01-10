@@ -1,4 +1,7 @@
 'use strict';
+
+const { type } = require("express/lib/response");
+
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('slides', {
@@ -14,7 +17,8 @@ module.exports = {
             },
 
             image: {
-                type: Sequelize.BLOB('long')
+                // type: Sequelize.BLOB('long')
+                type : Sequelize.STRING
             },
 
             status: {

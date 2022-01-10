@@ -27,7 +27,7 @@ const slideController = {
     //create slide
     CreateSlide : async(req, res) => {
         try {
-            let info = await slideService.CreateSlide(req.body);
+            let info = await slideService.CreateSlide(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -45,7 +45,7 @@ const slideController = {
     //edit slide
     EditSlide : async(req, res) => {
         try{
-            let info = await slideService.EditSlide(req.body);
+            let info = await slideService.EditSlide(req.body, req.file);
             return res.status(200).json(info);
         }catch(e){
             console.log(e);

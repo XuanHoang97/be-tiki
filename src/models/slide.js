@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         date: DataTypes.STRING,
         categoryId: DataTypes.INTEGER,
         status: DataTypes.STRING,
+        cloudinary_id: DataTypes.STRING, 
     }, {
         sequelize,
         modelName: 'Slide',

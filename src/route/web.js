@@ -5,11 +5,12 @@ import productController from '../controllers/productController';
 import newController from '../controllers/newController';
 import searchController from '../controllers/searchController';
 import slideController from '../controllers/slideController';
+const upload = require('../ultils/multer');
 
 let router = express.Router();
 
 let initWebRouter = (app) => {
-    //CRUD with NodeJS
+    //CRUD
     router.get('/', homeController.getHomePage);
     router.get('/crud', homeController.getCRUD);
     router.post('/post-crud', homeController.postCRUD);
@@ -18,58 +19,58 @@ let initWebRouter = (app) => {
     router.post('/put-crud', homeController.putCRUD);
     router.get('/delete-crud', homeController.deleteCRUD);
 
-    //API Login & CRUD user With Redux
-    router.post('/api/login', userController.handleLogin);
-    router.get('/api/get-all-users', userController.handleGetAllUsers);
-    router.post('/api/create-new-user', userController.handleCreateNewUser);
-    router.put('/api/edit-user', userController.handleEditUser);
-    router.delete('/api/delete-user', userController.handleDeleteUser);
-    router.get('/api/detail-user', userController.getDetailUser);
+    //Login & CRUD User
+    router.post('/login', userController.handleLogin);
+    router.get('/get-all-users', userController.handleGetAllUsers);
+    router.post('/create-new-user', userController.handleCreateNewUser);
+    router.put('/edit-user', userController.handleEditUser);
+    router.delete('/delete-user', userController.handleDeleteUser);
+    router.get('/detail-user', userController.getDetailUser);
     
     //search
-    router.get('/api/search', searchController.handleSearch);
+    router.get('/search', searchController.handleSearch);
     
-    //API Product
-    router.get('/api/allcode', userController.getAllCode);
-    router.get('/api/get-all-products', productController.GetAllProducts);
-    router.post('/api/create-new-product', productController.CreateNewProduct);
-    router.put('/api/edit-product', productController.EditProduct);
-    router.delete('/api/delete-product', productController.DeleteProduct);
-    router.get('/api/similar-product', productController.getSimilarProduct);
-    router.get('/api/get-detail-product', productController.getDetailProduct);
-    // router.get('/api/get-product-by-category', productController.getProductByCategory);
+    //Product
+    router.get('/allcode', userController.getAllCode);
+    router.get('/get-all-products', productController.GetAllProducts);
+    router.post('/create-new-product', productController.CreateNewProduct);
+    router.put('/edit-product', productController.EditProduct);
+    router.delete('/delete-product', productController.DeleteProduct);
+    router.get('/similar-product', productController.getSimilarProduct);
+    router.get('/get-detail-product', productController.getDetailProduct);
+    // router.get('/get-product-by-category', productController.getProductByCategory);
 
 
     //article product
-    router.get('/api/get-some-product', productController.getSomeProduct);
-    router.get('/api/get-article-product', productController.getArticleProduct);
-    router.post('/api/save-info-product', productController.postInfoProduct);
-    router.put('/api/edit-info-product', productController.editInfoProduct);
+    router.get('/get-some-product', productController.getSomeProduct);
+    router.get('/get-article-product', productController.getArticleProduct);
+    router.post('/save-info-product', productController.postInfoProduct);
+    router.put('/edit-info-product', productController.editInfoProduct);
 
 
-    //api category
-    router.get('/api/get-all-category', productController.GetAllCategory);
-    router.post('/api/create-new-category', productController.CreateNewCategory);
-    router.put('/api/edit-category', productController.EditCategory);
-    router.delete('/api/delete-category', productController.DeleteCategory);
+    //category
+    router.get('/get-all-category', productController.GetAllCategory);
+    router.post('/create-new-category', productController.CreateNewCategory);
+    router.put('/edit-category', productController.EditCategory);
+    router.delete('/delete-category', productController.DeleteCategory);
 
 
-    //API news and event
-    router.get('/api/get-all-news', newController.GetAllNews);
-    router.post('/api/create-news', newController.CreateNews);
-    router.put('/api/edit-news', newController.EditNews);
-    router.delete('/api/delete-news', newController.DeleteNews);
+    //news and event
+    router.get('/get-all-news', newController.GetAllNews);
+    router.post('/create-news', newController.CreateNews);
+    router.put('/edit-news', newController.EditNews);
+    router.delete('/delete-news', newController.DeleteNews);
 
-    //API multimedia
-    router.get('/api/get-all-slide', slideController.GetAllSlide);
-    router.post('/api/create-slide', slideController.CreateSlide);
-    router.put('/api/edit-slide', slideController.EditSlide);
-    router.delete('/api/delete-slide', slideController.DeleteSlide);
+    //multimedia 
+    router.get('/get-all-slide', slideController.GetAllSlide);
+    router.post('/create-slide',upload.single('image'), slideController.CreateSlide);
+    router.put('/edit-slide',upload.single('image'), slideController.EditSlide);
+    router.delete('/delete-slide',upload.single('image'), slideController.DeleteSlide);
 
-    router.get('/api/get-all-specialCategory', slideController.GetAllSpecialCategory);
-    router.post('/api/create-specialCategory', slideController.CreateSpecialCategory);
-    router.put('/api/edit-specialCategory', slideController.EditSpecialCategory);
-    router.delete('/api/delete-specialCategory', slideController.DeleteSpecialCategory);
+    router.get('/get-all-specialCategory', slideController.GetAllSpecialCategory);
+    router.post('/create-specialCategory', slideController.CreateSpecialCategory);
+    router.put('/edit-specialCategory', slideController.EditSpecialCategory);
+    router.delete('/delete-specialCategory', slideController.DeleteSpecialCategory);
 
 
     return app.use('/', router);

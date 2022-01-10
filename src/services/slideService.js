@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { cloudinary } = require('../ultils/cloudinary');
 
 //get all slides
 let GetAllSlide = (id) => {
@@ -22,15 +23,16 @@ let GetAllSlide = (id) => {
 };
 
 //create slide
-let CreateSlide = (data) => {
+let CreateSlide = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if(file){
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.secure_url;
+                data.cloudinary_id = result.public_id;
+            }
             let newSlide = await db.Slide.create({
-                name: data.name,
-                image: data.image,
-                status: data.status,
-                date: data.date,
-                categoryId: data.categoryId,
+                ...data
             });
             resolve(newSlide);
         } catch (e) {
@@ -40,7 +42,7 @@ let CreateSlide = (data) => {
 }
 
 //edit slide
-let EditSlide = (data) => {
+let EditSlide = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try { 
             let slide = await db.Slide.findOne({
@@ -53,20 +55,27 @@ let EditSlide = (data) => {
                     errCode: 1,
                     errMessage: 'Slide not found'
                 })
-            }else {
-                slide.name = data.name;
-                slide.date = data.date;
-                slide.status = data.status;
-                slide.categoryId = data.categoryId;
-                if(data.image) {
-                    slide.image = data.image;
-                }
-                await slide.save();
-                resolve({
-                    errCode: 0,
-                    message: 'The slide is updated'
-                })
             }
+
+            if(file){
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.secure_url;
+                data.cloudinary_id = result.public_id;
+            }
+            slide.name = data.name;
+            slide.date = data.date;
+            slide.status = data.status;
+            slide.categoryId = data.categoryId;
+            slide.image = data.image;
+            slide.cloudinary_id = data.cloudinary_id;
+            await slide.save(
+                {...data }
+            );
+            resolve({
+                errCode: 0,
+                errMessage: 'The slide is updated'
+            })            
+        
         } catch (e) {   
             reject(e);
         }
