@@ -14,8 +14,22 @@ module.exports = {
             },
 
             image: {
-                type: Sequelize.BLOB('long'),
+                type: Sequelize.STRING,
                 allowNull: true,
+            },
+
+            cloudinary_id: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+            },
+
+            productId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'Products',
+                    key: 'id'
+                }
             },
 
             description: {

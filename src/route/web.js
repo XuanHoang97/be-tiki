@@ -32,7 +32,7 @@ let initWebRouter = (app) => {
     
     //Product
     router.get('/allcode', userController.getAllCode);
-    router.get('/get-all-products', productController.GetAllProducts);
+    router.get('/get-all-products',upload.single('image'), productController.GetAllProducts);
     router.post('/create-new-product', productController.CreateNewProduct);
     router.put('/edit-product', productController.EditProduct);
     router.delete('/delete-product', productController.DeleteProduct);
@@ -47,6 +47,8 @@ let initWebRouter = (app) => {
     router.post('/save-info-product', productController.postInfoProduct);
     router.put('/edit-info-product', productController.editInfoProduct);
 
+    router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);    
+
 
     //category
     router.get('/get-all-category', productController.GetAllCategory);
@@ -57,8 +59,8 @@ let initWebRouter = (app) => {
 
     //news and event
     router.get('/get-all-news', newController.GetAllNews);
-    router.post('/create-news', newController.CreateNews);
-    router.put('/edit-news', newController.EditNews);
+    router.post('/create-news',upload.single('image'), newController.CreateNews);
+    router.put('/edit-news',upload.single('image'), newController.EditNews);
     router.delete('/delete-news', newController.DeleteNews);
 
     //multimedia 
@@ -68,9 +70,9 @@ let initWebRouter = (app) => {
     router.delete('/delete-slide',upload.single('image'), slideController.DeleteSlide);
 
     router.get('/get-all-specialCategory', slideController.GetAllSpecialCategory);
-    router.post('/create-specialCategory', slideController.CreateSpecialCategory);
-    router.put('/edit-specialCategory', slideController.EditSpecialCategory);
-    router.delete('/delete-specialCategory', slideController.DeleteSpecialCategory);
+    router.post('/create-specialCategory',upload.single('image'), slideController.CreateSpecialCategory);
+    router.put('/edit-specialCategory',upload.single('image'), slideController.EditSpecialCategory);
+    router.delete('/delete-specialCategory',upload.single('image'), slideController.DeleteSpecialCategory);
 
 
     return app.use('/', router);

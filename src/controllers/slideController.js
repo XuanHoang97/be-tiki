@@ -90,7 +90,7 @@ const slideController = {
     //create Special category
     CreateSpecialCategory : async(req, res) => {
         try {
-            let info = await slideService.CreateSpecialCategory(req.body);
+            let info = await slideService.CreateSpecialCategory(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -108,7 +108,7 @@ const slideController = {
     //edit Special category
     EditSpecialCategory : async(req, res) => {
         try{
-            let info = await slideService.EditSpecialCategory(req.body);
+            let info = await slideService.EditSpecialCategory(req.body, req.file);
             return res.status(200).json(info);
         }catch(e){
             console.log(e);

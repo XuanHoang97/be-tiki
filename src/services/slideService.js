@@ -96,6 +96,10 @@ let DeleteSlide = (slideId) => {
                     errMessage: `The slide isn't exist`
                 })
             }
+
+            if(foundSlide.cloudinary_id) {
+                await cloudinary.uploader.destroy(foundSlide.cloudinary_id);
+            }
     
             await db.Slide.destroy({
                 where: { id: slideId }
@@ -133,13 +137,17 @@ let GetAllSpecialCategory = (id) => {
 };
 
 ///create special category
-let CreateSpecialCategory = (data) => {
+let CreateSpecialCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if(file){
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.secure_url;
+                data.cloudinary_id = result.public_id;
+            }
+
             let newSpecialCategory = await db.SpecialCategory.create({
-                name: data.name,
-                image: data.image,
-                date: data.date,
+                ...data
             });
             resolve(newSpecialCategory);
         } catch (e) {
@@ -149,7 +157,7 @@ let CreateSpecialCategory = (data) => {
 };
 
 //edit special category
-let EditSpecialCategory = (data) => {
+let EditSpecialCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try { 
             let specialCategory = await db.SpecialCategory.findOne({
@@ -162,19 +170,26 @@ let EditSpecialCategory = (data) => {
                     errCode: 1,
                     errMessage: 'SpecialCategory not found'
                 })
-            }else {
-                specialCategory.name = data.name;
-                specialCategory.date = data.date;
-                specialCategory.categoryId = data.categoryId;
-                if(data.image) {
-                    specialCategory.image = data.image;
-                }
-                await specialCategory.save();
-                resolve({
-                    errCode: 0,
-                    message: 'The special category is updated'
-                })
             }
+
+            if(file){
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.secure_url;
+                data.cloudinary_id = result.public_id;
+            }
+            specialCategory.name = data.name;
+            specialCategory.date = data.date;
+            specialCategory.categoryId = data.categoryId;
+            specialCategory.image = data.image;
+            specialCategory.cloudinary_id = data.cloudinary_id;
+            await specialCategory.save(
+                {...data }
+            );
+            resolve({
+                errCode: 0,
+                errMessage: 'The special category is updated'
+            })            
+
         } catch (e) {   
             reject(e);
         }

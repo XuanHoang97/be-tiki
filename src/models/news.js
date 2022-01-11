@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         status: DataTypes.STRING,
         view: DataTypes.INTEGER,
         hot: DataTypes.BOOLEAN,
+        cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'New',

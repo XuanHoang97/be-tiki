@@ -26,7 +26,7 @@ const newController = {
     //create news
     CreateNews : async(req, res) => {
         try{
-            let news = await newService.createNews(req.body);
+            let news = await newService.createNews(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -40,7 +40,7 @@ const newController = {
     //edit news
     EditNews : async(req, res) => {
         try{
-            let news = await newService.editNews(req.body);
+            let news = await newService.editNews(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',

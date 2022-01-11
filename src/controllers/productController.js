@@ -27,7 +27,7 @@ const productController = {
     // create product
     CreateNewProduct : async(req, res) => {
         try{
-            let product = await productService.createNewProduct(req.body);
+            let product = await productService.createNewProduct(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -41,7 +41,7 @@ const productController = {
     //edit product
     EditProduct : async(req, res) => {
         try{
-            let product = await productService.editProduct(req.body);
+            let product = await productService.editProduct(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -127,6 +127,24 @@ const productController = {
             console.log(e)
         }
     },
+
+    postOptionProduct: async(req, res) => {
+        try {
+            let response = await productService.saveOptionProduct(req.body, req.multipleFile);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                response
+            });
+        } catch (e) {
+            console.log(e)
+            return res.status(200).json({
+                errCode: -1,
+                errMessage: 'Error from the server'
+            })
+        }
+    },
+
 
     //get some product in category
     getSomeProduct : async(req, res) => {

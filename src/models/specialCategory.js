@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         image: DataTypes.STRING,
         date: DataTypes.STRING,
         categoryId: DataTypes.INTEGER,
+        cloudinary_id: DataTypes.STRING
     }, {
         sequelize,
         modelName: 'SpecialCategory',

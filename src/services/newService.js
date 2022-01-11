@@ -1,5 +1,7 @@
 import db from "../models/index";
 import { Op } from "sequelize";
+const { cloudinary } = require('../ultils/cloudinary');
+
 
 // getAllNews
 let getAllNews = (id) => {
@@ -23,23 +25,18 @@ let getAllNews = (id) => {
 };
 
 //createNews
-let createNews = (data) => {
+let createNews = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let News = await db.New.create({
-                name: data.name,
-                image: data.image,
-                description: data.description,
-                content: data.content,
-                status: data.status,
-                productId: data.productId,
-                category_id: data.category_id,
-                author_id: data.author_id,
-                date: data.date,
-                view: data.view,
-                hot: data.hot,
+            if(file){
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.secure_url;
+                data.cloudinary_id = result.public_id;
+            }
+            let newEvent = await db.New.create({
+                ...data
             });
-            resolve(News);
+            resolve(newEvent);
         } catch (e) {
             reject(e);
         }
@@ -47,7 +44,7 @@ let createNews = (data) => {
 }
 
 //edit news
-let editNews = (data) => {
+let editNews = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
             let news = await db.New.findOne({
@@ -60,24 +57,34 @@ let editNews = (data) => {
                     errCode: 1,
                     errMessage: 'News and events not found'
                 })
-            }else {
+            }
+            
+            if(file){
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.secure_url;
+                data.cloudinary_id = result.public_id;
+            }
+
+            // else {
                 news.name = data.name;
                 news.description = data.description;
                 news.content = data.content;
                 news.status = data.status;
-                news.productId = data.productId;
                 news.category_id = data.category_id;
+                news.productId = data.productId;
                 news.author_id = data.author_id;
                 news.date = data.date;
-                if(data.image) {
-                    news.image = data.image;
-                }
-                await news.save();
+                news.image = data.image;
+                news.cloudinary_id = data.cloudinary_id;
+
+                await news.save({
+                    ...data
+                });
                 resolve({
                     errCode: 0,
                     message: 'The News and event is updated'
                 })
-            }
+            // }
         } catch (e) {   
             reject(e);
         }

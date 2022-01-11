@@ -1,6 +1,9 @@
 import db from "../models/index";
 import { Op } from "sequelize";
 import { raw } from "body-parser";
+import req from "express/lib/request";
+const { cloudinary } = require('../ultils/cloudinary');
+
 
 // getAllProducts
 let getAllProducts = (id) => {
@@ -24,20 +27,17 @@ let getAllProducts = (id) => {
 };
 
 //createProduct
-let createNewProduct = (data) => {
+let createNewProduct = (data,file) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let newProduct = await db.Product.create({
-                name: data.name,
-                price: data.price,
-                sale: data.sale,
-                warranty: data.warranty,
-                number: data.number,
-                category_id: data.category_id,
-                supplier_id: data.supplier_id,
-                image: data.image,
-                status: data.status,
+            if(file) {
+                let result = await cloudinary.uploader.upload(file.path);
+                data.image = result.url;
+                data.cloudinary_id = result.public_id;
+            }
 
+            let newProduct = await db.Product.create({
+                ...data
             });
             resolve(newProduct);
         } catch (e) {
@@ -138,8 +138,6 @@ let getSimilarProduct = (id) => {
 }
 
 
-
-
 //save detail info of product
 let saveDetailInfoProduct = (data) => {
     return new Promise(async(resolve, reject) => {
@@ -201,6 +199,24 @@ let editDetailInfoProduct = (data) => {
         }
     })
 }
+
+//upload multiple image
+let saveOptionProduct = (data, multipleFile) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            
+            
+
+        
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+
+
 
 
 //get detail product
@@ -428,6 +444,8 @@ module.exports = {
     getSimilarProduct,
     saveDetailInfoProduct,
     editDetailInfoProduct,
+    saveOptionProduct,
+
     getSomeProduct,
     getArticleProduct,
     getDetailProduct,
