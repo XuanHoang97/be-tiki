@@ -13,10 +13,6 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            product_id: {
-                type: Sequelize.INTEGER
-            },
-
             price: {
                 type: Sequelize.INTEGER
             },
@@ -37,7 +33,12 @@ module.exports = {
             },
 
             image: {
-                type: Sequelize.BLOB('long'),
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+
+            cloudinary_id: {
+                type: Sequelize.INTEGER,
                 allowNull: true,
             },
 

@@ -31,7 +31,7 @@ let createNewProduct = (data,file) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(file) {
-                let result = await cloudinary.uploader.upload(file.path);
+                const result = await cloudinary.uploader.upload(file.path);
                 data.image = result.url;
                 data.cloudinary_id = result.public_id;
             }
@@ -47,7 +47,7 @@ let createNewProduct = (data,file) => {
 }
 
 //edit product
-let editProduct = (data) => {
+let editProduct = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try { 
             let product = await db.Product.findOne({
@@ -60,24 +60,32 @@ let editProduct = (data) => {
                     errCode: 1,
                     errMessage: 'Product not found'
                 })
-            }else {
-                product.name = data.name;
-                product.price = data.price;
-                product.sale = data.sale;
-                product.warranty = data.warranty;
-                product.number = data.number;
-                product.category_id = data.category_id;
-                product.supplier_id = data.supplier_id;
-                product.status = data.status;
-                if(data.image) {
-                    product.image = data.image;
-                }
-                await product.save();
-                resolve({
-                    errCode: 0,
-                    message: 'The product is updated'
-                })
             }
+
+            if(file) {
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.url;
+                data.cloudinary_id = result.public_id;
+            }
+            
+            product.name = data.name;
+            product.price = data.price;
+            product.sale = data.sale;
+            product.status = data.status;
+            product.number = data.number;
+            product.warranty = data.warranty;
+            product.category_id = data.category_id;
+            product.supplier_id = data.supplier_id;
+            product.image = data.image;
+            product.cloudinary_id = data.cloudinary_id;
+
+            await product.save({
+                ...data
+            });
+            resolve({
+                errCode: 0,
+                message: 'The product is updated'
+            })
         } catch (e) {   
             reject(e);
         }
@@ -216,9 +224,6 @@ let saveOptionProduct = (data, multipleFile) => {
 }
 
 
-
-
-
 //get detail product
 let getDetailProduct = (inputId) => {
     return new Promise(async (resolve, reject) => {
@@ -303,19 +308,19 @@ let getAllCategory = (id) => {
 
 
 //create category
-let createNewCategory = (data) => {
+let createNewCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if(file) {
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.url;
+                data.cloudinary_id = result.public_id;
+            }
             let newCategory = await db.Category.create({
-                image: data.image,
-                name: data.name,
-                keyMap: data.keyMap,
-                type: data.type,
-                value: data.value,
-                statusId: data.status,
-                categoryId: data.categoryId,
+                ...data
             });
-            resolve(newCategory);
+            resolve({newCategory});
+
         } catch (e) {
             reject(e);
         }
@@ -323,7 +328,7 @@ let createNewCategory = (data) => {
 };
 
 //edit category
-let editCategory = (data) => {
+let editCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
             let category = await db.Category.findOne({
@@ -335,18 +340,28 @@ let editCategory = (data) => {
                     errCode: 1,
                     errMessage: 'Product not found'
                 })
-            }else{
-                category.image = data.image;
-                category.name = data.name;
-                category.keyMap = data.keyMap;
-                category.type = data.type;
-                category.value = data.value;
-                await category.save();
-                resolve({
-                    errCode: 0,
-                    message: 'The category is updated'
-                })
             }
+            
+            if(file) {
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.url;
+                data.cloudinary_id = result.public_id;
+            }
+
+            category.name = data.name;
+            category.keyMap = data.keyMap;
+            category.type = data.type;
+            category.value = data.value;
+            category.image = data.image;
+            category.cloudinary_id = data.cloudinary_id;
+
+            await category.save({
+                ...data
+            });
+            resolve({
+                errCode: 0,
+                message: 'The category is updated'
+            })
         } catch (e) {
             reject(e);
         }

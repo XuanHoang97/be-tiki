@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         value: DataTypes.STRING,
         categoryId: DataTypes.STRING,
         statusId: DataTypes.STRING,
+        cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Category',

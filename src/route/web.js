@@ -32,9 +32,9 @@ let initWebRouter = (app) => {
     
     //Product
     router.get('/allcode', userController.getAllCode);
-    router.get('/get-all-products',upload.single('image'), productController.GetAllProducts);
-    router.post('/create-new-product', productController.CreateNewProduct);
-    router.put('/edit-product', productController.EditProduct);
+    router.get('/get-all-products', productController.GetAllProducts);
+    router.post('/create-new-product',upload.single('image'), productController.CreateNewProduct);
+    router.put('/edit-product',upload.single('image'), productController.EditProduct);
     router.delete('/delete-product', productController.DeleteProduct);
     router.get('/similar-product', productController.getSimilarProduct);
     router.get('/get-detail-product', productController.getDetailProduct);
@@ -52,8 +52,8 @@ let initWebRouter = (app) => {
 
     //category
     router.get('/get-all-category', productController.GetAllCategory);
-    router.post('/create-new-category', productController.CreateNewCategory);
-    router.put('/edit-category', productController.EditCategory);
+    router.post('/create-new-category',upload.single('image'), productController.CreateNewCategory);
+    router.put('/edit-category',upload.single('image'), productController.EditCategory);
     router.delete('/delete-category', productController.DeleteCategory);
 
 

@@ -10,7 +10,7 @@ module.exports = {
             },
 
             image: {
-                type: Sequelize.BLOB('long'),
+                type: Sequelize.STRING,
                 allowNull: true,
             },
 
@@ -37,6 +37,10 @@ module.exports = {
 
             statusId: {
                 type: Sequelize.STRING
+            },
+
+            cloudinary_id: {
+                type: Sequelize.INTEGER
             },
 
             createdAt: {

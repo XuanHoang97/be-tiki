@@ -224,7 +224,7 @@ const productController = {
     //create category
     CreateNewCategory: async(req, res) => {
         try{
-            let category = await productService.createNewCategory(req.body);
+            let category = await productService.createNewCategory(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -238,7 +238,7 @@ const productController = {
     //edit category
     EditCategory: async(req, res) => {
         try{
-            let category = await productService.editCategory(req.body);
+            let category = await productService.editCategory(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
