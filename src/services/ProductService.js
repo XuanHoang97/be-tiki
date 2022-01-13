@@ -258,10 +258,6 @@ let getDetailProduct = (inputId) => {
                     nest: true
                 });
 
-                if(detailProduct.image) {
-                    detailProduct.image =new Buffer(detailProduct.image, 'base64').toString('binary');
-                }
-
                 resolve({
                     errCode: 0,
                     detailProduct

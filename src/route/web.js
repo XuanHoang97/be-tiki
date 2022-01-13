@@ -5,6 +5,7 @@ import productController from '../controllers/productController';
 import newController from '../controllers/newController';
 import searchController from '../controllers/searchController';
 import slideController from '../controllers/slideController';
+import orderController from '../controllers/orderController';
 const upload = require('../ultils/multer');
 
 let router = express.Router();
@@ -48,6 +49,14 @@ let initWebRouter = (app) => {
     router.put('/edit-info-product', productController.editInfoProduct);
 
     router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);    
+
+    //order product
+    router.get('/get-all-cart', orderController.getAllCart);
+    router.post('/add-to-cart', orderController.addToCart);
+    // router.put('/update-cart', orderController.updateCart);
+    // router.delete('/delete-cart', orderController.deleteCart);
+    
+
 
 
     //category

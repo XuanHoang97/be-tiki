@@ -9,8 +9,25 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            transaction_id: {
-                type: Sequelize.INTEGER
+            order_code: {
+                type: Sequelize.STRING
+            },
+
+            
+            date: {
+                type: Sequelize.STRING
+            },
+            
+            delivery_date: {
+                type: Sequelize.STRING
+            },
+            
+            address: {
+                type: Sequelize.STRING
+            },
+            
+            statusId: {
+                type: Sequelize.STRING
             },
 
             product_id: {
@@ -21,23 +38,20 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            qty: {
-                type: Sequelize.BOOLEAN
+            delivery: {
+                type: Sequelize.STRING
             },
 
-            price: {
-                type: Sequelize.INTEGER
+            payment_method: {
+                type: Sequelize.STRING
             },
 
-            price_old: {
-                type: Sequelize.INTEGER
+            note: {
+                type: Sequelize.STRING
             },
+            
 
-            sale: {
-                type: Sequelize.BOOLEAN
-            },
-
-            warranty: {
+            token: {
                 type: Sequelize.STRING
             },
 

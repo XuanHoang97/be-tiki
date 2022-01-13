@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
             Product.belongsTo(models.Category, {foreignKey: 'category_id', targetKey: 'keyMap', as: 'categoryData'})
             Product.hasOne(models.Markdown, {foreignKey: 'productId'})
             Product.hasMany(models.New, {foreignKey: 'productId',  as: 'newData'})
+            // Product.belongsTo(models.Cart, {foreignKey: 'productId', as: 'cartData'})
         }
     };
     Product.init({
