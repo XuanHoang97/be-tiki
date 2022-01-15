@@ -51,10 +51,12 @@ let initWebRouter = (app) => {
     router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);    
 
     //order product
-    router.get('/get-all-cart', orderController.getAllCart);
-    router.post('/add-to-cart', orderController.addToCart);
+    router.post('/add-item-to-cart', orderController.addToCart);
+    router.get('/cart', orderController.getCart);
+    router.delete('/delete-item-cart', orderController.deleteItemCart);
     // router.put('/update-cart', orderController.updateCart);
-    // router.delete('/delete-cart', orderController.deleteCart);
+
+
     
 
 

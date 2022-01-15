@@ -9,8 +9,12 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            order_code: {
+            orderCode: {
                 type: Sequelize.STRING
+            },
+
+            totalPrice: {
+                type: Sequelize.INTEGER
             },
 
             
@@ -30,11 +34,11 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            product_id: {
+            productId: {
                 type: Sequelize.INTEGER
             },
 
-            user_id: {
+            userId: {
                 type: Sequelize.INTEGER
             },
 
@@ -42,14 +46,13 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            payment_method: {
+            paymentMethod: {
                 type: Sequelize.STRING
             },
 
             note: {
                 type: Sequelize.STRING
-            },
-            
+            },    
 
             token: {
                 type: Sequelize.STRING

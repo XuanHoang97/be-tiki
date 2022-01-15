@@ -1,53 +1,99 @@
 import db from "../models/index";
 const { cloudinary } = require('../ultils/cloudinary');
 
-//get all cart
-let getAllCart = (id) => {
+//order not login
+//add to cart
+let addToCart = (data, productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let cart = '';
-            if (id === 'ALL') {
-                cart = await db.Cart.findAll({
-                    // include: [
-                    //     {
-                    //         model: db.Product,
-                    //         as: 'cartData',
-                    //         attributes: ['name', 'image', 'price', 'sale', 'number', 'warranty'],
-                    //     }
-                    // ],
-                    // raw: false,        
-                    // nest: true
+            if(productId){
+                let product = await db.Product.findOne({
+                    where: {
+                        id: productId
+                    }
                 });
+
+                if(product){
+                    let cart = await db.Cart.findOne({
+                        where: {
+                            productId: productId,
+                        }
+                    });
+                    
+                    //if cart exist
+                    if(cart){
+                        let result = await db.Cart.update({
+                            number: cart.number + 1,
+                        }, {
+                            where: {
+                                productId: productId,
+                            }
+                        });
+                        resolve(result);
+                    }else{
+                        let result = await db.Cart.create({
+                            productId: productId,
+                            qty: 1,
+                            productName: product.name,
+                            productImage: product.image,
+                            productPrice: product.price,
+
+                        });
+                        
+                        resolve(result);
+                    }
+                    console.log('data product : ', product);
+                }else{
+                    reject('Product not found');
+                }
+            }
+
+        }catch (error) {
+            reject(error);
+        }
+    });
+};
+
+//get all cart not login
+let getCart = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let carts = '';
+            if (id === 'ALL') {
+                carts = await db.Cart.findAll()
             } 
             if(id && id !== 'ALL') {
-                cart = await db.Cart.findOne({
+                carts = await db.Cart.findOne({
                     where: { id: id }
                 });
             }
-            resolve(cart);
+            resolve(carts);
         } catch (error) {
             reject(error);
         }
     });
 };
 
-//add to cart
-let addToCart = (data) => {
+//delete item cart
+let deleteItemCart = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let listCart = await db.Cart.create({                
-                qty: data.qty,
-                productId: data.productId,
-                userId: data.userId,
+            let result = await db.Cart.destroy({
+                where: {
+                    productId: productId,
+                }
             });
-            resolve(listCart);
-        } catch (e) {
-            reject(e);
+            resolve(result);
+        } catch (error) {
+            reject(error);
         }
     });
 };
 
+
+
 module.exports = {
-    getAllCart,
-    addToCart
+    getCart,
+    addToCart,
+    deleteItemCart,
 }
