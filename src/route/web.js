@@ -54,7 +54,6 @@ let initWebRouter = (app) => {
     router.post('/add-item-to-cart', orderController.addToCart);
     router.get('/cart', orderController.getCart);
     router.delete('/delete-item-cart', orderController.deleteItemCart);
-    // router.put('/update-cart', orderController.updateCart);
 
 
     

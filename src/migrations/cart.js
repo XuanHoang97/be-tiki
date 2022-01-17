@@ -13,22 +13,26 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            productName: {
-                type : Sequelize.STRING
-            },
-
-            productImage: {
-                type : Sequelize.STRING
-            },
-
-            productPrice: {
-                type : Sequelize.INTEGER
-            },
-            
-
             qty: {
                 type: Sequelize.INTEGER,
             },
+
+            Name: {
+                type : Sequelize.STRING
+            },
+
+            Image: {
+                type : Sequelize.STRING
+            },
+
+            Price: {
+                type : Sequelize.INTEGER
+            },
+
+            saleOff: {
+                type : Sequelize.INTEGER
+            },
+
 
             createdAt: {
                 allowNull: false,

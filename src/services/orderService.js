@@ -3,7 +3,7 @@ const { cloudinary } = require('../ultils/cloudinary');
 
 //order not login
 //add to cart
-let addToCart = (data, productId) => {
+let addToCart = (data, productId, qty) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(productId){
@@ -11,7 +11,7 @@ let addToCart = (data, productId) => {
                     where: {
                         id: productId
                     }
-                });
+                });            
 
                 if(product){
                     let cart = await db.Cart.findOne({
@@ -19,11 +19,12 @@ let addToCart = (data, productId) => {
                             productId: productId,
                         }
                     });
-                    
+                 
                     //if cart exist
                     if(cart){
                         let result = await db.Cart.update({
                             number: cart.number + 1,
+                            qty: cart.qty + qty,
                         }, {
                             where: {
                                 productId: productId,
@@ -33,16 +34,15 @@ let addToCart = (data, productId) => {
                     }else{
                         let result = await db.Cart.create({
                             productId: productId,
-                            qty: 1,
-                            productName: product.name,
-                            productImage: product.image,
-                            productPrice: product.price,
-
+                            Name: product.name,
+                            Image: product.image,
+                            Price: product.price,
+                            saleOff: product.sale,
+                            qty: qty,   
                         });
                         
                         resolve(result);
                     }
-                    console.log('data product : ', product);
                 }else{
                     reject('Product not found');
                 }
@@ -78,17 +78,32 @@ let getCart = (id) => {
 let deleteItemCart = (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let result = await db.Cart.destroy({
-                where: {
-                    productId: productId,
-                }
-            });
-            resolve(result);
-        } catch (error) {
-            reject(error);
+            let foundItemProduct = await db.Cart.findOne({
+                where: { id: productId }
+            })
+
+            if (!foundItemProduct) {
+                resolve({
+                    errCode: 2,
+                    errMessage: `The cart isn't exist`
+                })
+            }else{
+                await db.Cart.destroy({
+                    where: { id: productId }
+                });
+                resolve({
+                    errCode: 0,
+                    errMessage: `The item cart is deleted`,
+                })
+            }
+        } catch (e) {
+            reject(e);
         }
     });
 };
+
+
+
 
 
 
