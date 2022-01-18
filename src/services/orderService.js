@@ -1,6 +1,7 @@
 import db from "../models/index";
 const { cloudinary } = require('../ultils/cloudinary');
 import _ from 'lodash';
+import emailService from '../services/emailService';
 
 //order not login
 //add to cart
@@ -120,7 +121,7 @@ let createOrder = (data) => {
                 if(order && order.length > 0){
                     order = order.map(item => {
                         item.orderCode = 'OD' + Math.floor(Math.random() * 1000);
-                        item.status = 'Chờ xác nhận';
+                        item.status = 'S1';
                         item.total = data.total;
                         item.date = new Date();
                         item.address = data.address;
@@ -132,7 +133,25 @@ let createOrder = (data) => {
                         item.payment = data.payment;
                         return item;
                     });
+
+                    //send mail
+                    await emailService.sendSimpleEmail({
+                        receiveEmail: data.email,
+                        customerName: data.username,
+                        orderCode: order[0].orderCode,
+                        productName: order[0].Name,
+                        qty: order[0].qty,
+                        total: data.total,
+                        date: order[0].date,
+                        address: data.address,
+                        phone: data.phone,
+                        note: data.note,
+                        delivery: data.delivery,
+                        payment: data.payment,
+                        redirectLink: 'abcd'
+                    });
                 }
+
 
                 // get all existing data
                 let existing = await db.Order.findAll({
@@ -155,7 +174,6 @@ let createOrder = (data) => {
                     await db.Cart.destroy({
                         where: { userId: data.userId }
                     });
-
                 }
                 resolve({
                     errCode: 0,
