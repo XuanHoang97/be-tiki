@@ -13,16 +13,39 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            totalPrice: {
+            userId: {
                 type: Sequelize.INTEGER
             },
 
-            
+            productId: {
+                type: Sequelize.INTEGER
+            },
+
+            Name: {
+                type: Sequelize.STRING
+            },
+
+            Price: {
+                type: Sequelize.INTEGER
+            },
+
+            qty: {
+                type: Sequelize.INTEGER
+            },
+
+            total: {
+                type: Sequelize.INTEGER
+            },
+     
             date: {
                 type: Sequelize.STRING
             },
             
-            delivery_date: {
+            status: {
+                type: Sequelize.STRING
+            },
+
+            username: {
                 type: Sequelize.STRING
             },
             
@@ -30,29 +53,27 @@ module.exports = {
                 type: Sequelize.STRING
             },
             
-            statusId: {
+
+            email: {
                 type: Sequelize.STRING
             },
 
-            productId: {
+            phone: {
                 type: Sequelize.INTEGER
-            },
-
-            userId: {
-                type: Sequelize.INTEGER
-            },
-
-            delivery: {
-                type: Sequelize.STRING
-            },
-
-            paymentMethod: {
-                type: Sequelize.STRING
             },
 
             note: {
                 type: Sequelize.STRING
             },    
+
+            delivery: {
+                type: Sequelize.STRING
+            },
+
+            payment: {
+                type: Sequelize.STRING
+            },
+
 
             token: {
                 type: Sequelize.STRING

@@ -55,6 +55,13 @@ let initWebRouter = (app) => {
     router.get('/cart', orderController.getCart);
     router.delete('/delete-item-cart', orderController.deleteItemCart);
 
+    router.post('/create-order', orderController.createOrder);
+    router.get('/get-order', orderController.getOrder);
+
+    //notification order
+    
+
+
 
     
 
