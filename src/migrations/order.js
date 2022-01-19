@@ -17,6 +17,10 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
+            status: {
+                type: Sequelize.STRING
+            },
+
             productId: {
                 type: Sequelize.INTEGER
             },
@@ -38,10 +42,6 @@ module.exports = {
             },
      
             date: {
-                type: Sequelize.STRING
-            },
-            
-            status: {
                 type: Sequelize.STRING
             },
 

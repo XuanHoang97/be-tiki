@@ -57,6 +57,7 @@ let initWebRouter = (app) => {
 
     router.post('/create-order', orderController.createOrder);
     router.get('/get-order', orderController.getOrder);
+    router.post('/verify-order', orderController.verifyOrder);
 
     //notification order
     

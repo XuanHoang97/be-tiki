@@ -2,6 +2,15 @@ import db from "../models/index";
 const { cloudinary } = require('../ultils/cloudinary');
 import _ from 'lodash';
 import emailService from '../services/emailService';
+import {v4 as uuidv4} from 'uuid';
+import { status } from "express/lib/response";
+
+//verify email
+let buildUrlEmail = (productId, token) => {
+    let result = `http://localhost:3000/verify-order?token=${token}&productId=${productId}`;
+    return result;
+}
+
 
 //order not login
 //add to cart
@@ -119,8 +128,10 @@ let createOrder = (data) => {
                 let order = data.arrOrder;
                 // save array data to database 
                 if(order && order.length > 0){
+                    let token = uuidv4();
+
                     order = order.map(item => {
-                        item.orderCode = 'OD' + Math.floor(Math.random() * 1000);
+                        item.orderCode = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
                         item.total = data.total;
                         item.date = new Date();
@@ -131,10 +142,11 @@ let createOrder = (data) => {
                         item.note = data.note;
                         item.delivery = data.delivery;
                         item.payment = data.payment;
+                        item.token = token;
                         return item;
                     });
 
-                    //send mail
+                    //send mail-verify order
                     await emailService.sendSimpleEmail({
                         receiveEmail: data.email,
                         customerName: data.username,
@@ -148,7 +160,7 @@ let createOrder = (data) => {
                         note: data.note,
                         delivery: data.delivery,
                         payment: data.payment,
-                        redirectLink: 'abcd'
+                        redirectLink: buildUrlEmail(order[0].productId, token)
                     });
                 }
 
@@ -208,6 +220,49 @@ let getOrder = (id) => {
     });
 };
 
+//verify order
+let verifyOrder = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!data.token || !data.productId){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let order = await db.Order.findOne({
+                    where: {
+                        token: data.token,
+                        productId: data.productId,
+                        status: 'S1'
+                    },
+                    raw: false  //return obj sequelize-use function save()
+                });
+
+                if(order){
+                    order.status = 'S2';
+                    await order.save();
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'update order success',
+                    })
+                }else{
+                    resolve({
+                        errCode: 2,
+                        errMessage: 'order has been active or does not exist',
+                    })
+                }
+            }
+        }
+        catch (error) {
+            reject(error);
+        }
+    });
+};
+
+
+
 
 
 
@@ -218,4 +273,5 @@ module.exports = {
 
     createOrder,
     getOrder,
+    verifyOrder,
 }

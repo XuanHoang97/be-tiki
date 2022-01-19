@@ -102,7 +102,24 @@ const orderController = {
         }
     },
 
-  
+    //verify order
+    verifyOrder : async(req, res) => {
+        try{
+            let result = await orderService.verifyOrder(req.body);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Verify order success',
+                result
+            });
+        }catch(e){
+            console.log(e);
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: 'Verify order fail',
+                error: e
+            })
+        }
+    },
 
 
 }
