@@ -12,107 +12,107 @@ let buildUrlEmail = (productId, token) => {
 }
 
 
-//order not login
+//order: if login user
 //add to cart
-let addToCart = (data, productId, qty, userId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if(productId){
-                let product = await db.Product.findOne({
-                    where: {
-                        id: productId
-                    }
-                });            
+// let addToCart = (data, productId, qty, userId) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             if(productId){
+//                 let product = await db.Product.findOne({
+//                     where: {
+//                         id: productId
+//                     }
+//                 });            
 
-                if(product){
-                    let cart = await db.Cart.findOne({
-                        where: {
-                            productId: productId,
-                        }
-                    });
+//                 if(product){
+//                     let cart = await db.Cart.findOne({
+//                         where: {
+//                             productId: productId,
+//                         }
+//                     });
                  
-                    //if cart exist
-                    if(cart){
-                        let result = await db.Cart.update({
-                            number: cart.number + 1,
-                            qty: cart.qty + qty,
-                        }, {
-                            where: {
-                                productId: productId,
-                            }
-                        });
-                        resolve(result);
-                    }else{
-                        let result = await db.Cart.create({
-                            userId: userId,
-                            productId: productId,
-                            Name: product.name,
-                            Image: product.image,
-                            Price: product.price,
-                            saleOff: product.sale,
-                            qty: qty,   
-                        });
+//                     //if cart exist
+//                     if(cart){
+//                         let result = await db.Cart.update({
+//                             number: cart.number + 1,
+//                             qty: cart.qty + qty,
+//                         }, {
+//                             where: {
+//                                 productId: productId,
+//                             }
+//                         });
+//                         resolve(result);
+//                     }else{
+//                         let result = await db.Cart.create({
+//                             userId: userId,
+//                             productId: productId,
+//                             Name: product.name,
+//                             Image: product.image,
+//                             Price: product.price,
+//                             saleOff: product.sale,
+//                             qty: qty,   
+//                         });
                         
-                        resolve(result);
-                    }
-                }else{
-                    reject('Product not found');
-                }
-            }
+//                         resolve(result);
+//                     }
+//                 }else{
+//                     reject('Product not found');
+//                 }
+//             }
 
-        }catch (error) {
-            reject(error);
-        }
-    });
-};
+//         }catch (error) {
+//             reject(error);
+//         }
+//     });
+// };
 
-//get all cart not login
-let getCart = (id) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let carts = '';
-            if (id === 'ALL') {
-                carts = await db.Cart.findAll()
-            } 
-            if(id && id !== 'ALL') {
-                carts = await db.Cart.findOne({
-                    where: { id: id }
-                });
-            }
-            resolve(carts);
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+//get all cart
+// let getCart = (id) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             let carts = '';
+//             if (id === 'ALL') {
+//                 carts = await db.Cart.findAll()
+//             } 
+//             if(id && id !== 'ALL') {
+//                 carts = await db.Cart.findOne({
+//                     where: { id: id }
+//                 });
+//             }
+//             resolve(carts);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// };
 
 //delete item cart
-let deleteItemCart = (productId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let foundItemProduct = await db.Cart.findOne({
-                where: { id: productId }
-            })
+// let deleteItemCart = (productId) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             let foundItemProduct = await db.Cart.findOne({
+//                 where: { id: productId }
+//             })
 
-            if (!foundItemProduct) {
-                resolve({
-                    errCode: 2,
-                    errMessage: `The cart isn't exist`
-                })
-            }else{
-                await db.Cart.destroy({
-                    where: { id: productId }
-                });
-                resolve({
-                    errCode: 0,
-                    errMessage: `The item cart is deleted`,
-                })
-            }
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
+//             if (!foundItemProduct) {
+//                 resolve({
+//                     errCode: 2,
+//                     errMessage: `The cart isn't exist`
+//                 })
+//             }else{
+//                 await db.Cart.destroy({
+//                     where: { id: productId }
+//                 });
+//                 resolve({
+//                     errCode: 0,
+//                     errMessage: `The item cart is deleted`,
+//                 })
+//             }
+//         } catch (e) {
+//             reject(e);
+//         }
+//     });
+// };
 
 
 //create order
@@ -131,6 +131,9 @@ let createOrder = (data) => {
                     let token = uuidv4();
 
                     order = order.map(item => {
+                        item.Name = data.arrOrder[0].name;
+                        item.Price = data.arrOrder[0].price;
+                        item.productId = data.arrOrder[0].id;
                         item.orderCode = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
                         item.total = data.total;
@@ -145,6 +148,8 @@ let createOrder = (data) => {
                         item.token = token;
                         return item;
                     });
+
+                    console.log('data order:' , order);
 
                     //send mail-verify order
                     await emailService.sendSimpleEmail({
@@ -174,24 +179,18 @@ let createOrder = (data) => {
 
                 //compare arr transmission data
                 let toCreate = _.differenceWith(order, existing, (a, b) => {
-                    return a.productId === b.productId && +a.userId === +b.userId;
+                    return a.orderCode === b.orderCode && +a.userId === +b.userId;
                 });
 
 
                 //create data
                 if (toCreate && toCreate.length > 0) {
                     await db.Order.bulkCreate(toCreate)
-
-                    //destroy cart
-                    await db.Cart.destroy({
-                        where: { userId: data.userId }
-                    });
                 }
                 resolve({
                     errCode: 0,
                     errMessage: 'OK',
                 })
-
             }
 
         } catch (error) {
@@ -267,9 +266,9 @@ let verifyOrder = (data) => {
 
 
 module.exports = {
-    getCart,
-    addToCart,
-    deleteItemCart,
+    // getCart,
+    // addToCart,
+    // deleteItemCart,
 
     createOrder,
     getOrder,
