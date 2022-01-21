@@ -401,7 +401,7 @@ let getDetailCategory = (category_id) => {
                     {
                         model: db.Product,
                         as: 'categoryData',
-                        attributes: ['name', 'price', 'sale', 'warranty'],
+                        attributes: ['name', 'image', 'price', 'sale'],
                     }
                 ],
                 raw: false,
