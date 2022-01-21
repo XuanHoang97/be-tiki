@@ -3,16 +3,16 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Order extends Model {
         static associate(models) {
-            
+            // Order.belongsTo(models.Product, {foreignKey: 'productId', targetKey: 'id', as: 'productData'})
+           
         }
     };
     Order.init({
-        orderCode: DataTypes.STRING,
-        userId: DataTypes.INTEGER,
+        code: DataTypes.STRING,
         status: DataTypes.STRING,
         productId: DataTypes.INTEGER,
-        Name: DataTypes.STRING,
-        Price: DataTypes.INTEGER,
+        name: DataTypes.STRING,
+        price: DataTypes.INTEGER,
         qty: DataTypes.INTEGER,
         total: DataTypes.INTEGER,
 

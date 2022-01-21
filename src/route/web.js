@@ -39,7 +39,6 @@ let initWebRouter = (app) => {
     router.delete('/delete-product', productController.DeleteProduct);
     router.get('/similar-product', productController.getSimilarProduct);
     router.get('/get-detail-product', productController.getDetailProduct);
-    // router.get('/get-product-by-category', productController.getProductByCategory);
 
 
     //article product
@@ -48,7 +47,7 @@ let initWebRouter = (app) => {
     router.post('/save-info-product', productController.postInfoProduct);
     router.put('/edit-info-product', productController.editInfoProduct);
 
-    router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);    
+    router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);  
 
     //order product
     router.post('/add-item-to-cart', orderController.addToCart);
@@ -62,17 +61,12 @@ let initWebRouter = (app) => {
     //notification order
     
 
-
-
-    
-
-
-
     //category
     router.get('/get-all-category', productController.GetAllCategory);
     router.post('/create-new-category',upload.single('image'), productController.CreateNewCategory);
     router.put('/edit-category',upload.single('image'), productController.EditCategory);
     router.delete('/delete-category', productController.DeleteCategory);
+    router.get('/get-detail-category', productController.getDetailCategory);
 
 
     //news and event

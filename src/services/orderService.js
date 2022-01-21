@@ -129,12 +129,8 @@ let createOrder = (data) => {
                 // save array data to database 
                 if(order && order.length > 0){
                     let token = uuidv4();
-
-                    order = order.map(item => {
-                        item.Name = data.arrOrder[0].name;
-                        item.Price = data.arrOrder[0].price;
-                        item.productId = data.arrOrder[0].id;
-                        item.orderCode = 'OD' + Math.floor(Math.random() * 10000);
+                    order = order.map((item) => {                
+                        item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
                         item.total = data.total;
                         item.date = new Date();
@@ -151,15 +147,17 @@ let createOrder = (data) => {
 
                     console.log('data order:' , order);
 
-                    //send mail-verify order
+                    // send mail-verify order
                     await emailService.sendSimpleEmail({
                         receiveEmail: data.email,
                         customerName: data.username,
-                        orderCode: order[0].orderCode,
-                        productName: order[0].Name,
+
+                        orderCode: order[0].code,
+                        productName: order[0].name,
                         qty: order[0].qty,
-                        total: data.total,
                         date: order[0].date,
+
+                        total: data.total,
                         address: data.address,
                         phone: data.phone,
                         note: data.note,
@@ -172,14 +170,17 @@ let createOrder = (data) => {
 
                 // get all existing data
                 let existing = await db.Order.findAll({
-                    where: { userId: data.userId},
-                    attributes: ['orderCode', 'userId', 'productId', 'Name', 'Price', 'qty', 'total', 'date', 'status', 'username', 'email', 'phone', 'address', 'note', 'delivery', 'payment', 'token'],
+                    // where: { userId: data.userId},
+                    attributes: {
+                        exclude: ['id', 'userId']
+                    },
                     raw: true
                 })
 
                 //compare arr transmission data
                 let toCreate = _.differenceWith(order, existing, (a, b) => {
-                    return a.orderCode === b.orderCode && +a.userId === +b.userId;
+                    // return a.code === b.code && +a.userId === +b.userId;
+                    return a.code === b.code
                 });
 
 
@@ -232,7 +233,7 @@ let verifyOrder = (data) => {
                 let order = await db.Order.findOne({
                     where: {
                         token: data.token,
-                        productId: data.productId,
+                        // productId: data.productId,
                         status: 'S1'
                     },
                     raw: false  //return obj sequelize-use function save()

@@ -271,7 +271,24 @@ const productController = {
         }
     },
 
- 
+    //get all product in category
+    getDetailCategory: async(req, res) => {
+        try{
+            let {id} = req.query;
+            let product = await productService.getDetailCategory(id);
+            return res.status(200).json(product)
+        }catch(e){
+            console.log(e);
+            if (!id) {
+                return res.status(500).json({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter',
+                    product: []
+                })
+            }
+        }
+    }
+
 
     
 

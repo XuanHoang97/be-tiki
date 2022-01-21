@@ -269,7 +269,6 @@ let getDetailProduct = (inputId) => {
     })
 }
 
-//get product by category
 
 
 
@@ -392,6 +391,29 @@ let deleteCategory = (categoryid) => {
     })
 }
 
+//get all product in category
+let getDetailCategory = (category_id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let detailCategory = await db.Category.findOne({
+                where: { id: category_id },
+                include: [
+                    {
+                        model: db.Product,
+                        as: 'categoryData',
+                        attributes: ['name', 'price', 'sale', 'warranty'],
+                    }
+                ],
+                raw: false,
+                nest: true
+            });
+            resolve(detailCategory);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
 
 
 //get some product by category
@@ -437,10 +459,6 @@ let getArticleProduct = (id) => {
     });
 };
 
-
-
-
-
 module.exports = {
     getAllProducts,
     createNewProduct,
@@ -449,6 +467,7 @@ module.exports = {
     createNewCategory,
     editCategory,
     deleteCategory,
+    getDetailCategory,
 
     editProduct,
     deleteProduct,

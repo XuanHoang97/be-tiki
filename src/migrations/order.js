@@ -9,12 +9,8 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            orderCode: {
+            code: {
                 type: Sequelize.STRING
-            },
-
-            userId: {
-                type: Sequelize.INTEGER
             },
 
             status: {
@@ -25,11 +21,11 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            Name: {
+            name: {
                 type: Sequelize.STRING
             },
 
-            Price: {
+            price: {
                 type: Sequelize.INTEGER
             },
 
