@@ -19,8 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         
         productId: DataTypes.INTEGER,
         categoryId: DataTypes.INTEGER,
-        imageDesc: DataTypes.STRING,
-        cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Markdown',

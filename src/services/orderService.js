@@ -3,7 +3,7 @@ const { cloudinary } = require('../ultils/cloudinary');
 import _ from 'lodash';
 import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
-import { status } from "express/lib/response";
+// import { status } from "express/lib/response";
 
 //verify email
 let buildUrlEmail = (productId, token) => {
@@ -143,30 +143,28 @@ let createOrder = (data) => {
                         item.payment = data.payment;
                         item.token = token;
                         return item;
-
-
                     });
 
                     console.log('data order:' , order);
 
                     // send mail-verify order
-                    // await emailService.sendSimpleEmail({
-                    //     receiveEmail: data.email,
-                    //     customerName: data.username,
+                    await emailService.sendSimpleEmail({
+                        receiveEmail: data.email,
+                        customerName: data.username,
 
-                    //     orderCode: order[0].code,
-                    //     productName: order[0].name,
-                    //     qty: order[0].qty,
-                    //     date: order[0].date,
+                        orderCode: order[0].code,
+                        productName: order[0].name,
+                        qty: order[0].qty,
+                        date: order[0].date,
 
-                    //     total: data.total,
-                    //     address: data.address,
-                    //     phone: data.phone,
-                    //     note: data.note,
-                    //     delivery: data.delivery,
-                    //     payment: data.payment,
-                    //     redirectLink: buildUrlEmail(order[0].productId, token)
-                    // });
+                        total: data.total,
+                        address: data.address,
+                        phone: data.phone,
+                        note: data.note,
+                        delivery: data.delivery,
+                        payment: data.payment,
+                        redirectLink: buildUrlEmail(order[0].productId, token)
+                    });
                 }
 
 

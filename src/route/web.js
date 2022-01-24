@@ -42,7 +42,6 @@ let initWebRouter = (app) => {
 
 
     //article product
-    router.get('/get-some-product', productController.getSomeProduct);
     router.get('/get-article-product', productController.getArticleProduct);
     router.post('/save-info-product', productController.postInfoProduct);
     router.put('/edit-info-product', productController.editInfoProduct);

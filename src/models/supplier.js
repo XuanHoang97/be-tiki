@@ -20,14 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Supplier.init({
-        author_id: DataTypes.INTEGER,
         name: DataTypes.STRING,
-        email: DataTypes.STRING,
+        product: DataTypes.STRING,
+        address: DataTypes.STRING,
         phone: DataTypes.STRING,
         fax: DataTypes.STRING,
-        website: DataTypes.STRING,
-        logo: DataTypes.STRING,
-        status: DataTypes.BOOLEAN,
+        email: DataTypes.STRING,
+        image: DataTypes.STRING,
+        cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Supplier',

@@ -128,6 +128,7 @@ const productController = {
         }
     },
 
+    //save option product
     postOptionProduct: async(req, res) => {
         try {
             let response = await productService.saveOptionProduct(req.body, req.multipleFile);
@@ -138,28 +139,13 @@ const productController = {
             });
         } catch (e) {
             console.log(e)
-            return res.status(200).json({
+            return res.status(500).json({
                 errCode: -1,
                 errMessage: 'Error from the server'
             })
         }
     },
 
-
-    //get some product in category
-    getSomeProduct : async(req, res) => {
-        try {
-            let someProduct = await productService.getSomeProduct();
-            return res.status(200).json(someProduct)
-    
-        } catch (e) {
-            console.log(e)
-            return res.status(200).json({
-                errCode: -1,
-                errMessage: 'Error from the server'
-            })
-        }
-    },
 
     //get article product
     getArticleProduct : async(req, res) => {
@@ -174,7 +160,7 @@ const productController = {
         }catch(e){
             console.log(e);
             if (!id) {
-                return res.status(200).json({
+                return res.status(500).json({
                     errCode: 1,
                     errMessage: 'Missing required parameter',
                     articles: []

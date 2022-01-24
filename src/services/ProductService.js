@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { raw } from "body-parser";
 import req from "express/lib/request";
 const { cloudinary } = require('../ultils/cloudinary');
+import _ from 'lodash';
 
 
 // getAllProducts
@@ -161,7 +162,7 @@ let saveDetailInfoProduct = (data) => {
                 descriptionMarkdown: data.descriptionMarkdown,
                 option: data.option,
                 productId: data.productId,
-                // categoryId: data.categoryId,
+                categoryId: data.categoryId,
             });
             resolve({
                 errCode: 0,
@@ -196,6 +197,7 @@ let editDetailInfoProduct = (data) => {
             detailProduct.descriptionHTML = data.descriptionHTML;
             detailProduct.descriptionMarkdown = data.descriptionMarkdown;
             detailProduct.productId = data.productId;
+            detailProduct.categoryId = data.categoryId;
             await detailProduct.save();
             resolve({
                 errCode: 0,
@@ -208,14 +210,47 @@ let editDetailInfoProduct = (data) => {
     })
 }
 
-//upload multiple image
+//save option product
 let saveOptionProduct = (data, multipleFile) => {
     return new Promise(async (resolve, reject) => {
         try {
-            
-            
+            if(!data.arrOptionProduct) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'The option product is not exist'
+                })
+            }else{
+                //save data option product
+                let optionProduct = data.arrOptionProduct;
+                if(optionProduct && optionProduct.length > 0) {
+                    optionProduct = optionProduct.map(item => {
+                        return item ;
+                    })
+                }
 
-        
+                console.log('check data send: ', data);
+                
+                // get all existing data
+                let existing = await db.DetailProduct.findAll({
+                    where: {categoryId: data.categoryId, productId: data.productId },
+                    attributes: ['productId', 'categoryId', 'option'],
+                    raw: true
+                })
+
+                //compare arr transmission data
+                let toCreate = _.differenceWith(optionProduct, existing, (a, b) => {
+                    return a.option === b.option
+                });
+
+                //create data
+                if (toCreate && toCreate.length > 0) {
+                    await db.DetailProduct.bulkCreate(toCreate)
+                }    
+                resolve({
+                    errCode: 0,
+                    errMessage: 'OK',
+                })
+            }
 
         } catch (e) {
             reject(e);
@@ -268,9 +303,6 @@ let getDetailProduct = (inputId) => {
         }
     })
 }
-
-
-
 
 //get all category
 let getAllCategory = (id) => {
@@ -401,7 +433,7 @@ let getDetailCategory = (category_id) => {
                     {
                         model: db.Product,
                         as: 'categoryData',
-                        attributes: ['name', 'image', 'price', 'sale'],
+                        attributes: ['id', 'name', 'image', 'price', 'sale'],
                     }
                 ],
                 raw: false,
@@ -412,30 +444,6 @@ let getDetailCategory = (category_id) => {
             reject(e);
         }
     });
-}
-
-
-
-//get some product by category
-let getSomeProduct = () => {
-    return new Promise(async(resolve, reject) => {
-        try {
-            let someProduct = await db.Product.findAll({
-                where: { category_id: 'C2' },
-                attributes: {
-                    exclude: ['image']
-                },
-            })
-
-            resolve({
-                errCode: 0,
-                errMessage: 'The product is found',
-                data: someProduct
-            })
-        } catch (e) {
-            reject(e);
-        }
-    })
 }
 
 //get all article product
@@ -476,7 +484,6 @@ module.exports = {
     editDetailInfoProduct,
     saveOptionProduct,
 
-    getSomeProduct,
     getArticleProduct,
     getDetailProduct,
 
