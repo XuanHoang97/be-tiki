@@ -21,7 +21,7 @@ const userController = {
         })
     },
 
-    handleGetAllUsers: async (req, res) => {
+    getAllUsers: async (req, res) => {
         let id = req.query.id //All, id
         let users = await userService.getAllUsers(id)
         if (!id) {
@@ -37,11 +37,11 @@ const userController = {
             users
         })
     },
-    handleCreateNewUser: async (req, res) => {
+    createUser: async (req, res) => {
         let message = await userService.createNewUser(req.body);
         return res.status(200).json(message)
     },
-    handleDeleteUser: async (req, res) => {
+    deleteUser: async (req, res) => {
         if (!req.body.id) {
             return res.status(200).json({
                 errCode: 1,
@@ -52,7 +52,7 @@ const userController = {
         let message = await userService.deleteUser(req.body.id);
         return res.status(200).json(message)
     },
-    handleEditUser: async (req, res) => {
+    editUser: async (req, res) => {
         try {
             let message = await userService.updateUserData(req.body)
             return res.status(200).json(message)
@@ -72,18 +72,6 @@ const userController = {
             })
         }
     },
-    getDetailUser: async (req, res) => {
-        try {
-            let data = await userService.getDetailUserService(req.query.id);
-            return res.status(200).json(data);
-        } catch (e) {
-            console.log('get detail user error: ', e)
-            return res.status(200).json({
-                errCode: -1,
-                errMessage: 'Error from server'
-            })
-        }
-    }
 }
 
 module.exports = userController

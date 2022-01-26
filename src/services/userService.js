@@ -24,7 +24,7 @@ let handleUserLogin = (email, password) => {
             if (isExist) {
                 // user already exist
                 let user = await db.User.findOne({
-                    attributes: ['id', 'email', 'roleId', 'password', 'firstName', 'lastName'],
+                    attributes: ['id', 'email', 'roleId', 'password', 'username'],
                     where: { email: email },
                     raw: true,
                 });
@@ -118,8 +118,7 @@ let createNewUser = (data) => {
                 await db.User.create({
                     email: data.email,
                     password: hashPasswordFromBcrypt,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
+                    username: data.username,
                     address: data.address,
                     phoneNumber: data.phoneNumber,
                     gender: data.gender,
@@ -183,8 +182,7 @@ let updateUserData = (data) => {
 
             if (user) {
                 user.email = data.email;
-                user.firstName = data.firstName;
-                user.lastName = data.lastName;
+                user.username = data.username;
                 user.address = data.address;
                 user.roleId = data.roleId;
                 user.positionId = data.positionId;
@@ -237,48 +235,11 @@ let getAllCodeService = (typeInput) => {
     })
 }
 
-//get detail user
-let getDetailUserService = (userId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (!userId) {
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter'
-                })
-            } else {
-                let data = await db.User.findOne({
-                    where: { id: userId },
-                    attributes: {
-                        exclude: ['password']
-                    },
-                    raw: false,
-                    nest: true
-                })
-                if (!data) data = {};
-                // convert image to base64
-                if (data && data.image) {
-                    data.image = new Buffer(data.image, 'base64').toString('binary');
-                }
-
-                resolve({
-                    errCode: 0,
-                    data: data
-                });
-            }
-        } catch (e) {
-            reject(e);
-        }
-    })
-}
-
-
 module.exports = {
-    handleUserLogin: handleUserLogin,
-    getAllUsers: getAllUsers,
-    createNewUser: createNewUser,
-    deleteUser: deleteUser,
-    updateUserData: updateUserData,
-    getAllCodeService: getAllCodeService,
-    getDetailUserService,
+    handleUserLogin,
+    getAllUsers,
+    createNewUser,
+    deleteUser,
+    updateUserData,
+    getAllCodeService,
 }

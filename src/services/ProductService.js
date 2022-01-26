@@ -28,7 +28,7 @@ let getAllProducts = (id) => {
 };
 
 //createProduct
-let createNewProduct = (data,file) => {
+let createProduct = (data,file) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(file) {
@@ -335,7 +335,7 @@ let getAllCategory = (id) => {
 
 
 //create category
-let createNewCategory = (data, file) => {
+let createCategory = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(file) {
@@ -469,10 +469,10 @@ let getArticleProduct = (id) => {
 
 module.exports = {
     getAllProducts,
-    createNewProduct,
+    createProduct,
     
     getAllCategory,
-    createNewCategory,
+    createCategory,
     editCategory,
     deleteCategory,
     getDetailCategory,

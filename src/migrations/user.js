@@ -17,11 +17,12 @@ module.exports = {
           type: Sequelize.STRING
       },
 
-      firstName: {
-          type: Sequelize.STRING
+      username: {
+        type : Sequelize.STRING
       },
-      lastName: {
-          type: Sequelize.STRING
+
+      age: {
+        type : Sequelize.INTEGER
       },
 
       address: {

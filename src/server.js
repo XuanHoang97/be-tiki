@@ -4,18 +4,16 @@ import viewEngine from "./config/viewEngine";
 import initWebRoutes from './route/web';
 import connectDB from "./config/connectDB";
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 
 require('dotenv').config();
-
 let app = express();
 
 //fix bug cors
 app.use(cors())
 
+app.use(cors({ credentials:true, origin:'http://localhost:3000' }));
 
-// config app
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({
@@ -23,9 +21,11 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
+app.use(cookieParser());
+app.use(express.json());
+
 viewEngine(app);
 initWebRoutes(app);
-
 connectDB();
 
 let port = process.env.PORT || 6969;

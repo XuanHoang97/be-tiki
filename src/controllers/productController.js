@@ -25,9 +25,9 @@ const productController = {
     },
 
     // create product
-    CreateNewProduct : async(req, res) => {
+    createProduct : async(req, res) => {
         try{
-            let product = await productService.createNewProduct(req.body, req.file);
+            let product = await productService.createProduct(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -208,9 +208,9 @@ const productController = {
     },
 
     //create category
-    CreateNewCategory: async(req, res) => {
+    createCategory: async(req, res) => {
         try{
-            let category = await productService.createNewCategory(req.body, req.file);
+            let category = await productService.createCategory(req.body, req.file);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',

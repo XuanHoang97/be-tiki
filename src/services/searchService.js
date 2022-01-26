@@ -8,8 +8,8 @@ const searchUser = (keyword) => {
             let info = await db.User.findAll({
                 where: {
                     [Op.or]: [
-                        { firstName: { [Op.like]: `%${keyword}%` } },
-                        { lastName: { [Op.like]: `%${keyword}%` } },
+
+                        { username: { [Op.like]: `%${keyword}%` } },
                         { email: { [Op.like]: `%${keyword}%` } },
                         { phoneNumber: { [Op.like]: `%${keyword}%` } },
                         { address: { [Op.like]: `%${keyword}%` } },

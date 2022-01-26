@@ -12,14 +12,15 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    username: DataTypes.STRING,
     address: DataTypes.STRING,
+    age: DataTypes.INTEGER,
     phoneNumber: DataTypes.STRING,
     gender: DataTypes.STRING,
     image: DataTypes.STRING,
     roleId: DataTypes.STRING,
-    positionId: DataTypes.STRING
+    positionId: DataTypes.STRING,
+    refresh_token: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'User',
