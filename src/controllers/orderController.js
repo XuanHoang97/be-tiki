@@ -121,6 +121,43 @@ const orderController = {
         }
     },
 
+    // Filter order by status
+    filterOrder : async(req, res) => {
+        try{
+            let result = await orderService.filterOrder(req.query.status);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Filter order success',
+                result
+            });
+        }catch(e){
+            console.log(e);
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: 'Filter order fail',
+                error: e
+            })
+        }
+    },
+
+    // update order
+    updateOrder : async(req, res) => {
+        try{
+            let result = await orderService.updateOrder(req.body);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Update order success',
+                result
+            });
+        }catch(e){
+            console.log(e);
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: 'Update order fail',
+                error: e
+            })
+        }
+    }
 
 }
 

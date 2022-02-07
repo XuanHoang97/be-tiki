@@ -6,7 +6,10 @@ import newController from '../controllers/newController';
 import searchController from '../controllers/searchController';
 import slideController from '../controllers/slideController';
 import orderController from '../controllers/orderController';
+import paginationController from '../controllers/paginationController';
 const upload = require('../ultils/multer');
+import db from "../models/index";
+
 
 //authentication
 import { getUsers, Register, Login, Logout } from "../controllers/authController.js";
@@ -16,6 +19,21 @@ import { refreshToken } from "../controllers/refreshToken.js";
 let router = express.Router();
 
 let initWebRouter = (app) => {
+    // Auth
+    // router.get('/users', verifyToken, getUsers);  
+    router.post('/auth/register', Register);
+    router.post('/auth/login', Login);
+    router.get('/auth/token', refreshToken);
+    router.delete('/auth/logout', Logout);
+
+    // pagination
+    router.get('/get-all-news/:page', paginationController.getAllNews);
+
+
+
+    //auth admin
+    router.post('/login', userController.handleLogin);
+
     //CRUD server side
     router.get('/', homeController.getHomePage);
     router.get('/crud', homeController.getCRUD);
@@ -50,7 +68,7 @@ let initWebRouter = (app) => {
 
     router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);  
 
-    // Order product
+    // Order
     router.post('/add-item-to-cart', orderController.addToCart);
     router.get('/cart', orderController.getCart);
     router.delete('/delete-item-cart', orderController.deleteItemCart);
@@ -58,6 +76,9 @@ let initWebRouter = (app) => {
     router.post('/create-order', orderController.createOrder);
     router.get('/get-order', orderController.getOrder);
     router.post('/verify-order', orderController.verifyOrder);
+
+    router.get('/filter-order', orderController.filterOrder);
+    router.put('/update-order', orderController.updateOrder);
 
     // Notification order
     
@@ -87,18 +108,6 @@ let initWebRouter = (app) => {
     router.put('/edit-specialCategory',upload.single('image'), slideController.EditSpecialCategory);
     router.delete('/delete-specialCategory',upload.single('image'), slideController.DeleteSpecialCategory);
 
-    // Auth
-    // router.get('/users', getUsers);
-    router.get('/users', verifyToken, getUsers);
-    router.post('/users', Register);
-    router.post('/auth/login', Login);
-    router.get('/token', refreshToken);
-    router.delete('/logout', Logout);
-
-
-    
-    //auth admin
-    router.post('/login', userController.handleLogin);
 
 
 

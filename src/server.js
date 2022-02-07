@@ -9,10 +9,7 @@ import cookieParser from "cookie-parser";
 require('dotenv').config();
 let app = express();
 
-//fix bug cors
-app.use(cors())
-
-app.use(cors({ credentials:true, origin:'http://localhost:3000' }));
+app.use(cors({ credentials:true, origin: process.env.URL_REACT}));
 
 
 app.use(bodyParser.json({ limit: '50mb' }));

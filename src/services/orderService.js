@@ -261,6 +261,63 @@ let verifyOrder = (data) => {
     });
 };
 
+// Filter order by status
+let filterOrder = (status) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let orders = '';
+            if (status === 'S0') {
+                orders = await db.Order.findAll({
+                })
+            } 
+            if(status && status !== 'S0') {
+                orders = await db.Order.findAll({
+                    where: { status: status }
+                });
+            }
+            resolve(orders);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+// update order
+let updateOrder = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!data.id){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let order = await db.Order.findOne({
+                    where: { id: data.id },
+                    raw: false  //return obj sequelize-use function save()
+                });
+
+                if(order){
+                    order.status = data.status;
+                    await order.save();
+
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'update order success',
+                    })
+                }else{
+                    resolve({
+                        errCode: 2,
+                        errMessage: 'order has been active or does not exist',
+                    })
+                }
+            }
+        }
+        catch (error) {
+            reject(error);
+        }
+    });
+};
 
 
 
@@ -274,4 +331,6 @@ module.exports = {
     createOrder,
     getOrder,
     verifyOrder,
+    filterOrder,
+    updateOrder,
 }

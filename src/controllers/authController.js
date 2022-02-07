@@ -13,23 +13,42 @@ export const getUsers = async(req, res) => {
     }
 }
 
+// Register
 export const Register = async(req, res) => {
     const { username, email, password } = req.body;
-    // if(password !== confPassword) return res.status(400).json({msg: "Password and Confirm Password do not match"});
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
-    try {
-        await db.User.create({
-            username: username,
-            email: email,
-            password: hashPassword
+
+    //check email exist
+    const isExist = await db.User.findOne({
+        where: { email }
+    });
+    if (isExist) {
+        return res.json({
+            errCode: 1,
+            status: 201,
+            errMessage: "Your email is already exist, please try another email"
         });
-        res.json({msg: "Registration Successful"});
-    } catch (error) {
-        console.log(error);
+    }else{
+        try {
+            const user = await db.User.create({
+                username,
+                email,
+                password: hashPassword
+            });
+            
+            res.json({
+                errCode: 0,
+                status: 200,
+                errMessage: "Register success",
+            });
+        } 
+        catch (error) {
+            console.log(error);
+        }
     }
 }
- 
+ // Login
 export const Login = async(req, res) => {
     try {
         const user = await db.User.findAll({
@@ -38,15 +57,19 @@ export const Login = async(req, res) => {
             }
         });
         const match = await bcrypt.compare(req.body.password, user[0].password);
-        if(!match) return res.status(400).json({msg: "Wrong Password"});
+        if(!match) return res.status(400).json({
+            errCode: 1,
+            status: 400,
+            errMessage: "Wrong password"
+        });
         const userId = user[0].id;
         const username = user[0].username;
         const email = user[0].email;
         const accessToken = jwt.sign({userId, username, email}, process.env.ACCESS_TOKEN_SECRET,{
-            expiresIn: '15s'
+            expiresIn: '1h'
         });
         const refreshToken = jwt.sign({userId, username, email}, process.env.REFRESH_TOKEN_SECRET,{
-            expiresIn: '1d'
+            expiresIn: '7d' 
         });
         await db.User.update({refresh_token: refreshToken},{
             where:{
@@ -57,9 +80,19 @@ export const Login = async(req, res) => {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000
         });
-        res.json({ accessToken });
+        
+        return res.json({
+            errCode: 0,
+            status:200,
+            errMessage: "Login success",
+            accessToken,
+        });
     } catch (error) {
-        res.status(404).json({msg:"Email not found"});
+        res.status(404).json({
+            errCode: 2,
+            status: 404,
+            errMessage: "Email not found"
+        });
     }
 }
  
