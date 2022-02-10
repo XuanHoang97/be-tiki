@@ -2,7 +2,6 @@ import userService from '../services/userService';
 
 const userController = {
     handleLogin: async (req, res) => {
-        // lay gia tri tu phia client truyen len 
         let { email, password } = req.body;
 
         if (!email || !password) {

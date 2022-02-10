@@ -3,7 +3,7 @@ const { cloudinary } = require('../ultils/cloudinary');
 import _ from 'lodash';
 import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
-// import { status } from "express/lib/response";
+// import { raw } from "body-parser";
 
 //verify email
 let buildUrlEmail = (productId, token) => {
@@ -12,59 +12,71 @@ let buildUrlEmail = (productId, token) => {
 }
 
 
-//order: if login user
+//order: if have authentication
 //add to cart
-// let addToCart = (data, productId, qty, userId) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             if(productId){
-//                 let product = await db.Product.findOne({
-//                     where: {
-//                         id: productId
-//                     }
-//                 });            
+let addToCart = (data, productId, qty, userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // if(!data.token || !productId || !qty){
+            if(!productId || !qty){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }
 
-//                 if(product){
-//                     let cart = await db.Cart.findOne({
-//                         where: {
-//                             productId: productId,
-//                         }
-//                     });
+            console.log('data: ', data);
+
+            // if(data.token && productId && qty){
+            if(productId && qty){
+                let product = await db.Product.findOne({
+                    where: {
+                        id: productId
+                    }
+                });            
+
+                if(product){
+                    let cart = await db.Cart.findOne({
+                        where: {
+                            productId: productId,
+                        }
+                    });
                  
-//                     //if cart exist
-//                     if(cart){
-//                         let result = await db.Cart.update({
-//                             number: cart.number + 1,
-//                             qty: cart.qty + qty,
-//                         }, {
-//                             where: {
-//                                 productId: productId,
-//                             }
-//                         });
-//                         resolve(result);
-//                     }else{
-//                         let result = await db.Cart.create({
-//                             userId: userId,
-//                             productId: productId,
-//                             Name: product.name,
-//                             Image: product.image,
-//                             Price: product.price,
-//                             saleOff: product.sale,
-//                             qty: qty,   
-//                         });
+                    //if cart exist
+                    if(cart){
+                        let result = await db.Cart.update({
+                            number: cart.number + 1,
+                            qty: cart.qty + qty,
+                        }, {
+                            where: {
+                                productId: productId,
+                            }
+                        });
+                        resolve(result);
+                        raw: true
+                    }else{
+                        let result = await db.Cart.create({
+                            userId: userId,
+                            productId: productId,
+                            qty: qty,   
+                            Name: product.name,
+                            Image: product.image,
+                            Price: product.price,
+                            saleOff: product.sale,
+                        });
                         
-//                         resolve(result);
-//                     }
-//                 }else{
-//                     reject('Product not found');
-//                 }
-//             }
+                        resolve(result);
+                    }
+                }else{
+                    reject('Product not found');
+                }
+            }
 
-//         }catch (error) {
-//             reject(error);
-//         }
-//     });
-// };
+        }catch (error) {
+            reject(error);
+        }
+    });
+};
 
 //get all cart
 // let getCart = (id) => {
@@ -325,7 +337,7 @@ let updateOrder = (data) => {
 
 module.exports = {
     // getCart,
-    // addToCart,
+    addToCart,
     // deleteItemCart,
 
     createOrder,

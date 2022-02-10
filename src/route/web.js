@@ -8,11 +8,10 @@ import slideController from '../controllers/slideController';
 import orderController from '../controllers/orderController';
 import paginationController from '../controllers/paginationController';
 const upload = require('../ultils/multer');
-import db from "../models/index";
 
 
 //authentication
-import { getUsers, Register, Login, Logout } from "../controllers/authController.js";
+import { getUser, Register, Login, Logout } from "../controllers/authController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { refreshToken } from "../controllers/refreshToken.js";
 
@@ -20,7 +19,7 @@ let router = express.Router();
 
 let initWebRouter = (app) => {
     // Auth
-    // router.get('/users', verifyToken, getUsers);  
+    router.get('/user', verifyToken, getUser);  
     router.post('/auth/register', Register);
     router.post('/auth/login', Login);
     router.get('/auth/token', refreshToken);

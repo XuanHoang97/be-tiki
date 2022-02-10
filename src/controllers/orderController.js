@@ -128,6 +128,7 @@ const orderController = {
             res.status(200).json({
                 errCode: 0,
                 errMessage: 'Filter order success',
+                length: result.length,
                 result
             });
         }catch(e){
@@ -135,6 +136,7 @@ const orderController = {
             return res.status(500).json({
                 errCode: 1,
                 errMessage: 'Filter order fail',
+                length: 0,
                 error: e
             })
         }

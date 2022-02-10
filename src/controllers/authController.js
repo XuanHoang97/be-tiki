@@ -2,12 +2,17 @@ import db from "../models/index";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const getUsers = async(req, res) => {
+// Get user after login
+export const getUser = async(req, res) => {
     try {
-        const users = await db.User.findAll({
-            attributes:['id','username','email']
+        const {id} = req
+        const users = await db.User.findOne({
+            where: {id},
+            attributes: {
+                exclude: ["password","refresh_token"]
+            }
         });
-        res.json(users);
+        return res.json(users);
     } catch (error) {
         console.log(error);
     }
@@ -62,18 +67,18 @@ export const Login = async(req, res) => {
             status: 400,
             errMessage: "Wrong password"
         });
-        const userId = user[0].id;
+        const id = user[0].id;
         const username = user[0].username;
         const email = user[0].email;
-        const accessToken = jwt.sign({userId, username, email}, process.env.ACCESS_TOKEN_SECRET,{
+        const accessToken = jwt.sign({id, username, email}, process.env.ACCESS_TOKEN_SECRET,{
             expiresIn: '1h'
         });
-        const refreshToken = jwt.sign({userId, username, email}, process.env.REFRESH_TOKEN_SECRET,{
+        const refreshToken = jwt.sign({id, username, email}, process.env.REFRESH_TOKEN_SECRET,{
             expiresIn: '7d' 
         });
         await db.User.update({refresh_token: refreshToken},{
             where:{
-                id: userId
+                id: id
             }
         });
         res.cookie('refreshToken', refreshToken,{
@@ -95,7 +100,8 @@ export const Login = async(req, res) => {
         });
     }
 }
- 
+
+// Logout
 export const Logout = async(req, res) => {
     const refreshToken = req.cookies.refreshToken;
     if(!refreshToken) return res.sendStatus(204);
