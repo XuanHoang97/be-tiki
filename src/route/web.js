@@ -67,6 +67,9 @@ let initWebRouter = (app) => {
 
     router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);  
 
+    // filter product
+    router.get('/filter-product', productController.filterProduct);
+
     // Order
     router.post('/add-item-to-cart', orderController.addToCart);
     router.get('/cart', orderController.getCart);

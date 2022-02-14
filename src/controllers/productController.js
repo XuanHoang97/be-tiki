@@ -183,6 +183,27 @@ const productController = {
         }
     },
 
+    // filter product by price
+    filterProduct : async(req, res) => {
+        try {
+            let {priceFrom, priceTo} = req.query;
+            let products = await productService.filterProduct(priceFrom, priceTo);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                products
+            })
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({
+                errCode: -1,
+                errMessage: 'Error from the server'
+            })
+        }
+    },
+
+    
+
 
 
     //get all category

@@ -304,6 +304,33 @@ let getDetailProduct = (inputId) => {
     })
 }
 
+// filter product by price between min and max
+let filterProduct = (priceFrom, priceTo) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = await db.Product.findAll({
+                where: {
+                    price: {
+                        [Op.between]: [priceFrom, priceTo]
+                    }
+                },
+                raw: true
+            });
+            if(products.length > 0) {
+                resolve(products)
+            }else{
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Không tìm thấy sản phẩm nào'
+                })
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+};
+
+
 //get all category
 let getAllCategory = (id) => {
     return new Promise(async (resolve, reject) => {
@@ -486,5 +513,6 @@ module.exports = {
 
     getArticleProduct,
     getDetailProduct,
+    filterProduct,
 
 }
