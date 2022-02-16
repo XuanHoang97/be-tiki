@@ -3,7 +3,7 @@ const { cloudinary } = require('../ultils/cloudinary');
 import _ from 'lodash';
 import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
-// import { raw } from "body-parser";
+import { raw } from "body-parser";
 
 //verify email
 let buildUrlEmail = (productId, token) => {
@@ -17,62 +17,70 @@ let buildUrlEmail = (productId, token) => {
 let addToCart = (data, productId, qty, userId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // if(!data.token || !productId || !qty){
-            if(!productId || !qty){
+            if(!productId || !qty || !userId){
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing required parameter'
                 })
-            }
-
-            console.log('data: ', data);
-
-            // if(data.token && productId && qty){
-            if(productId && qty){
-                let product = await db.Product.findOne({
+            }else{
+                let user = await db.User.findOne({
                     where: {
-                        id: productId
-                    }
-                });            
+                        id: userId
+                    },
+                });
 
-                if(product){
-                    let cart = await db.Cart.findOne({
+                if(user){
+                    let product = await db.Product.findOne({
                         where: {
-                            productId: productId,
-                        }
+                            id: productId
+                        },
                     });
-                 
-                    //if cart exist
-                    if(cart){
-                        let result = await db.Cart.update({
-                            number: cart.number + 1,
-                            qty: cart.qty + qty,
-                        }, {
+
+                    if(product){
+                        let cart = await db.Cart.findOne({
                             where: {
+                                userId: userId,
                                 productId: productId,
-                            }
+                            },
                         });
-                        resolve(result);
-                        raw: true
+
+                        // if cart is exist
+                        if(cart){
+                            let result = await db.Cart.update({
+                                qty: cart.qty + parseInt(qty),
+                            },{
+                                where: {
+                                    userId: userId,
+                                    productId: productId
+                                }
+                            });
+                            resolve(result);
+                        }else{
+                            let result = await db.Cart.create({
+                                userId: userId,
+                                productId: productId,
+                                qty: qty,
+                                Name: product.name,
+                                Image: product.image,
+                                Price: product.price,
+                                saleOff: product.sale,
+                            });
+                            resolve(result);
+                        }
                     }else{
-                        let result = await db.Cart.create({
-                            userId: userId,
-                            productId: productId,
-                            qty: qty,   
-                            Name: product.name,
-                            Image: product.image,
-                            Price: product.price,
-                            saleOff: product.sale,
-                        });
-                        
-                        resolve(result);
+                        resolve({
+                            errCode: 1,
+                            errMessage: 'Product not exist'
+                        })
                     }
                 }else{
-                    reject('Product not found');
+                    resolve({
+                        errCode: 1,
+                        errMessage: 'User not exist'
+                    })
                 }
             }
-
-        }catch (error) {
+        } catch (error) {
             reject(error);
         }
     });
@@ -137,7 +145,7 @@ let createOrder = (data) => {
                     errMessage: 'Missing required parameter'
                 })
             }else{ 
-                let order = [...data.arrOrder];
+                let order = data.arrOrder;
                 // save array data to database 
                 if(order && order.length > 0){
                     let token = uuidv4();
@@ -160,23 +168,23 @@ let createOrder = (data) => {
                     console.log('data order:' , order);
 
                     // send mail-verify order
-                    await emailService.sendSimpleEmail({
-                        receiveEmail: data.email,
-                        customerName: data.username,
+                    // await emailService.sendSimpleEmail({
+                    //     receiveEmail: data.email,
+                    //     customerName: data.username,
 
-                        orderCode: order[0].code,
-                        productName: order[0].name,
-                        qty: order[0].qty,
-                        date: order[0].date,
+                    //     orderCode: order[0].code,
+                    //     productName: order[0].name,
+                    //     qty: order[0].qty,
+                    //     date: order[0].date,
 
-                        total: data.total,
-                        address: data.address,
-                        phone: data.phone,
-                        note: data.note,
-                        delivery: data.delivery,
-                        payment: data.payment,
-                        redirectLink: buildUrlEmail(order[0].productId, token)
-                    });
+                    //     total: data.total,
+                    //     address: data.address,
+                    //     phone: data.phone,
+                    //     note: data.note,
+                    //     delivery: data.delivery,
+                    //     payment: data.payment,
+                    //     redirectLink: buildUrlEmail(order[0].productId, token)
+                    // });
                 }
 
 

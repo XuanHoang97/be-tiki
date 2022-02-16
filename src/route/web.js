@@ -70,6 +70,9 @@ let initWebRouter = (app) => {
     // filter product
     router.get('/filter-product', productController.filterProduct);
 
+    // get number product sold
+    router.get('/get-number-product-sale', productController.getNumberProductSale);
+
     // Order
     router.post('/add-item-to-cart', orderController.addToCart);
     router.get('/cart', orderController.getCart);

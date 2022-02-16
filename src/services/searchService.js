@@ -2,14 +2,14 @@ import db from "../models/index";
 import { Op } from "sequelize";
 
 //search all product
-const search = (keyword, priceFrom, priceTo) => {
+const search = (keyword,price, priceFrom, priceTo) => {
     return new Promise(async (resolve, reject) => {
         try {
             let info = '';
             if (keyword === '' || keyword === undefined || keyword === null) {
                 return info
             } 
-            if(keyword && keyword !== '' && keyword !== undefined && keyword !== null) {
+            else {
                 info = await db.Product.findAll({
                     where: {
                         [Op.or]: [
@@ -30,6 +30,12 @@ const search = (keyword, priceFrom, priceTo) => {
                     if(priceFrom && priceTo) {
                         info = info.filter(item => {
                             return item.price >= priceFrom && item.price <= priceTo
+                        })
+                    }else if(price) {
+                        info = info.filter(item => {
+                            if(item.price <= price) {
+                                return item.price <= price
+                            }
                         })
                     }
                     resolve(info)

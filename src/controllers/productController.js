@@ -202,6 +202,27 @@ const productController = {
         }
     },
 
+
+    // get number product sale
+    getNumberProductSale : async(req, res) => {
+        try {
+            let {productId} = req.query;
+            let productSold = await productService.getNumberProductSale(productId);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                length: productSold.length,
+                productSold
+            })
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({
+                errCode: -1,
+                length: 0,
+                errMessage: 'Error from the server',
+            })
+        }
+    },
     
 
 

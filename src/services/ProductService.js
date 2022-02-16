@@ -330,6 +330,32 @@ let filterProduct = (priceFrom, priceTo) => {
     })
 };
 
+// get number product sale
+let getNumberProductSale = (productId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let products = await db.Order.findAll({
+                where: {
+                    status: 'S4',
+                    productId: productId
+                },
+                raw: true,
+            });
+
+            if(products.length > 0) {
+                    resolve(products)
+                }else{
+                    resolve({
+                        errCode: 1,
+                        length: 0,
+                        errMessage: 'Không tìm thấy sản phẩm nào'
+                    })
+                }
+            }catch (e) {
+            reject(e);
+        }
+    })
+}
 
 //get all category
 let getAllCategory = (id) => {
@@ -514,5 +540,6 @@ module.exports = {
     getArticleProduct,
     getDetailProduct,
     filterProduct,
+    getNumberProductSale,
 
 }
