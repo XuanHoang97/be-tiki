@@ -1,6 +1,7 @@
 import orderService from '../services/orderService';
 
 const orderController = {
+    // Order with login
     //add to cart
     addToCart : async(req, res) => {
         try {
@@ -19,48 +20,44 @@ const orderController = {
         }
     },
 
-    //get all cart not login
+    //get cart by userId
     getCart : async(req, res) => {
-        try{
-            let result = await orderService.getCart(req.query.id);
+        try {
+            let {userId} = req.query;
+            let result = await orderService.getCart(userId);
             res.status(200).json({
                 errCode: 0,
-                errMessage: 'Get all cart success',
+                errMessage: 'Get cart success',
                 result
             });
-
-        }catch(e){
-            console.log(e);
-            if (!id) {
-                return res.status(500).json({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter',
-                    result: []
-                })
-            }
+        } catch (error) {
+            res.status(500).json({
+                errMessage: 'Get cart fail',
+                error: error
+            });
         }
     },
 
-    //delete item cart
-    deleteItemCart : async(req, res) => {
-        try{
-            if (!req.body.id) {
-                return res.status(200).json({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter'
-                })
-            }
-    
-            let cart = await orderService.deleteItemCart(req.body.id);
-            return res.status(200).json({
+    //delete item cart by userId
+    deleteItemCart : async(req, res) => {   
+        try {
+            let {id} = req.body;
+            let result = await orderService.deleteItemCart(id);
+            res.status(200).json({
                 errCode: 0,
-                errMessage: 'OK',
-                cart: cart
-            })
-        }catch(e){
-            console.log(e);
+                errMessage: 'Delete item cart success',
+                result
+            });
+        } catch (error) {
+            res.status(500).json({
+                errMessage: 'Delete item cart fail',
+                error: error
+            });
         }
     },
+
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Order with not login
 
     //create order
     createOrder : async(req, res) => {

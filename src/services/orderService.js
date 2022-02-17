@@ -86,53 +86,52 @@ let addToCart = (data, productId, qty, userId) => {
     });
 };
 
-//get all cart
-// let getCart = (id) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             let carts = '';
-//             if (id === 'ALL') {
-//                 carts = await db.Cart.findAll()
-//             } 
-//             if(id && id !== 'ALL') {
-//                 carts = await db.Cart.findOne({
-//                     where: { id: id }
-//                 });
-//             }
-//             resolve(carts);
-//         } catch (error) {
-//             reject(error);
-//         }
-//     });
-// };
+//get cart by userId
+let getCart = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!userId){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let carts = await db.Cart.findAll({
+                    where: {
+                        userId: userId
+                    }
+                });
+                resolve(carts);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
-//delete item cart
-// let deleteItemCart = (productId) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             let foundItemProduct = await db.Cart.findOne({
-//                 where: { id: productId }
-//             })
+//delete item cart by userId
+let deleteItemCart = (productId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!productId){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let result = await db.Cart.destroy({
+                    where: {
+                        id: productId,
+                    }
+                });
+                resolve(result);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
-//             if (!foundItemProduct) {
-//                 resolve({
-//                     errCode: 2,
-//                     errMessage: `The cart isn't exist`
-//                 })
-//             }else{
-//                 await db.Cart.destroy({
-//                     where: { id: productId }
-//                 });
-//                 resolve({
-//                     errCode: 0,
-//                     errMessage: `The item cart is deleted`,
-//                 })
-//             }
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
 
 
 //create order
@@ -344,9 +343,9 @@ let updateOrder = (data) => {
 
 
 module.exports = {
-    // getCart,
     addToCart,
-    // deleteItemCart,
+    getCart,
+    deleteItemCart,
 
     createOrder,
     getOrder,
