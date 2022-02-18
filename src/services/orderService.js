@@ -1,5 +1,4 @@
 import db from "../models/index";
-const { cloudinary } = require('../ultils/cloudinary');
 import _ from 'lodash';
 import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
@@ -132,8 +131,34 @@ let deleteItemCart = (productId) => {
     });
 };
 
+// update array in cart
+let updateItemCart = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let carts = data.arrCart;
+            if(carts && carts.length > 0){
+                carts.map((item, index) => {
+                    return item;
+                });
+            }
+            await db.Cart.bulkCreate(carts, {
+                updateOnDuplicate: ['qty']
+            });
+            resolve({
+                errCode: 0,
+                errMessage: 'update cart success',
+                carts
+            });
+        } catch (error) {
+            reject(error);
+        }   
+    });
+};
 
 
+
+
+// Option: Order without login
 //create order
 let createOrder = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -339,13 +364,11 @@ let updateOrder = (data) => {
 };
 
 
-
-
-
 module.exports = {
     addToCart,
     getCart,
     deleteItemCart,
+    updateItemCart,
 
     createOrder,
     getOrder,

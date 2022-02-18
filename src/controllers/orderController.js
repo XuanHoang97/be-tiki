@@ -56,6 +56,24 @@ const orderController = {
         }
     },
 
+    // update item cart by userId
+    updateItemCart : async(req, res) => {
+        try {
+            // let {id, qty} = req.body;
+            let result = await orderService.updateItemCart(req.body);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Update item cart success',
+                result
+            });
+        } catch (error) {
+            res.status(500).json({
+                errMessage: 'Update item cart fail',
+                error: error
+            });
+        }
+    },
+
     // ---------------------------------------------------------------------------------------------------------------------
     // Order with not login
 
