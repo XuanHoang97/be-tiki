@@ -73,12 +73,15 @@ let initWebRouter = (app) => {
     // get number product sold
     router.get('/get-number-product-sale', productController.getNumberProductSale);
 
-    // Order
+    // Order with login
     router.post('/add-item-to-cart', orderController.addToCart);
     router.get('/cart', orderController.getCart);
     router.delete('/delete-item-cart', orderController.deleteItemCart);
     router.put('/update-item-cart', orderController.updateItemCart);
+    router.post('/checkout', orderController.checkout);
+    router.get('/get-order-by-user', orderController.getOrderByUser);
 
+    // order without login
     router.post('/create-order', orderController.createOrder);
     router.get('/get-order', orderController.getOrder);
     router.post('/verify-order', orderController.verifyOrder);

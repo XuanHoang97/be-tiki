@@ -10,7 +10,6 @@ let buildUrlEmail = (productId, token) => {
     return result;
 }
 
-
 //order: if have authentication
 //add to cart
 let addToCart = (data, productId, qty, userId) => {
@@ -59,10 +58,10 @@ let addToCart = (data, productId, qty, userId) => {
                                 userId: userId,
                                 productId: productId,
                                 qty: qty,
-                                Name: product.name,
-                                Image: product.image,
-                                Price: product.price,
-                                saleOff: product.sale,
+                                name: product.name,
+                                image: product.image,
+                                price: product.price,
+                                sale: product.sale,
                             });
                             resolve(result);
                         }
@@ -155,6 +154,105 @@ let updateItemCart = (data) => {
     });
 };
 
+// checkout order
+let checkout = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!data.arrOrder){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{ 
+                let order = data.arrOrder;
+                if(order && order.length > 0){
+                    let token = uuidv4();
+                    order = order.map((item) => {                
+                        item.code = 'OD' + Math.floor(Math.random() * 10000);
+                        item.status = 'S1';
+                        item.total = data.total;
+                        item.date = new Date();
+                        item.dateDelivery = data.dateDelivery;
+                        item.username = data.username;
+                        item.address = data.address;
+                        item.phone = data.phone;
+                        item.email = data.email;
+                        item.delivery = data.delivery;
+                        item.payment = data.payment;
+                        item.token = token;
+                        return item;
+                    });
+                }
+
+                // get all existing data
+                let existing = await db.Order.findAll({
+                    where: { 
+                        userId: order[0].userId
+                    },
+                    // attributes: {
+                    //     exclude: ['id', 'userId']
+                    // },
+                    raw: true
+                })
+
+                //compare arr transmission data
+                let toCreate = _.differenceWith(order, existing, (a, b) => {
+                    return a.code === b.code
+                });
+
+
+                //create data
+                if (toCreate && toCreate.length > 0) {
+                    await db.Order.bulkCreate(toCreate)
+                    // delete cart
+                    await db.Cart.destroy({
+                        where: {
+                            userId: order[0].userId
+                        }
+                    });
+                }
+                resolve({
+                    errCode: 0,
+                    errMessage: 'OK',
+                })
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+// get order by userId
+let getOrderByUser = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!userId){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let orders = await db.Order.findAll({
+                    where: {
+                        userId: userId
+                    },
+                    order: [
+                        ['id', 'DESC']
+                    ],
+                    attributes: {
+                        exclude: ['userId', 'token']
+                    },
+                    raw: true
+                });
+                resolve(orders);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+
 
 
 
@@ -214,7 +312,6 @@ let createOrder = (data) => {
 
                 // get all existing data
                 let existing = await db.Order.findAll({
-                    // where: { userId: data.userId},
                     attributes: {
                         exclude: ['id', 'userId']
                     },
@@ -365,11 +462,15 @@ let updateOrder = (data) => {
 
 
 module.exports = {
+    // order with login 
     addToCart,
     getCart,
     deleteItemCart,
     updateItemCart,
+    checkout,
+    getOrderByUser,
 
+    // order without login
     createOrder,
     getOrder,
     verifyOrder,

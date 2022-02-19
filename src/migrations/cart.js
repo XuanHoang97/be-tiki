@@ -21,19 +21,19 @@ module.exports = {
                 type: Sequelize.INTEGER,
             },
 
-            Name: {
+            name: {
                 type : Sequelize.STRING
             },
 
-            Image: {
+            image: {
                 type : Sequelize.STRING
             },
 
-            Price: {
+            price: {
                 type : Sequelize.INTEGER
             },
 
-            saleOff: {
+            sale: {
                 type : Sequelize.INTEGER
             },
 

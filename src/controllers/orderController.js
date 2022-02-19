@@ -74,6 +74,42 @@ const orderController = {
         }
     },
 
+    // checkout order
+    checkout : async(req, res) => {
+        try {
+            let result = await orderService.checkout(req.body);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Checkout success',
+                result
+            });
+        } catch (error) {
+            res.status(500).json({
+                errMessage: 'Checkout fail',
+                error: error
+            });
+        }
+    },
+
+    // get order by userId
+    getOrderByUser: async(req, res) => {
+        try {
+            let {userId} = req.query;
+            let result = await orderService.getOrderByUser(userId);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Get order success',
+                result
+            });
+        } catch (error) {
+            res.status(500).json({
+                errMessage: 'Get order fail',
+                error: error
+            });
+        }
+    },
+
+
     // ---------------------------------------------------------------------------------------------------------------------
     // Order with not login
 
