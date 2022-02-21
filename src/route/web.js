@@ -26,9 +26,7 @@ let initWebRouter = (app) => {
     router.delete('/auth/logout', Logout);
 
     // pagination
-    router.get('/get-all-news/:page', paginationController.getAllNews);
-
-
+    router.get('/news/:page', paginationController.getAllNews);
 
     //auth admin
     router.post('/login', userController.handleLogin);
@@ -80,6 +78,7 @@ let initWebRouter = (app) => {
     router.put('/update-item-cart', orderController.updateItemCart);
     router.post('/checkout', orderController.checkout);
     router.get('/get-order-by-user', orderController.getOrderByUser);
+    router.get('/filterMyOrder', orderController.filterMyOrder);
 
     // order without login
     router.post('/create-order', orderController.createOrder);

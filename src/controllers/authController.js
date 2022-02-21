@@ -71,7 +71,7 @@ export const Login = async(req, res) => {
         const username = user[0].username;
         const email = user[0].email;
         const accessToken = jwt.sign({id, username, email}, process.env.ACCESS_TOKEN_SECRET,{
-            expiresIn: '1h'
+            expiresIn: '1d'
         });
         const refreshToken = jwt.sign({id, username, email}, process.env.REFRESH_TOKEN_SECRET,{
             expiresIn: '7d' 

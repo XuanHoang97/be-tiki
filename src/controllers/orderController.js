@@ -109,6 +109,25 @@ const orderController = {
         }
     },
 
+    // filter myOrder by status
+    filterMyOrder: async(req, res) => {
+        try {
+            let {status, userId} = req.query;
+            let result = await orderService.filterMyOrder(status, userId);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Filter my order success',
+                result
+            });
+        } catch (error) {
+            res.status(500).json({
+                errMessage: 'Filter my order fail',
+                error: error
+            });
+        }
+    },
+
+
 
     // ---------------------------------------------------------------------------------------------------------------------
     // Order with not login

@@ -189,9 +189,6 @@ let checkout = (data) => {
                     where: { 
                         userId: order[0].userId
                     },
-                    // attributes: {
-                    //     exclude: ['id', 'userId']
-                    // },
                     raw: true
                 })
 
@@ -204,11 +201,21 @@ let checkout = (data) => {
                 //create data
                 if (toCreate && toCreate.length > 0) {
                     await db.Order.bulkCreate(toCreate)
+
                     // delete cart
                     await db.Cart.destroy({
                         where: {
                             userId: order[0].userId
                         }
+                    });
+
+                    // send notification someone order
+                    await db.Notification.create({
+                        // userId: order[0].userId,
+                        // title: `Bạn có đơn hàng mới`,
+                        // description: 'Xin chào, bạn có đơn hàng mới',
+                        // status: 'S1',
+                        // date: new Date(),
                     });
                 }
                 resolve({
@@ -251,6 +258,47 @@ let getOrderByUser = (userId) => {
         }
     });
 };
+
+// filter my order
+let filterMyOrder = (status, userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!status && !userId){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let orders = '';
+                if (status === 'S0' && userId) {
+                    orders = await db.Order.findAll({
+                        where: {
+                            userId: userId,
+                        },
+                    })
+                }else{
+                    orders = await db.Order.findAll({
+                        where: {
+                            status: status,
+                            userId: userId
+                        },
+                        order: [
+                            ['id', 'DESC']
+                        ],
+                        attributes: {
+                            exclude: ['userId', 'token']
+                        },
+                        raw: true
+                    });
+                }
+                resolve(orders);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 
 
 
@@ -469,6 +517,7 @@ module.exports = {
     updateItemCart,
     checkout,
     getOrderByUser,
+    filterMyOrder,
 
     // order without login
     createOrder,
