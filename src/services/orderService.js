@@ -230,7 +230,7 @@ let checkout = (data) => {
 };
 
 // get order by userId
-let getOrderByUser = (userId) => {
+let getOrderByUser = (userId, req, res) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!userId){
@@ -239,18 +239,18 @@ let getOrderByUser = (userId) => {
                     errMessage: 'Missing required parameter'
                 })
             }else{
-                let orders = await db.Order.findAll({
-                    where: {
-                        userId: userId
-                    },
-                    order: [
-                        ['id', 'DESC']
-                    ],
-                    attributes: {
-                        exclude: ['userId', 'token']
-                    },
-                    raw: true
-                });
+            let orders = await db.Order.findAll({
+                where: {
+                    userId: userId
+                },
+                order: [
+                    ['id', 'DESC']
+                ],
+                attributes: {
+                    exclude: ['userId', 'token']
+                },
+                raw: true
+            });
                 resolve(orders);
             }
         } catch (error) {
@@ -298,11 +298,6 @@ let filterMyOrder = (status, userId) => {
         }
     });
 };
-
-
-
-
-
 
 // Option: Order without login
 //create order

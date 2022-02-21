@@ -82,7 +82,7 @@ let initWebRouter = (app) => {
 
     // order without login
     router.post('/create-order', orderController.createOrder);
-    router.get('/get-order', orderController.getOrder);
+    router.get('/orders/:page', orderController.getOrder);
     router.post('/verify-order', orderController.verifyOrder);
 
     router.get('/filter-order', orderController.filterOrder);

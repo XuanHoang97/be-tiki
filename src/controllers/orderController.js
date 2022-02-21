@@ -1,4 +1,5 @@
 import orderService from '../services/orderService';
+import db from "../models/index";
 
 const orderController = {
     // Order with login
@@ -153,23 +154,52 @@ const orderController = {
 
     //get all order
     getOrder : async(req, res) => {
-        try{
-            let result = await orderService.getOrder(req.query.id);
+        // try{
+        //     let result = await orderService.getOrder(req.query.id);
+        //     res.status(200).json({
+        //         errCode: 0,
+        //         errMessage: 'Get all order success',
+        //         result
+        //     });
+        // }catch(e){
+        //     console.log(e);
+        //     if (!id) {
+        //         return res.status(500).json({
+        //             errCode: 1,
+        //             errMessage: 'Missing required parameter',
+        //             result: []
+        //         })
+        //     }
+        // }
+
+        let limit = 5;   // number of records per page
+        let offset = 0;
+        db.Order.findAndCountAll()
+        .then((data) => {
+          let page = req.params.page;      // page number
+          let pages = Math.ceil(data.count / limit);
+              offset = limit * (page - 1);
+          db.Order.findAll({
+            attributes: {
+                exclude: ['userId', 'token']
+            },
+
+            limit: limit,
+            offset: offset,
+            $sort: { id: 1 }
+          })
+          .then((users) => {
             res.status(200).json({
                 errCode: 0,
-                errMessage: 'Get all order success',
-                result
-            });
-        }catch(e){
-            console.log(e);
-            if (!id) {
-                return res.status(500).json({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter',
-                    result: []
-                })
-            }
-        }
+                'result': users, 
+                'count': data.count, 
+                'pages': pages});
+          });
+        })
+        .catch(function (error) {
+              res.status(500).send('Internal Server Error');
+        });
+      
     },
 
     //verify order

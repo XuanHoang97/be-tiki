@@ -1,7 +1,6 @@
 import db from "../models/index";
 
 const paginationController = {
-    // pagination news
     getAllNews: (req, res) => {
         let limit = 3;   // number of records per page
         let offset = 0;
