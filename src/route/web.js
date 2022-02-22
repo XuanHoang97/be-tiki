@@ -42,8 +42,8 @@ let initWebRouter = (app) => {
 
     // CRUD User
     router.get('/get-all-users', userController.getAllUsers);
-    router.post('/create-new-user', userController.createUser);
-    router.put('/edit-user', userController.editUser);
+    router.post('/create-new-user',upload.single('image'), userController.createUser);
+    router.put('/edit-user',upload.single('image'), userController.editUser);
     router.delete('/delete-user', userController.deleteUser);
     
     // Search
@@ -82,7 +82,7 @@ let initWebRouter = (app) => {
 
     // order without login
     router.post('/create-order', orderController.createOrder);
-    router.get('/orders/:page', orderController.getOrder);
+    router.get('/orders', orderController.getOrder);
     router.post('/verify-order', orderController.verifyOrder);
 
     router.get('/filter-order', orderController.filterOrder);

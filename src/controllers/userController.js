@@ -37,7 +37,7 @@ const userController = {
         })
     },
     createUser: async (req, res) => {
-        let message = await userService.createNewUser(req.body);
+        let message = await userService.createNewUser(req.body, req.file);
         return res.status(200).json(message)
     },
     deleteUser: async (req, res) => {
@@ -53,7 +53,7 @@ const userController = {
     },
     editUser: async (req, res) => {
         try {
-            let message = await userService.updateUserData(req.body)
+            let message = await userService.updateUserData(req.body, req.file)
             return res.status(200).json(message)
         } catch (e) {
             console.log('loi', e)

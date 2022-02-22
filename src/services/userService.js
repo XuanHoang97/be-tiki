@@ -2,6 +2,9 @@ import db from "../models/index";
 import bcrypt from 'bcryptjs';
 const salt = bcrypt.genSaltSync(10);
 import { Op } from "sequelize";
+const { cloudinary } = require('../ultils/cloudinary');
+
+
 //hash password
 let hashUserPassword = (password) => {
     return new Promise(async (resolve, reject) => {
@@ -103,7 +106,7 @@ let getAllUsers = (userId) => {
 }
 
 //Create USers
-let createNewUser = (data) => {
+let createNewUser = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
             // check email is exist ???
@@ -113,24 +116,34 @@ let createNewUser = (data) => {
                     errCode: 1,
                     errMessage: 'Your email is already in used, Plz try another email'
                 })
-            } else {
-                let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-                await db.User.create({
-                    email: data.email,
-                    password: hashPasswordFromBcrypt,
-                    username: data.username,
-                    address: data.address,
-                    phoneNumber: data.phoneNumber,
-                    gender: data.gender,
-                    roleId: data.roleId,
-                    positionId: data.positionId,
-                    image: data.avatar,
-                })
-                resolve({
-                    errCode: 0,
-                    message: 'OK'
-                });
+            } else if(file) {
+                const result = await cloudinary.uploader.upload(file.path);
+                data.image = result.url;
+                data.cloudinary_id = result.public_id;
             }
+            let newUser = await db.User.create({
+                ...data
+            });
+            resolve({newUser});
+            
+            // {
+            //     let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+            //     await db.User.create({
+            //         email: data.email,
+            //         password: hashPasswordFromBcrypt,
+            //         username: data.username,
+            //         address: data.address,
+            //         phoneNumber: data.phoneNumber,
+            //         gender: data.gender,
+            //         roleId: data.roleId,
+            //         positionId: data.positionId,
+            //         image: data.avatar,
+            //     })
+            //     resolve({
+            //         errCode: 0,
+            //         message: 'OK'
+            //     });
+            // }
 
         } catch (e) {
             reject(e);
@@ -165,7 +178,7 @@ let deleteUser = (userId) => {
 }
 
 //update Users
-let updateUserData = (data) => {
+let updateUserData = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id) {
@@ -181,30 +194,34 @@ let updateUserData = (data) => {
             })
 
             if (user) {
+                if(file) {
+                    const result = await cloudinary.uploader.upload(file.path);
+                    data.image = result.url;
+                    data.cloudinary_id = result.public_id;
+                }
                 user.email = data.email;
                 user.username = data.username;
                 user.address = data.address;
+                user.phoneNumber = data.phoneNumber;
                 user.roleId = data.roleId;
                 user.positionId = data.positionId;
                 user.gender = data.gender;
-                user.phoneNumber = data.phoneNumber;
-                if (data.avatar) {
-                    user.image = data.avatar;
-                }
+                user.image = data.image;
+                user.cloudinary_id = data.cloudinary_id;
 
-                await user.save();
+                await user.save({
+                    ...data
+                });
                 resolve({
                     errCode: 0,
-                    message: 'update the user succeeds '
-                });
+                    message: 'The user is updated'
+                })
             } else {
                 resolve({
                     errCode: 1,
                     errMessage: `User's not found`
                 })
             }
-
-
         } catch (e) {
             reject(e);
         }

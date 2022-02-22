@@ -46,7 +46,7 @@ module.exports = {
       },
 
       image: {
-        type: Sequelize.BLOB('long'),
+        type: Sequelize.STRING,
         allowNull: true,
       },
 
@@ -62,10 +62,5 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Users');
-
-    queryInterface.changeColumn('Users', 'image', {
-      type: Sequelize.STRING,
-      allowNull: true,
-    })
   }
 };

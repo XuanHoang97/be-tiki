@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { cloudinary } = require('../ultils/cloudinary');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
@@ -20,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     roleId: DataTypes.STRING,
     positionId: DataTypes.STRING,
-    refresh_token: DataTypes.TEXT
+    refresh_token: DataTypes.TEXT,
+    cloudinary_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'User',
