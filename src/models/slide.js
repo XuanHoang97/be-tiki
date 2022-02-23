@@ -10,10 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     Slide.init({
         name: DataTypes.STRING,
         image: DataTypes.STRING,
-        date: DataTypes.STRING,
         categoryId: DataTypes.INTEGER,
         status: DataTypes.STRING,
-        cloudinary_id: DataTypes.STRING, 
+        cloudinary_id: DataTypes.INTEGER, 
     }, {
         sequelize,
         modelName: 'Slide',

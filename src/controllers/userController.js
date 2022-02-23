@@ -37,8 +37,15 @@ const userController = {
         })
     },
     createUser: async (req, res) => {
-        let message = await userService.createNewUser(req.body, req.file);
-        return res.status(200).json(message)
+        try{
+            let message = await userService.createNewUser(req.body, req.file);
+            return res.status(200).json(message)
+        }catch(e){
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: e
+            })
+        }
     },
     deleteUser: async (req, res) => {
         if (!req.body.id) {

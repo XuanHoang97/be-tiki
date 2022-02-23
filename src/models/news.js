@@ -16,9 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         category_id: DataTypes.STRING,
         author_id: DataTypes.STRING,
         date: DataTypes.STRING,
-        status: DataTypes.STRING,
-        view: DataTypes.INTEGER,
-        hot: DataTypes.BOOLEAN,
         cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,

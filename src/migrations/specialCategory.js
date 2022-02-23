@@ -12,6 +12,10 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
+            categoryId: {
+                type: Sequelize.INTEGER
+            },
+
             name: {
                 type: Sequelize.STRING
             },
@@ -20,15 +24,7 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            date: {
-                type: Sequelize.STRING
-            },
-
             cloudinary_id: {
-                type: Sequelize.STRING
-            },
-
-            categoryId: {
                 type: Sequelize.INTEGER
             },
 

@@ -50,6 +50,16 @@ module.exports = {
         allowNull: true,
       },
 
+      cloudinary_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+
+      refresh_token: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+
       createdAt: {
           allowNull: false,
           type: Sequelize.DATE

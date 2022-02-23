@@ -11,26 +11,25 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
+            
+            categoryId: {
+                type: Sequelize.INTEGER
+            },
 
             name: {
                 type: Sequelize.STRING
             },
 
-            image: {
-                // type: Sequelize.BLOB('long')
-                type : Sequelize.STRING
-            },
-
             status: {
                 type: Sequelize.STRING
             },
-
-            date: {
-                type: Sequelize.STRING
+            
+            image: {
+                type : Sequelize.STRING
             },
 
-            categoryId: {
-                type: Sequelize.INTEGER
+            cloudinary_id: {
+                type : Sequelize.INTEGER
             },
 
             createdAt: {

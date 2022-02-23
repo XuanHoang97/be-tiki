@@ -59,7 +59,6 @@ module.exports = {
                 type: Sequelize.TEXT('long')
             },
 
-
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

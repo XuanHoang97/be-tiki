@@ -17,8 +17,16 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
+            userId: {
+                type: Sequelize.INTEGER
+            },
+
             productId: {
                 type: Sequelize.INTEGER
+            },
+
+            image: {
+                type: Sequelize.STRING
             },
 
             name: {
@@ -38,6 +46,10 @@ module.exports = {
             },
      
             date: {
+                type: Sequelize.STRING
+            },
+
+            dateDelivery: {
                 type: Sequelize.STRING
             },
 
@@ -69,7 +81,6 @@ module.exports = {
             payment: {
                 type: Sequelize.STRING
             },
-
 
             token: {
                 type: Sequelize.STRING

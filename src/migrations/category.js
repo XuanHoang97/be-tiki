@@ -8,14 +8,14 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-
+            
+            name: {
+                type: Sequelize.STRING
+            },
+            
             image: {
                 type: Sequelize.STRING,
                 allowNull: true,
-            },
-
-            name: {
-                type: Sequelize.STRING
             },
 
             keyMap: {
@@ -33,7 +33,6 @@ module.exports = {
             categoryId: {
                 type: Sequelize.STRING
             },
-
 
             statusId: {
                 type: Sequelize.STRING

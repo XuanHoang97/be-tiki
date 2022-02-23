@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     age: DataTypes.INTEGER,
     phoneNumber: DataTypes.STRING,
     gender: DataTypes.STRING,
-    image: DataTypes.STRING,
     roleId: DataTypes.STRING,
     positionId: DataTypes.STRING,
     refresh_token: DataTypes.TEXT,
+    image: DataTypes.STRING,
     cloudinary_id: DataTypes.INTEGER,
   }, {
     sequelize,

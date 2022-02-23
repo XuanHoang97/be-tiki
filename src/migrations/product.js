@@ -9,10 +9,23 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            name: {
+            category_id: {
                 type: Sequelize.STRING
             },
 
+            supplier_id: {
+                type: Sequelize.STRING
+            },
+            
+            name: {
+                type: Sequelize.STRING
+            },
+            
+            image: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+            
             price: {
                 type: Sequelize.INTEGER
             },
@@ -21,33 +34,14 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            status: {
-                type: Sequelize.STRING
-            },
-            number: {
-                type: Sequelize.INTEGER
-            },
-
             warranty: {
                 type: Sequelize.INTEGER
             },
 
-            image: {
-                type: Sequelize.STRING,
-                allowNull: true,
-            },
 
             cloudinary_id: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
-            },
-
-            category_id: {
-                type: Sequelize.STRING
-            },
-
-            supplier_id: {
-                type: Sequelize.STRING
             },
 
             createdAt: {

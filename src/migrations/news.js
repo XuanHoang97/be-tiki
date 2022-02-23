@@ -13,6 +13,19 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
+            productId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+            
+            category_id: {
+                type: Sequelize.STRING
+            },
+
+            author_id: {
+                type: Sequelize.STRING
+            },
+
             image: {
                 type: Sequelize.STRING,
                 allowNull: true,
@@ -23,14 +36,6 @@ module.exports = {
                 allowNull: true,
             },
 
-            productId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: {
-                    model: 'Products',
-                    key: 'id'
-                }
-            },
 
             description: {
                 type: Sequelize.STRING
@@ -40,28 +45,8 @@ module.exports = {
                 type: Sequelize.TEXT('long')
             },
 
-            status: {
-                type: Sequelize.STRING
-            },
-
-            category_id: {
-                type: Sequelize.STRING
-            },
-
-            author_id: {
-                type: Sequelize.STRING
-            },
-
             date: {
                 type: Sequelize.STRING
-            },
-
-            view: {
-                type: Sequelize.INTEGER
-            },
-
-            hot: {
-                type: Sequelize.BOOLEAN
             },
 
             createdAt: {
