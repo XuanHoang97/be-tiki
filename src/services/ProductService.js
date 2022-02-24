@@ -72,7 +72,6 @@ let editProduct = (data, file) => {
             product.name = data.name;
             product.price = data.price;
             product.sale = data.sale;
-            product.status = data.status;
             product.number = data.number;
             product.warranty = data.warranty;
             product.category_id = data.category_id;

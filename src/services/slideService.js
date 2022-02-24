@@ -63,7 +63,6 @@ let EditSlide = (data, file) => {
                 data.cloudinary_id = result.public_id;
             }
             slide.name = data.name;
-            slide.date = data.date;
             slide.status = data.status;
             slide.categoryId = data.categoryId;
             slide.image = data.image;
@@ -178,7 +177,6 @@ let EditSpecialCategory = (data, file) => {
                 data.cloudinary_id = result.public_id;
             }
             specialCategory.name = data.name;
-            specialCategory.date = data.date;
             specialCategory.categoryId = data.categoryId;
             specialCategory.image = data.image;
             specialCategory.cloudinary_id = data.cloudinary_id;

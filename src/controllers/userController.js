@@ -63,7 +63,7 @@ const userController = {
             let message = await userService.updateUserData(req.body, req.file)
             return res.status(200).json(message)
         } catch (e) {
-            console.log('loi', e)
+            console.log('err', e)
         }
     },
     getAllCode: async (req, res) => {

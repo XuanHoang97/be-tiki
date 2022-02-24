@@ -69,7 +69,6 @@ let editNews = (data, file) => {
                 news.name = data.name;
                 news.description = data.description;
                 news.content = data.content;
-                news.status = data.status;
                 news.category_id = data.category_id;
                 news.productId = data.productId;
                 news.author_id = data.author_id;
