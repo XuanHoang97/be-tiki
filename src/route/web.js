@@ -7,11 +7,11 @@ import searchController from '../controllers/searchController';
 import slideController from '../controllers/slideController';
 import orderController from '../controllers/orderController';
 import paginationController from '../controllers/paginationController';
+import notifyController from '../controllers/notifyController';
 const upload = require('../ultils/multer');
 
-
 //authentication
-import { getUser, Register, Login, Logout } from "../controllers/authController.js";
+import { getUser, updateUser, changePassword, Register, Login, Logout } from "../controllers/authController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { refreshToken } from "../controllers/refreshToken.js";
 
@@ -20,10 +20,27 @@ let router = express.Router();
 let initWebRouter = (app) => {
     // Auth
     router.get('/user', verifyToken, getUser);  
+    router.put('/update-user',verifyToken, upload.single('image'), updateUser);  
+    router.put('/change-password',verifyToken,  changePassword);
     router.post('/auth/register', Register);
     router.post('/auth/login', Login);
     router.get('/auth/token', refreshToken);
     router.delete('/auth/logout', Logout);
+
+    // Order with login
+    router.post('/add-item-to-cart',verifyToken, orderController.addToCart);
+    router.get('/cart',verifyToken, orderController.getCart);
+    router.delete('/delete-item-cart',verifyToken, orderController.deleteItemCart);
+    router.put('/update-item-cart',verifyToken, orderController.updateItemCart);
+    router.post('/checkout',verifyToken, orderController.checkout);
+    router.get('/get-order-by-user',verifyToken, orderController.getOrderByUser);
+    router.get('/filterMyOrder',verifyToken, orderController.filterMyOrder);
+
+    // Notify
+    router.get('/notify', notifyController.getNotify);
+    router.put('/update-notify', notifyController.updateNotify);
+    router.put('/mark-all-as-read', notifyController.markAllAsRead);
+
 
     // pagination
     router.get('/news/:page', paginationController.getAllNews);
@@ -71,15 +88,6 @@ let initWebRouter = (app) => {
     // get number product sold
     router.get('/get-number-product-sale', productController.getNumberProductSale);
 
-    // Order with login
-    router.post('/add-item-to-cart', orderController.addToCart);
-    router.get('/cart', orderController.getCart);
-    router.delete('/delete-item-cart', orderController.deleteItemCart);
-    router.put('/update-item-cart', orderController.updateItemCart);
-    router.post('/checkout', orderController.checkout);
-    router.get('/get-order-by-user', orderController.getOrderByUser);
-    router.get('/filterMyOrder', orderController.filterMyOrder);
-
     // order without login
     router.post('/create-order', orderController.createOrder);
     router.get('/orders', orderController.getOrder);
@@ -115,8 +123,6 @@ let initWebRouter = (app) => {
     router.post('/create-specialCategory',upload.single('image'), slideController.CreateSpecialCategory);
     router.put('/edit-specialCategory',upload.single('image'), slideController.EditSpecialCategory);
     router.delete('/delete-specialCategory',upload.single('image'), slideController.DeleteSpecialCategory);
-
-
 
 
     return app.use('/', router);

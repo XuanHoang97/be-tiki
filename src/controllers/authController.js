@@ -1,6 +1,8 @@
 import db from "../models/index";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import authService from '../services/authService';
+
 
 // Get user after login
 export const getUser = async(req, res) => {
@@ -17,6 +19,20 @@ export const getUser = async(req, res) => {
         console.log(error);
     }
 }
+
+//edit user
+export const updateUser = async(req, res) => {
+    try {
+        const result = await authService.updateUser(req.body, req.file);
+        if (!result) {
+            return res.status(400).json('User does not exist');
+        }
+        return res.status(200).json(result);
+    } catch (error) {
+        console.log('error', error);
+    }
+}
+
 
 // Register
 export const Register = async(req, res) => {
@@ -121,4 +137,18 @@ export const Logout = async(req, res) => {
     });
     res.clearCookie('refreshToken');
     return res.sendStatus(200);
+}
+
+// change password
+export const changePassword = async(req, res) => {
+    try{
+        let result = await authService.changePassword(req.body);
+        return res.status(200).json({
+            errCode: 0,
+            status: 200,
+            result
+        });
+    }catch(error){
+        console.log(error);
+    }
 }

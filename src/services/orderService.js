@@ -209,14 +209,20 @@ let checkout = (data) => {
                         }
                     });
 
-                    // send notification someone order
-                    await db.Notification.create({
-                        // userId: order[0].userId,
-                        // title: `Bạn có đơn hàng mới`,
-                        // description: 'Xin chào, bạn có đơn hàng mới',
+                    // add notification
+                    let notification = await db.Notify.create({
+                        userId: order[0].userId,
+                        title: 'Đơn hàng mới',
+                        content: 'Bạn có đơn hàng mới',
                         // status: 'S1',
-                        // date: new Date(),
+                        date: new Date(),
+
+                        where: {
+                            userId: order[0].userId
+                        }
                     });
+                    console.log(notification);
+                    
                 }
                 resolve({
                     errCode: 0,
@@ -478,12 +484,34 @@ let updateOrder = (data) => {
             }else{
                 let order = await db.Order.findOne({
                     where: { id: data.id },
-                    raw: false  //return obj sequelize-use function save()
+                    raw: false  
                 });
 
                 if(order){
                     order.status = data.status;
                     await order.save();
+
+                    // add notification
+                    let orderStatus = '';
+                    if(data.status === 'S2'){
+                        orderStatus = 'đã được xác nhận';
+                    }
+                    if(data.status === 'S3'){
+                        orderStatus = 'đang được giao tới bạn';
+                    }
+                    if(data.status === 'S4'){
+                        orderStatus = 'đã được giao tới bạn, vui lòng kiểm tra';
+                    }
+                    let notification = await db.Notify.create({
+                        userId: order.userId,
+                        title: 'Đơn hàng #' + order.code,
+                        content: 'Đơn hàng #' + '\xa0' + order.code + '\xa0' + orderStatus,
+                        status: 'OS1',
+                        image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUvgTq9HrMypyxQNO5Kr1JGQZ-7aLzo9yUfA&usqp=CAU',
+                        date: Date()
+
+                    });
+                    console.log('notification: ', notification, orderStatus);
 
                     resolve({
                         errCode: 0,

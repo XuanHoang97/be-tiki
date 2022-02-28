@@ -1,7 +1,6 @@
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 const salt = bcrypt.genSaltSync(10);
-import { Op } from "sequelize";
 const { cloudinary } = require('../ultils/cloudinary');
 
 
