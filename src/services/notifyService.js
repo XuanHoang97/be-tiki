@@ -48,20 +48,20 @@ let getNotify = (userId, status) => {
 }
 
 // update notify
-let updateNotify = (id, status) => {
+let updateNotify = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!id) {
+            if(!data.id) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing params"
                 });
             }else{
                 let notify = await db.Notify.update({
-                    status: status
+                    status: data.status
                 }, {
                     where: {
-                        id: id
+                        id: data.id
                     }
                 });
                 resolve({
@@ -77,20 +77,20 @@ let updateNotify = (id, status) => {
 }
 
 // mark all as read
-let markAllAsRead = (userId) => {
+let markAllAsRead = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!userId) {
+            if(!data.userId) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing params"
                 });
             }else{
                 let notify = await db.Notify.update({
-                    status: 'OS2'
+                    status: 'N2'
                 }, {
                     where: {
-                        userId: userId
+                        userId: data.userId
                     }
                 });
                 resolve({
@@ -109,5 +109,6 @@ let markAllAsRead = (userId) => {
 
 module.exports = {
     getNotify,
-    updateNotify
+    updateNotify,
+    markAllAsRead
 }

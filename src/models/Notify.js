@@ -10,9 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         userId : DataTypes.INTEGER,
         title: DataTypes.STRING,
         content: DataTypes.STRING,
-        image: DataTypes.STRING,
         date: DataTypes.STRING,
         status: DataTypes.STRING,
+        type: DataTypes.STRING,
+        image: DataTypes.STRING,
         cloudinary_id: DataTypes.INTEGER,
 
     }, {

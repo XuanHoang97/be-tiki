@@ -25,6 +25,14 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
+            valueFrom: {
+                type: Sequelize.INTEGER
+            },
+
+            valueTo: {
+                type: Sequelize.INTEGER
+            },
+
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

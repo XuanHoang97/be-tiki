@@ -16,8 +16,7 @@ const notifyController = {
     // update notify
     updateNotify: async (req, res) => {
         try {
-            let {id, status}  = req.body;
-            let result = await notifyService.updateNotify(id, status);
+            let result = await notifyService.updateNotify(req.body);
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json(error);
@@ -27,8 +26,7 @@ const notifyController = {
     // mark all as read
     markAllAsRead: async (req, res) => {
         try {
-            let {userId}  = req.body;
-            let result = await notifyService.markAllAsRead(userId);
+            let result = await notifyService.markAllAsRead(req.body);
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json(error);

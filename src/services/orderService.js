@@ -3,6 +3,19 @@ import _ from 'lodash';
 import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
 import { raw } from "body-parser";
+const {format, zonedTimeToUtc} = require('date-fns-tz');
+
+//today's date
+const today =new Date();
+const timeZone = 'Asia/Ho_Chi_Minh';
+const timeInZone = zonedTimeToUtc(today, timeZone);
+const currentDate = today.valueOf() + 7 * 60 * 60
+// console.log(`
+//     default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
+//     time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
+//     stringDate: ${today.toISOString ()}
+//     currentDate: ${currentDate}
+// `);
 
 //verify email
 let buildUrlEmail = (productId, token) => {
@@ -497,7 +510,7 @@ let updateOrder = (data) => {
                         orderStatus = 'đã được xác nhận';
                     }
                     if(data.status === 'S3'){
-                        orderStatus = 'đang được giao tới bạn';
+                        orderStatus = 'đang được vận chuyển';
                     }
                     if(data.status === 'S4'){
                         orderStatus = 'đã được giao tới bạn, vui lòng kiểm tra';
@@ -506,13 +519,13 @@ let updateOrder = (data) => {
                         userId: order.userId,
                         title: 'Đơn hàng #' + order.code,
                         content: 'Đơn hàng #' + '\xa0' + order.code + '\xa0' + orderStatus,
-                        status: 'OS1',
+                        status: 'N1',
                         image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUvgTq9HrMypyxQNO5Kr1JGQZ-7aLzo9yUfA&usqp=CAU',
-                        date: Date()
-
+                        type: 'ORDER',
+                        date: currentDate,
                     });
-                    console.log('notification: ', notification, orderStatus);
-
+                    
+                    console.log('notification: ', notification, orderStatus)
                     resolve({
                         errCode: 0,
                         errMessage: 'update order success',

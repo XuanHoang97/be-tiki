@@ -37,9 +37,9 @@ let initWebRouter = (app) => {
     router.get('/filterMyOrder',verifyToken, orderController.filterMyOrder);
 
     // Notify
-    router.get('/notify', notifyController.getNotify);
-    router.put('/update-notify', notifyController.updateNotify);
-    router.put('/mark-all-as-read', notifyController.markAllAsRead);
+    router.get('/notify',verifyToken, notifyController.getNotify);
+    router.put('/update-notify',verifyToken, notifyController.updateNotify);
+    router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
 
 
     // pagination
@@ -85,19 +85,12 @@ let initWebRouter = (app) => {
     // filter product
     router.get('/filter-product', productController.filterProduct);
 
-    // get number product sold
-    router.get('/get-number-product-sale', productController.getNumberProductSale);
-
     // order without login
     router.post('/create-order', orderController.createOrder);
     router.get('/orders', orderController.getOrder);
     router.post('/verify-order', orderController.verifyOrder);
-
     router.get('/filter-order', orderController.filterOrder);
     router.put('/update-order', orderController.updateOrder);
-
-    // Notification order
-    
 
     // Category
     router.get('/get-all-category', productController.GetAllCategory);

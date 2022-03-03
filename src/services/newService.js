@@ -36,6 +36,33 @@ let createNews = (data, file) => {
             let newEvent = await db.New.create({
                 ...data
             });
+
+            // add notification
+            let user = await db.User.findAll({
+            });
+
+            if(user){
+                // send all user
+                user.forEach(async (item) => {
+                    await db.Notify.create({
+                        userId: item.id,
+                        title: data.name,
+                        content: data.name + ' has been created by ' + data.author_id,
+                        status: 'N1',
+                        image : data.image,
+                        type: 'ACTION',
+                        date: new Date().valueOf() + 7 * 60 * 60,
+                    })
+                })
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Thêm thành công',
+                    newEvent
+                })
+            }
+            console.log('newEvent', user.id);
+
             resolve(newEvent);
         } catch (e) {
             reject(e);
