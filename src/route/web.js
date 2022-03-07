@@ -41,7 +41,6 @@ let initWebRouter = (app) => {
     router.put('/update-notify',verifyToken, notifyController.updateNotify);
     router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
 
-
     // pagination
     router.get('/news/:page', paginationController.getAllNews);
 
@@ -88,7 +87,7 @@ let initWebRouter = (app) => {
     // order without login
     router.post('/create-order', orderController.createOrder);
     router.get('/orders', orderController.getOrder);
-    router.post('/verify-order', orderController.verifyOrder);
+    router.post('/verify-order', orderController.verifyOrder);  // verify order from email
     router.get('/filter-order', orderController.filterOrder);
     router.put('/update-order', orderController.updateOrder);
 

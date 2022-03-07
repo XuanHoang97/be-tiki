@@ -171,36 +171,9 @@ const orderController = {
                 })
             }
         }
-
-        // let limit = 5;   
-        // let offset = 0;
-        // db.Order.findAndCountAll()
-        // .then((data) => {
-        //   let page = req.params.page;      
-        //   let pages = Math.ceil(data.count / limit);
-        //       offset = limit * (page - 1);
-        //   db.Order.findAll({
-        //     attributes: {
-        //         exclude: ['userId', 'token']
-        //     },
-        //     limit: limit,
-        //     offset: offset,
-        //     $sort: { id: 1 }
-        //   })
-        //   .then((users) => {
-        //     res.status(200).json({
-        //         errCode: 0,
-        //         'result': users, 
-        //         'count': data.count, 
-        //         'pages': pages});
-        //   });
-        // })
-        // .catch(function (error) {
-        //       res.status(500).send('Internal Server Error');
-        // });
     },
 
-    //verify order
+    //verify order from email
     verifyOrder : async(req, res) => {
         try{
             let result = await orderService.verifyOrder(req.body);

@@ -10,12 +10,12 @@ const today =new Date();
 const timeZone = 'Asia/Ho_Chi_Minh';
 const timeInZone = zonedTimeToUtc(today, timeZone);
 const currentDate = today.valueOf() + 7 * 60 * 60
-// console.log(`
-//     default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
-//     time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
-//     stringDate: ${today.toISOString ()}
-//     currentDate: ${currentDate}
-// `);
+console.log(`
+    default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
+    time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
+    stringDate: ${today.toISOString ()}
+    currentDate: ${currentDate}
+`);
 
 //verify email
 let buildUrlEmail = (productId, token) => {
@@ -184,8 +184,9 @@ let checkout = (data) => {
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
                         item.total = data.total;
-                        item.date = new Date();
+                        item.date = data.date;
                         item.dateDelivery = data.dateDelivery;
+                        item.timeTrack = '';
                         item.username = data.username;
                         item.address = data.address;
                         item.phone = data.phone;
@@ -235,7 +236,6 @@ let checkout = (data) => {
                         }
                     });
                     console.log(notification);
-                    
                 }
                 resolve({
                     errCode: 0,
@@ -335,6 +335,7 @@ let createOrder = (data) => {
                     let token = uuidv4();
                     order = order.map((item) => {                
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
+                        item.userId = 0;
                         item.status = 'S1';
                         item.total = data.total;
                         item.date = new Date();
@@ -423,7 +424,7 @@ let getOrder = (id) => {
     });
 };
 
-//verify order
+//verify order from email
 let verifyOrder = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -502,7 +503,14 @@ let updateOrder = (data) => {
 
                 if(order){
                     order.status = data.status;
-                    await order.save();
+                    order.timeTrack = currentDate;
+                    await order.save(
+                        {
+                            fields: ['status', 'timeTrack']
+                        }
+                    );
+
+                    console.log('update order success', order.timeTrack);
 
                     // add notification
                     let orderStatus = '';

@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     class Order extends Model {
         static associate(models) {
             Order.belongsTo(models.Product, {foreignKey: 'productId',  as: 'productData'})
-           
         }
     };
     Order.init({
@@ -27,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         delivery: DataTypes.STRING,
         payment: DataTypes.STRING,
         token: DataTypes.STRING,
+        timeTrack: DataTypes.STRING,
     }, {
         sequelize,
         modelName: 'Order',

@@ -9,7 +9,31 @@ import cookieParser from "cookie-parser";
 require('dotenv').config();
 let app = express();
 
-app.use(cors({ credentials:true, origin: process.env.URL_REACT}));
+// app.use(cors({ credentials:true, origin: process.env.URL_REACT}));
+// app.use(cors({ credentials:true, origin: process.env.URL_REACT_PRODUCT}));
+
+// fix CORS
+const whitelist = ['http://localhost:3000', "https://tikishop.netlify.app"];
+app.use(cors({
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+    credentials: true,
+    optionsSuccessStatus: 200,
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'device-remember-token',
+        'Access-Control-Allow-Origin',
+        'Origin',
+        'Accept',
+    ]
+}))
 
 
 app.use(bodyParser.json({ limit: '50mb' }));

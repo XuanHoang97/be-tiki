@@ -13,11 +13,23 @@ let getAllProducts = (id) => {
             let products = '';
             if (id === 'ALL') {
                 products = await db.Product.findAll({
+                    // fetch list data product and calculate number sold of product in order table
+                    // include: [{
+                    //     model: db.Order,
+                    //     as: 'productData',
+                    //     where :{
+                    //         status: 'S4',
+                    //     },
+                    //     attributes: [
+                    //         [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
+                    //     ]
+                    // }]
                 })
+
             } 
             if(id && id !== 'ALL') {
                 products = await db.Product.findOne({
-                    where: { id: id }
+                    where: { id: id },
                 });
             }
             resolve(products);
@@ -287,8 +299,19 @@ let getDetailProduct = (inputId) => {
                             as: 'newData',
                             attributes: ['name', 'image', 'date', 'author_id']
                         },
+
+                        {
+                            model: db.Order,
+                            as: 'productData',
+                            where: {
+                                status: 'S4'
+                            },
+                            attributes: [
+                                [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
+                            ]
+                        }
                     ],
-                    raw: false,             //convert Object not sequelize obj
+                    raw: false,            
                     nest: true
                 });
 
