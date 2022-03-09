@@ -50,7 +50,7 @@ let createNews = (data, file) => {
                         content: data.name + ' has been created by ' + data.author_id,
                         status: 'N1',
                         image : data.image,
-                        type: 'ACTION',
+                        type: 'ACTIVITY',
                         date: new Date().valueOf() + 7 * 60 * 60,
                     })
                 })

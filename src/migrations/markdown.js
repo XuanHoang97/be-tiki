@@ -19,26 +19,6 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             
-            characterHTML: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-            
-            characterMarkdown: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
-            accessoryHTML: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
-            accessoryMarkdown: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
             descriptionHTML: {
                 allowNull: false,
                 type: Sequelize.TEXT('long')

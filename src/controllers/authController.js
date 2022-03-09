@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authService from '../services/authService';
 
-
 // Get user after login
 export const getUser = async(req, res) => {
     try {

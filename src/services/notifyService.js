@@ -1,7 +1,7 @@
 import db from "../models/index";
 
 // get notify by user
-let getNotify = (userId, status) => {
+let getNotify = (userId, status, type) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!userId) {
@@ -35,6 +35,18 @@ let getNotify = (userId, status) => {
                         }
                     });
                 }
+                if(type) {
+                    notify = await db.Notify.findAll({
+                        where: {
+                            userId: userId,
+                            type: type
+                        },
+                        attributes:{
+                            exclude: ['cloudinary_id', 'createdAt', 'updatedAt']
+                        }
+                    });
+                }
+
                 resolve({
                     errCode: 0,
                     errMessage: "Success",

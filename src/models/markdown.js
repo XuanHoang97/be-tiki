@@ -7,11 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Markdown.init({
-        characterHTML: DataTypes.TEXT('long'),
-        characterMarkdown: DataTypes.TEXT('long'),
-        accessoryHTML: DataTypes.TEXT('long'),
-        accessoryMarkdown: DataTypes.TEXT('long'),
-
         descriptionHTML: DataTypes.TEXT('long'),
         descriptionMarkdown: DataTypes.TEXT('long'),
         specificationHTML: DataTypes.TEXT('long'),

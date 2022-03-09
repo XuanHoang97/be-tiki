@@ -98,7 +98,6 @@ let initWebRouter = (app) => {
     router.delete('/delete-category', productController.DeleteCategory);
     router.get('/get-detail-category', productController.getDetailCategory);
 
-
     // News and event
     router.get('/get-all-news', newController.GetAllNews);
     router.post('/create-news',upload.single('image'), newController.CreateNews);
@@ -115,7 +114,6 @@ let initWebRouter = (app) => {
     router.post('/create-specialCategory',upload.single('image'), slideController.CreateSpecialCategory);
     router.put('/edit-specialCategory',upload.single('image'), slideController.EditSpecialCategory);
     router.delete('/delete-specialCategory',upload.single('image'), slideController.DeleteSpecialCategory);
-
 
     return app.use('/', router);
 }

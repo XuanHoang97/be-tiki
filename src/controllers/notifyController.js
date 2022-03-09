@@ -5,8 +5,8 @@ const notifyController = {
     // get notify by user
     getNotify: async (req, res) => {
         try {
-            let {userId, status}  = req.query;
-            let result = await notifyService.getNotify(userId, status);
+            let {userId, status, type}  = req.query;
+            let result = await notifyService.getNotify(userId, status, type);
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json(error);

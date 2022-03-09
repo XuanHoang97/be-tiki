@@ -22,7 +22,7 @@ module.exports = {
       },
 
       age: {
-        type : Sequelize.INTEGER
+        type : Sequelize.BIGINT
       },
 
       address: {

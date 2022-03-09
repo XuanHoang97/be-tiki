@@ -13,17 +13,6 @@ let getAllProducts = (id) => {
             let products = '';
             if (id === 'ALL') {
                 products = await db.Product.findAll({
-                    // fetch list data product and calculate number sold of product in order table
-                    // include: [{
-                    //     model: db.Order,
-                    //     as: 'productData',
-                    //     where :{
-                    //         status: 'S4',
-                    //     },
-                    //     attributes: [
-                    //         [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
-                    //     ]
-                    // }]
                 })
 
             } 
@@ -163,10 +152,6 @@ let saveDetailInfoProduct = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
             let detailProduct = await db.Markdown.create({                
-                characterHTML: data.characterHTML,
-                characterMarkdown: data.characterMarkdown,
-                accessoryHTML: data.accessoryHTML,
-                accessoryMarkdown: data.accessoryMarkdown,
                 specificationHTML: data.specificationHTML,
                 specificationMarkdown: data.specificationMarkdown,
                 descriptionHTML: data.descriptionHTML,
@@ -199,10 +184,6 @@ let editDetailInfoProduct = (data) => {
                     errMessage: 'The detail product is not exist'
                 })
             }
-            detailProduct.characterHTML = data.characterHTML;
-            detailProduct.characterMarkdown = data.characterMarkdown;
-            detailProduct.accessoryHTML = data.accessoryHTML;
-            detailProduct.accessoryMarkdown = data.accessoryMarkdown;
             detailProduct.specificationHTML = data.specificationHTML;
             detailProduct.specificationMarkdown = data.specificationMarkdown;
             detailProduct.descriptionHTML = data.descriptionHTML;
@@ -380,7 +361,6 @@ let getAllCategory = (id) => {
         }
     });
 };
-
 
 //create category
 let createCategory = (data, file) => {
