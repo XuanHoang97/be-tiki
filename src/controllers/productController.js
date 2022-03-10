@@ -99,12 +99,21 @@ const productController = {
     // post info product
     postInfoProduct: async(req, res) => {
         try {
-            let response = await productService.saveDetailInfoProduct(req.body);
+            let response = await productService.saveDetailInfoProduct(req.body, req.files);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
                 response
             });
+
+            let pictureFiles = req.files;
+            if (!pictureFiles)
+            return res.status(400).json({ message: "No picture attached!" });
+            let multiplePicturePromise = pictureFiles.map((picture) =>
+                cloudinary.v2.uploader.upload(picture.path)
+            );
+            let imageResponses = await Promise.all(multiplePicturePromise);
+            res.status(201).json({ images: imageResponses });
         } catch (e) {
             console.log(e)
             return res.status(200).json({
@@ -131,7 +140,7 @@ const productController = {
     //save option product
     postOptionProduct: async(req, res) => {
         try {
-            let response = await productService.saveOptionProduct(req.body, req.multipleFile);
+            let response = await productService.saveOptionProduct(req.body);
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
@@ -290,8 +299,25 @@ const productController = {
                 })
             }
         }
-    }
+    },
 
+    // rating product
+    rating: async(req, res) => {
+        try {
+            let result = await productService.ratingProduct(req.body);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                result
+            })
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({
+                errCode: -1,
+                errMessage: 'Error from the server'
+            })
+        }
+    },
 
     
 

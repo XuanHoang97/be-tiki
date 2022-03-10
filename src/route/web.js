@@ -40,6 +40,8 @@ let initWebRouter = (app) => {
     router.get('/notify',verifyToken, notifyController.getNotify);
     router.put('/update-notify',verifyToken, notifyController.updateNotify);
     router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
+    // rating
+    router.post('/rating', productController.rating);
 
     // pagination
     router.get('/news/:page', paginationController.getAllNews);
@@ -76,10 +78,10 @@ let initWebRouter = (app) => {
 
     // Article product
     router.get('/get-article-product', productController.getArticleProduct);
-    router.post('/save-info-product', productController.postInfoProduct);
+    router.post('/save-info-product',upload.array('pictures', 5), productController.postInfoProduct);
     router.put('/edit-info-product', productController.editInfoProduct);
 
-    router.post('/save-option-product',upload.array('multi-image', 3), productController.postOptionProduct);  
+    router.post('/save-option-product', productController.postOptionProduct);  
 
     // filter product
     router.get('/filter-product', productController.filterProduct);

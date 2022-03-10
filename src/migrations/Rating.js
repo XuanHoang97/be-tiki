@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('markdowns', {
+        await queryInterface.createTable('Ratings', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -9,46 +9,36 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            productId: {
-                allowNull: true,
-                type: Sequelize.INTEGER
+            userId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
             },
 
-            categoryId: {
+            orderId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+
+            productId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+
+            rating: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+
+            comment: {
+                type: Sequelize.STRING,
                 allowNull: true,
-                type: Sequelize.INTEGER
+            },
+
+            date: {
+                type: Sequelize.STRING,
+                allowNull: true,
             },
             
-            descriptionHTML: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
-            descriptionMarkdown: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
-            specificationHTML: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
-            specificationMarkdown: {
-                allowNull: false,
-                type: Sequelize.TEXT('long')
-            },
-
-            pictures: {
-                allowNull: true,
-                type: Sequelize.STRING
-            },
-
-            cloudinary_id: {
-                allowNull: true,
-                type: Sequelize.INTEGER
-            },
-
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
@@ -60,6 +50,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('markdowns');
+        await queryInterface.dropTable('Ratings');
     }
 };

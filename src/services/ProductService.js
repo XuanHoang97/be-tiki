@@ -3,8 +3,14 @@ import { Op } from "sequelize";
 import { raw } from "body-parser";
 import req from "express/lib/request";
 const { cloudinary } = require('../ultils/cloudinary');
+const {format, zonedTimeToUtc} = require('date-fns-tz');
 import _ from 'lodash';
 
+//today's date
+const today =new Date();
+const timeZone = 'Asia/Ho_Chi_Minh';
+const timeInZone = zonedTimeToUtc(today, timeZone);
+const currentDate = today.valueOf() + 7 * 60 * 60
 
 // getAllProducts
 let getAllProducts = (id) => {
@@ -146,25 +152,48 @@ let getSimilarProduct = (id) => {
     });
 }
 
-
 //save detail info of product
-let saveDetailInfoProduct = (data) => {
+let saveDetailInfoProduct = (data, files) => {
     return new Promise(async(resolve, reject) => {
         try {
-            let detailProduct = await db.Markdown.create({                
-                specificationHTML: data.specificationHTML,
-                specificationMarkdown: data.specificationMarkdown,
-                descriptionHTML: data.descriptionHTML,
-                descriptionMarkdown: data.descriptionMarkdown,
-                option: data.option,
-                productId: data.productId,
-                categoryId: data.categoryId,
-            });
-            resolve({
-                errCode: 0,
-                errMessage: 'The detail product is updated',
-                detailProduct
-            });
+            if(!files){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'The file is not exist'
+                })
+            }else{
+                //upload multiple file
+                let result = await Promise.all(files.map(async (file) => {
+                    const result = await cloudinary.uploader.upload(file.path);
+                    data.pictures = result.url;
+                    data.cloudinary_id = result.public_id;
+                    return result;
+                }));
+
+                let newDetailProduct = await db.Markdown.create({
+                    ...data
+                });
+                resolve({
+                    errCode: 0,
+                    message: 'The detail product is created',
+                    newDetailProduct
+                })
+            }
+
+            // let detailProduct = await db.Markdown.create({                
+            //     specificationHTML: data.specificationHTML,
+            //     specificationMarkdown: data.specificationMarkdown,
+            //     descriptionHTML: data.descriptionHTML,
+            //     descriptionMarkdown: data.descriptionMarkdown,
+            //     option: data.option,
+            //     productId: data.productId,
+            //     categoryId: data.categoryId,
+            // });
+            // resolve({
+            //     errCode: 0,
+            //     errMessage: 'The detail product is updated',
+            //     detailProduct
+            // });
         } catch (e) {
             reject(e);
         }
@@ -203,7 +232,7 @@ let editDetailInfoProduct = (data) => {
 }
 
 //save option product
-let saveOptionProduct = (data, multipleFile) => {
+let saveOptionProduct = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if(!data.arrOptionProduct) {
@@ -280,7 +309,8 @@ let getDetailProduct = (inputId) => {
                             as: 'newData',
                             attributes: ['name', 'image', 'date', 'author_id']
                         },
-
+                        
+                        // show number product sold
                         {
                             model: db.Order,
                             as: 'productData',
@@ -290,6 +320,18 @@ let getDetailProduct = (inputId) => {
                             attributes: [
                                 [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
                             ]
+                        },
+
+                        // show rating product
+                        {
+                            model: db.Rating,
+                            as: 'ratingData',
+                            where: {
+                                productId: inputId
+                            },
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt']
+                            }
                         }
                     ],
                     raw: false,            
@@ -495,6 +537,91 @@ let getArticleProduct = (id) => {
     });
 };
 
+// rating product
+let ratingProduct = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!data.productId || !data.userId || !data.rating) {
+                resolve ({
+                    errCode: 1,
+                    errMessage: 'missing data'
+                })
+            }
+                let product = await db.Product.findOne({
+                    where: { id: data.productId },
+                    raw: false
+                });
+                
+                // add rating
+                let rate = await db.Rating.findOne({
+                    where: { 
+                        productId: data.productId, 
+                        userId: data.userId ,
+                        orderId: data.orderId
+                    }
+                });
+                
+                // if user rated -> update rating
+                if(rate) {
+                    rate.rating = data.rating;
+                    await rate.save();
+                    resolve ({
+                        errCode: 2,
+                        errMessage: 'You have rated this product'
+                    })
+                }else{
+                    let newRating = await db.Rating.create({
+                        ...data
+                    });
+                }
+    
+                // update status order from S5 to S7
+                let order = await db.Order.findOne({
+                    where: { id: data.orderId }
+                });
+                if(order) {
+                    order.status = 'S7';
+                    await order.save();
+                }
+    
+                // add notify
+                let newNotify = await db.Notify.create({
+                    userId: data.userId,
+                    title: 'Cộng điểm đánh giá sản phẩm',
+                    content: 'Cảm ơn bạn đã đánh giá sản phẩm ' + product.name + ', Tiki tặng bạn ' + data.point + ' điểm tích lũy' ,
+                    status: 'N1',
+                    date: currentDate,
+                    type: 'ORDER',
+                    image : 'https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/paymentfe/75efaf1b556a8e2fac6ab9383e95d4e3.png',
+                });
+
+                let tikiXu = await db.Point.findOne({
+                    where: { userId: data.userId }
+                });
+
+                if(tikiXu) {
+                    tikiXu.point = tikiXu.point + parseInt(data.point);
+                    await tikiXu.save();
+                }else{
+                    let newPoint = await db.Point.create({
+                        userId: data.userId,
+                        point: parseInt(data.point),
+                        content: 'Cộng điểm đánh giá sản phẩm',
+                        date: currentDate
+                    });
+                }
+            resolve({
+                errCode: 0,
+                message: 'The product is rated',
+                newRating
+            })
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+
 module.exports = {
     getAllProducts,
     createProduct,
@@ -515,5 +642,6 @@ module.exports = {
     getArticleProduct,
     getDetailProduct,
     filterProduct,
+    ratingProduct,
 
 }

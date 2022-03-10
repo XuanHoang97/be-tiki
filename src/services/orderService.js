@@ -10,12 +10,12 @@ const today =new Date();
 const timeZone = 'Asia/Ho_Chi_Minh';
 const timeInZone = zonedTimeToUtc(today, timeZone);
 const currentDate = today.valueOf() + 7 * 60 * 60
-console.log(`
-    default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
-    time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
-    stringDate: ${today.toISOString ()}
-    currentDate: ${currentDate}
-`);
+// console.log(`
+//     default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
+//     time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
+//     stringDate: ${today.toISOString ()}
+//     currentDate: ${currentDate}
+// `);
 
 //verify email
 let buildUrlEmail = (productId, token) => {
