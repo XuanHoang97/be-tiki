@@ -17,6 +17,10 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
+            action: {
+                type: Sequelize.STRING
+            },
+
             userId: {
                 type: Sequelize.INTEGER
             },

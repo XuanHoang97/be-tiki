@@ -41,7 +41,7 @@ let initWebRouter = (app) => {
     router.put('/update-notify',verifyToken, notifyController.updateNotify);
     router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
     // rating
-    router.post('/rating', productController.rating);
+    router.post('/rating',verifyToken, productController.rating);
 
     // pagination
     router.get('/news/:page', paginationController.getAllNews);

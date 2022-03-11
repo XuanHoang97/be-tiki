@@ -310,29 +310,34 @@ let getDetailProduct = (inputId) => {
                             attributes: ['name', 'image', 'date', 'author_id']
                         },
                         
-                        // show number product sold
-                        {
-                            model: db.Order,
-                            as: 'productData',
-                            where: {
-                                status: 'S4'
-                            },
-                            attributes: [
-                                [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
-                            ]
-                        },
-
                         // show rating product
                         {
                             model: db.Rating,
                             as: 'ratingData',
-                            where: {
-                                productId: inputId
-                            },
                             attributes: {
-                                exclude: ['createdAt', 'updatedAt']
-                            }
-                        }
+                                exclude: ['createdAt', 'updatedAt'],
+                            },
+                        },
+                        // calculator average rating
+                        // {
+                        //     model: db.Rating,
+                        //     attributes: [
+                        //         [db.sequelize.fn('AVG', db.sequelize.col('rating')), 'averageRating']
+                        //     ],
+                        // }
+
+
+                        // show number product sold
+                        // {
+                        //     model: db.Order,
+                        //     as: 'productData',
+                        //     where: {
+                        //         status: 'S4'
+                        //     },
+                        //     attributes: [
+                        //         [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
+                        //     ]
+                        // },
                     ],
                     raw: false,            
                     nest: true
@@ -551,13 +556,18 @@ let ratingProduct = (data) => {
                     where: { id: data.productId },
                     raw: false
                 });
+
+                let user = await db.User.findOne({
+                    where: { id: data.userId },
+                    raw: false
+                });
                 
                 // add rating
                 let rate = await db.Rating.findOne({
                     where: { 
                         productId: data.productId, 
                         userId: data.userId ,
-                        orderId: data.orderId
+                        orderId: data.orderId,
                     }
                 });
                 
@@ -571,16 +581,33 @@ let ratingProduct = (data) => {
                     })
                 }else{
                     let newRating = await db.Rating.create({
-                        ...data
+                        userId : data.userId,
+                        orderId : data.orderId,
+                        productId : data.productId,
+                        rating : data.rating,
+                        comment : data.comment,
+                        date : currentDate,
+                        username: user.username,
+                        avatar: user.image,
+                        joinDate: user.joinDate,
                     });
+                    resolve ({
+                        errCode: 0,
+                        errMessage: 'Rating success',
+                        newRating
+                    })
                 }
     
-                // update status order from S5 to S7
+                // update status order
                 let order = await db.Order.findOne({
-                    where: { id: data.orderId }
+                    where: { 
+                        id: data.orderId,
+                        status: 'S4'
+                    }
                 });
                 if(order) {
-                    order.status = 'S7';
+                    // order.status = 'S4';
+                    order.action = 'Đã đánh giá';
                     await order.save();
                 }
     
@@ -595,6 +622,7 @@ let ratingProduct = (data) => {
                     image : 'https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/paymentfe/75efaf1b556a8e2fac6ab9383e95d4e3.png',
                 });
 
+                // add point
                 let tikiXu = await db.Point.findOne({
                     where: { userId: data.userId }
                 });

@@ -44,6 +44,12 @@ module.exports = {
       phoneNumber: {
           type: Sequelize.STRING
       },
+      
+      joinDate: {
+        type: Sequelize.BIGINT
+      },
+
+
 
       image: {
         type: Sequelize.STRING,

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             Product.hasOne(models.Markdown, {foreignKey: 'productId'})
             Product.hasMany(models.New, {foreignKey: 'productId',  as: 'newData'})
             Product.hasOne(models.Order, {foreignKey: 'productId', as: 'productData'})
-            Product.hasMany(models.Rating, {foreignKey: 'productId', as: 'ratingData'})
+            Product.hasMany(models.Rating, {foreignKey: 'productId' , as: 'ratingData'})
         }
     };
     Product.init({

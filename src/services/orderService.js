@@ -1,5 +1,5 @@
 import db from "../models/index";
-import _ from 'lodash';
+import _, { includes } from 'lodash';
 import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
 import { raw } from "body-parser";
@@ -337,6 +337,7 @@ let createOrder = (data) => {
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.userId = 0;
                         item.status = 'S1';
+                        item.action = 'Chưa đánh giá';
                         item.total = data.total;
                         item.date = new Date();
                         item.address = data.address;
@@ -414,8 +415,9 @@ let getOrder = (id) => {
             } 
             if(id && id !== 'ALL') {
                 orders = await db.Order.findOne({
-                    where: { id: id }
+                    where: { id: id },
                 });
+
             }
             resolve(orders);
         } catch (error) {

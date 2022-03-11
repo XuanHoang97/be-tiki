@@ -38,6 +38,21 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
+
+            avatar: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+
+            joinDate: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+
+            username: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
             
             createdAt: {
                 allowNull: false,
