@@ -234,6 +234,31 @@ let getAllCodeService = (typeInput) => {
     })
 }
 
+// get point user
+let getPointUser = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let point = await db.Point.findOne({
+                where: { id: userId },
+                raw: true,
+                nest: true,
+                include :[
+                    {
+                        model: db.History,
+                        as: 'pointData',
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt']
+                        },
+                    },
+                ]
+            })
+            resolve(point);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     handleUserLogin,
     getAllUsers,
@@ -241,4 +266,5 @@ module.exports = {
     deleteUser,
     updateUserData,
     getAllCodeService,
+    getPointUser
 }

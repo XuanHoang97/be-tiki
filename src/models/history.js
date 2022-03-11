@@ -1,19 +1,22 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Point extends Model {
+    class History extends Model {
         static associate(models) {
-            Point.hasMany(models.History, { foreignKey: 'userId', as: 'pointData' });
+            History.belongsTo(models.Point, { foreignKey: 'userId', as : 'pointData' });
         }
     };
-    Point.init({
+    History.init({
         userId: DataTypes.INTEGER,
         point: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         content: DataTypes.STRING,
         date: DataTypes.STRING,
+        icon: DataTypes.STRING,
+        expiration: DataTypes.STRING,
     }, {
         sequelize,
-        modelName: 'Point',
+        modelName: 'History',
     });
-    return Point;
+    return History;
 };

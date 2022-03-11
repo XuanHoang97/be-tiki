@@ -183,6 +183,7 @@ let checkout = (data) => {
                     order = order.map((item) => {                
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
+                        item.action = 'Chưa đánh giá';
                         item.total = data.total;
                         item.date = data.date;
                         item.dateDelivery = data.dateDelivery;
@@ -228,8 +229,10 @@ let checkout = (data) => {
                         userId: order[0].userId,
                         title: 'Đơn hàng mới',
                         content: 'Bạn có đơn hàng mới',
-                        // status: 'S1',
-                        date: new Date(),
+                        status: 'N1',
+                        type: 'ORDER',
+                        date: currentDate,
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUvgTq9HrMypyxQNO5Kr1JGQZ-7aLzo9yUfA&usqp=CAU',
 
                         where: {
                             userId: order[0].userId
@@ -505,6 +508,7 @@ let updateOrder = (data) => {
 
                 if(order){
                     order.status = data.status;
+                    order.action = 'Chưa đánh giá';
                     order.timeTrack = currentDate;
                     await order.save(
                         {
@@ -554,6 +558,43 @@ let updateOrder = (data) => {
     });
 };
 
+// view rating product
+let viewRating = (userId, productId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!userId || !productId){
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            }else{
+                let rating = await db.Rating.findOne({
+                    where: {
+                        productId: productId,
+                        userId: userId
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    },
+                    raw: false  
+                });
+
+                if(rating){
+                    resolve(rating)
+                }else{
+                    resolve({
+                        errCode: 2,
+                        errMessage: 'rating not found',
+                    })
+                }
+            }
+        }
+        catch (error) {
+            reject(error);
+        }
+    });
+};
+
 
 module.exports = {
     // order with login 
@@ -564,6 +605,7 @@ module.exports = {
     checkout,
     getOrderByUser,
     filterMyOrder,
+    viewRating,
 
     // order without login
     createOrder,

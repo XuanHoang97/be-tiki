@@ -622,7 +622,7 @@ let ratingProduct = (data) => {
                     image : 'https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/paymentfe/75efaf1b556a8e2fac6ab9383e95d4e3.png',
                 });
 
-                // add point
+                // add point to user
                 let tikiXu = await db.Point.findOne({
                     where: { userId: data.userId }
                 });
@@ -638,10 +638,21 @@ let ratingProduct = (data) => {
                         date: currentDate
                     });
                 }
+
+                // add history point
+                let newHistoryPoint = await db.History.create({
+                    userId: data.userId,
+                    type: 'RATING',
+                    point: data.point,
+                    date: currentDate,
+                    icon: 'https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/paymentfe/75efaf1b556a8e2fac6ab9383e95d4e3.png',
+                    // expiration: '',
+                    content: 'Cộng điểm đánh giá sản phẩm ' + product.name,
+                });
             resolve({
                 errCode: 0,
                 message: 'The product is rated',
-                newRating
+                newRating,
             })
         } catch (e) {
             reject(e);

@@ -78,6 +78,20 @@ const userController = {
             })
         }
     },
+
+    // get point user
+    getPointUser: async (req, res) => {
+        try {
+            let data = await userService.getPointUser(req.query.id);
+            return res.status(200).json(data);
+        } catch (e) {
+            console.log('get point user error: ', e)
+            return res.status(200).json({
+                errCode: -1,
+                errMessage: 'Error from server'
+            })
+        }
+    },
 }
 
 module.exports = userController

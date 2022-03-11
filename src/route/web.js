@@ -42,6 +42,12 @@ let initWebRouter = (app) => {
     router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
     // rating
     router.post('/rating',verifyToken, productController.rating);
+    // point user
+    router.get('/point-user', verifyToken, userController.getPointUser);
+    //view rating product
+    router.get('/rating', orderController.viewRatingProduct);
+
+
 
     // pagination
     router.get('/news/:page', paginationController.getAllNews);
