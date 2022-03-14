@@ -53,6 +53,26 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
+
+            orderCode: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+
+            imgProduct: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+
+            nameProduct: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+
+            reply: {
+                type: Sequelize.STRING,
+                defaultValue: 'tks you for your feedback',
+            },
             
             createdAt: {
                 allowNull: false,

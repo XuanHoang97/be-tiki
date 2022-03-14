@@ -40,12 +40,14 @@ let initWebRouter = (app) => {
     router.get('/notify',verifyToken, notifyController.getNotify);
     router.put('/update-notify',verifyToken, notifyController.updateNotify);
     router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
-    // rating
+    // rating client
     router.post('/rating',verifyToken, productController.rating);
     // point user
     router.get('/point-user', verifyToken, userController.getPointUser);
-    //view rating product
-    router.get('/rating', orderController.viewRatingProduct);
+
+
+    // get all rating
+    router.get('/get-rating', productController.getAllRating);
 
 
 
@@ -84,7 +86,7 @@ let initWebRouter = (app) => {
 
     // Article product
     router.get('/get-article-product', productController.getArticleProduct);
-    router.post('/save-info-product',upload.array('pictures', 5), productController.postInfoProduct);
+    router.post('/save-info-product',upload.array('pictures'), productController.postInfoProduct);
     router.put('/edit-info-product', productController.editInfoProduct);
 
     router.post('/save-option-product', productController.postOptionProduct);  

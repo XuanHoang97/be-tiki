@@ -230,26 +230,6 @@ const orderController = {
         }
     },
 
-    // view rating product
-    viewRatingProduct : async(req, res) => {
-        try{
-            let {userId, productId} = req.query;
-            let result = await orderService.viewRating(userId, productId);
-            res.status(200).json({
-                errCode: 0,
-                errMessage: 'View rating product success',
-                result
-            });
-        }catch(e){
-            console.log(e);
-            return res.status(500).json({
-                errCode: 1,
-                errMessage: 'View rating product fail',
-                error: e
-            })
-        }
-    },
-
 }
 
 module.exports = orderController

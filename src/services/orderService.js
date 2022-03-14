@@ -558,43 +558,6 @@ let updateOrder = (data) => {
     });
 };
 
-// view rating product
-let viewRating = (userId, productId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if(!userId || !productId){
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter'
-                })
-            }else{
-                let rating = await db.Rating.findOne({
-                    where: {
-                        productId: productId,
-                        userId: userId
-                    },
-                    attributes: {
-                        exclude: ['createdAt', 'updatedAt']
-                    },
-                    raw: false  
-                });
-
-                if(rating){
-                    resolve(rating)
-                }else{
-                    resolve({
-                        errCode: 2,
-                        errMessage: 'rating not found',
-                    })
-                }
-            }
-        }
-        catch (error) {
-            reject(error);
-        }
-    });
-};
-
 
 module.exports = {
     // order with login 
@@ -605,7 +568,6 @@ module.exports = {
     checkout,
     getOrderByUser,
     filterMyOrder,
-    viewRating,
 
     // order without login
     createOrder,

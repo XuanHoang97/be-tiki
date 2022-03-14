@@ -82,7 +82,8 @@ const userController = {
     // get point user
     getPointUser: async (req, res) => {
         try {
-            let data = await userService.getPointUser(req.query.id);
+            let {userId} = req.query;
+            let data = await userService.getPointUser(userId);
             return res.status(200).json(data);
         } catch (e) {
             console.log('get point user error: ', e)

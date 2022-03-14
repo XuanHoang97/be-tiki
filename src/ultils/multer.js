@@ -1,14 +1,20 @@
 const multer = require('multer')
 const path = require('path')
 
-module.exports = multer({
-    storage: multer.diskStorage({}),
+const storage = multer.diskStorage({
+    
+  })
 
-    fileFilter: function (req, file, cb) {
-        var ext = path.extname(file.originalname)
-        if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
-            return cb(new Error('Only .png and .jpg files are allowed!'), false)
-        }
-        cb(null, true)
-    }  
+  const fileFilter = (req, file, cb) => {
+      if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+            cb(null, true)
+      }else{
+            cb({message:'Unsupported file format'}, false)
+      }
+  }
+
+module.exports = multer({
+    storage: storage,
+
+    fileFilter: fileFilter 
 })

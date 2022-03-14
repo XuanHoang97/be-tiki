@@ -163,37 +163,23 @@ let saveDetailInfoProduct = (data, files) => {
                 })
             }else{
                 //upload multiple file
+                console.log('files',files);
                 let result = await Promise.all(files.map(async (file) => {
                     const result = await cloudinary.uploader.upload(file.path);
-                    data.pictures = result.url;
-                    data.cloudinary_id = result.public_id;
+                    const detailProduct= await db.Markdown.create({
+                        ...data,
+                        pictures: result.url,
+                        cloudinary_id: result.public_id
+                    });
+                    detailProduct.save();
                     return result;
                 }));
-
-                let newDetailProduct = await db.Markdown.create({
-                    ...data
-                });
+                console.log('result',result);
                 resolve({
                     errCode: 0,
                     message: 'The detail product is created',
-                    newDetailProduct
                 })
             }
-
-            // let detailProduct = await db.Markdown.create({                
-            //     specificationHTML: data.specificationHTML,
-            //     specificationMarkdown: data.specificationMarkdown,
-            //     descriptionHTML: data.descriptionHTML,
-            //     descriptionMarkdown: data.descriptionMarkdown,
-            //     option: data.option,
-            //     productId: data.productId,
-            //     categoryId: data.categoryId,
-            // });
-            // resolve({
-            //     errCode: 0,
-            //     errMessage: 'The detail product is updated',
-            //     detailProduct
-            // });
         } catch (e) {
             reject(e);
         }
@@ -570,6 +556,14 @@ let ratingProduct = (data) => {
                         orderId: data.orderId,
                     }
                 });
+
+                // update status order
+                let order = await db.Order.findOne({
+                    where: { 
+                        id: data.orderId,
+                        status: 'S4'
+                    }
+                });
                 
                 // if user rated -> update rating
                 if(rate) {
@@ -590,6 +584,11 @@ let ratingProduct = (data) => {
                         username: user.username,
                         avatar: user.image,
                         joinDate: user.joinDate,
+
+                        orderCode: order.code,
+                        nameProduct: order.name,
+                        imgProduct: order.image,
+                        reply: 'tks you rating',
                     });
                     resolve ({
                         errCode: 0,
@@ -598,15 +597,8 @@ let ratingProduct = (data) => {
                     })
                 }
     
-                // update status order
-                let order = await db.Order.findOne({
-                    where: { 
-                        id: data.orderId,
-                        status: 'S4'
-                    }
-                });
+                
                 if(order) {
-                    // order.status = 'S4';
                     order.action = 'Đã đánh giá';
                     await order.save();
                 }
@@ -660,6 +652,28 @@ let ratingProduct = (data) => {
     });
 };
 
+// get all rating product
+let getAllRating = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let ratings = '';
+            if (id === 'ALL') {
+                ratings = await db.Rating.findAll()
+            } 
+            if(id && id !== 'ALL') {
+                ratings = await db.Rating.findOne({
+                    where: { id: id },
+                });
+
+            }
+            resolve(ratings);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+
 
 module.exports = {
     getAllProducts,
@@ -682,5 +696,6 @@ module.exports = {
     getDetailProduct,
     filterProduct,
     ratingProduct,
+    getAllRating
 
 }

@@ -239,8 +239,9 @@ let getPointUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let point = await db.Point.findOne({
-                where: { id: userId },
-                raw: true,
+                where: { 
+                    userId: userId 
+                },
                 nest: true,
                 include :[
                     {

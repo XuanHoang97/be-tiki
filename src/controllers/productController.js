@@ -106,14 +106,6 @@ const productController = {
                 response
             });
 
-            let pictureFiles = req.files;
-            if (!pictureFiles)
-            return res.status(400).json({ message: "No picture attached!" });
-            let multiplePicturePromise = pictureFiles.map((picture) =>
-                cloudinary.v2.uploader.upload(picture.path)
-            );
-            let imageResponses = await Promise.all(multiplePicturePromise);
-            res.status(201).json({ images: imageResponses });
         } catch (e) {
             console.log(e)
             return res.status(200).json({
@@ -318,6 +310,24 @@ const productController = {
             })
         }
     },
+
+    // get all Rating
+    getAllRating: async(req, res) => {
+        try {
+            let result = await productService.getAllRating(req.query.id);
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: 'OK',
+                result
+            })
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({
+                errCode: -1,
+                errMessage: 'Error from the server'
+            })
+        }
+    }
 
     
 
