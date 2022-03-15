@@ -152,34 +152,19 @@ let getSimilarProduct = (id) => {
     });
 }
 
-//save detail info of product
-let saveDetailInfoProduct = (data, files) => {
+// description product
+let descProduct = (data) => {
     return new Promise(async(resolve, reject) => {
         try {
-            if(!files){
-                resolve({
-                    errCode: 1,
-                    errMessage: 'The file is not exist'
-                })
-            }else{
-                //upload multiple file
-                console.log('files',files);
-                let result = await Promise.all(files.map(async (file) => {
-                    const result = await cloudinary.uploader.upload(file.path);
-                    const detailProduct= await db.Markdown.create({
-                        ...data,
-                        pictures: result.url,
-                        cloudinary_id: result.public_id
-                    });
-                    detailProduct.save();
-                    return result;
-                }));
-                console.log('result',result);
-                resolve({
-                    errCode: 0,
-                    message: 'The detail product is created',
-                })
-            }
+            let detailProduct = await db.Markdown.create({
+                ...data
+            });
+            detailProduct.save();
+
+            console.log('description 1:', detailProduct);
+            console.log('description 2:', data);
+
+            resolve(detailProduct);
         } catch (e) {
             reject(e);
         }
@@ -304,26 +289,16 @@ let getDetailProduct = (inputId) => {
                                 exclude: ['createdAt', 'updatedAt'],
                             },
                         },
-                        // calculator average rating
-                        // {
-                        //     model: db.Rating,
-                        //     attributes: [
-                        //         [db.sequelize.fn('AVG', db.sequelize.col('rating')), 'averageRating']
-                        //     ],
-                        // }
+                        
+                        // image description
+                        {
+                            model: db.Image,
+                            as: 'picturesData',
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt'],
+                            },
+                        },
 
-
-                        // show number product sold
-                        // {
-                        //     model: db.Order,
-                        //     as: 'productData',
-                        //     where: {
-                        //         status: 'S4'
-                        //     },
-                        //     attributes: [
-                        //         [db.sequelize.fn('SUM',db.sequelize.col('qty')), 'total']
-                        //     ]
-                        // },
                     ],
                     raw: false,            
                     nest: true
@@ -688,7 +663,7 @@ module.exports = {
     editProduct,
     deleteProduct,
     getSimilarProduct,
-    saveDetailInfoProduct,
+    descProduct,
     editDetailInfoProduct,
     saveOptionProduct,
 

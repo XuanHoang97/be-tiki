@@ -8,6 +8,7 @@ import slideController from '../controllers/slideController';
 import orderController from '../controllers/orderController';
 import paginationController from '../controllers/paginationController';
 import notifyController from '../controllers/notifyController';
+import uploadFileController from '../controllers/uploadFileController';
 const upload = require('../ultils/multer');
 
 //authentication
@@ -86,10 +87,13 @@ let initWebRouter = (app) => {
 
     // Article product
     router.get('/get-article-product', productController.getArticleProduct);
-    router.post('/save-info-product',upload.array('pictures'), productController.postInfoProduct);
+    router.post('/save-info-product', productController.postInfoProduct);
     router.put('/edit-info-product', productController.editInfoProduct);
 
     router.post('/save-option-product', productController.postOptionProduct);  
+
+    // upload image
+    router.post('/uploadImage',upload.array('pictures'), uploadFileController.uploadFile);
 
     // filter product
     router.get('/filter-product', productController.filterProduct);
