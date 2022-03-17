@@ -9,6 +9,7 @@ import orderController from '../controllers/orderController';
 import paginationController from '../controllers/paginationController';
 import notifyController from '../controllers/notifyController';
 import uploadFileController from '../controllers/uploadFileController';
+import discountController from '../controllers/discountController';
 const upload = require('../ultils/multer');
 
 //authentication
@@ -41,14 +42,18 @@ let initWebRouter = (app) => {
     router.get('/notify',verifyToken, notifyController.getNotify);
     router.put('/update-notify',verifyToken, notifyController.updateNotify);
     router.put('/mark-all-as-read', verifyToken, notifyController.markAllAsRead);
-    // rating client
+
     router.post('/rating',verifyToken, productController.rating);
-    // point user
     router.get('/point-user', verifyToken, userController.getPointUser);
 
 
     // get all rating
     router.get('/get-rating', productController.getAllRating);
+
+    // discount
+    router.post('/add-discount', discountController.addDiscount);
+    router.get('/get-discount', discountController.getDiscount);
+
 
 
 

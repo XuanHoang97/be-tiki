@@ -1,5 +1,4 @@
 import db from "../models/index";
-import { Op } from "sequelize";
 const { cloudinary } = require('../ultils/cloudinary');
 
 
@@ -24,7 +23,7 @@ let getAllNews = (id) => {
     });
 };
 
-//createNews
+// create News
 let createNews = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
