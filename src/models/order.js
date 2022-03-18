@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         code: DataTypes.STRING,
         status: DataTypes.STRING,
         action: DataTypes.STRING,
+        bill : DataTypes.STRING,
         userId: DataTypes.INTEGER,
         productId: DataTypes.INTEGER,
         name: DataTypes.STRING,

@@ -21,6 +21,11 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
+            bill : {
+                type: Sequelize.STRING,
+                defaultValue: '0'
+            },
+
             userId: {
                 type: Sequelize.INTEGER
             },

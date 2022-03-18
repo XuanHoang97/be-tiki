@@ -10,6 +10,7 @@ import paginationController from '../controllers/paginationController';
 import notifyController from '../controllers/notifyController';
 import uploadFileController from '../controllers/uploadFileController';
 import discountController from '../controllers/discountController';
+import billController from '../controllers/billController';
 const upload = require('../ultils/multer');
 
 //authentication
@@ -53,6 +54,11 @@ let initWebRouter = (app) => {
     // discount
     router.post('/add-discount', discountController.addDiscount);
     router.get('/get-discount', discountController.getDiscount);
+
+    // user add discount
+    router.post('/save-discount', verifyToken, discountController.addDiscountUser);
+
+
 
 
 
@@ -106,9 +112,12 @@ let initWebRouter = (app) => {
     // order without login
     router.post('/create-order', orderController.createOrder);
     router.get('/orders', orderController.getOrder);
-    router.post('/verify-order', orderController.verifyOrder);  // verify order from email
+    router.post('/verify-order', orderController.verifyOrder);  // verify order -send email
     router.get('/filter-order', orderController.filterOrder);
     router.put('/update-order', orderController.updateOrder);
+
+    // send bill
+    router.post('/send-bill', billController.sendBill);
 
     // Category
     router.get('/get-all-category', productController.GetAllCategory);

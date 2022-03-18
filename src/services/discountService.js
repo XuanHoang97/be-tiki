@@ -41,7 +41,22 @@ let getDiscount = (id) => {
     });
 };
 
+// add Discount User
+let addDiscountUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let coupon = await db.Coupon.create({
+                ...data
+            });
+            resolve(coupon);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     addDiscount,
-    getDiscount
+    getDiscount,
+    addDiscountUser
 }

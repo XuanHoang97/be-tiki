@@ -36,6 +36,20 @@ const discountController = {
         }
     },
 
+    // add Discount User 
+    addDiscountUser: async (req, res) => {
+        try {
+            let discountUser = await discountService.addDiscountUser(req.body);
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'ok',
+                discountUser
+            });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+
 }
 module.exports = discountController
 

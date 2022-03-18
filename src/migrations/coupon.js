@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Discounts', {
+        await queryInterface.createTable('coupons', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -9,47 +9,41 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            type: {
-                type: Sequelize.STRING,
+            userId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
             },
 
             info: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+            },
+
+            applyTo: {
+                type: Sequelize.INTEGER,
+            },
+            
+            code: {
+                type: Sequelize.STRING,
+                allowNull: false,
             },
 
             discount: {
                 type: Sequelize.INTEGER,
-                defaultValue: 0,
-            },
-
-            Max: {
-                type: Sequelize.INTEGER
-            },
-
-            Used: {
-                type: Sequelize.INTEGER,
-                defaultValue: 0,
+                allowNull: false,
             },
 
             discountStart: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                allowNull: false,
             },
 
             discountEnd: {
-                type: Sequelize.STRING
-            },
-
-            applyTo: {
-                type: Sequelize.INTEGER
-            },
-
-            creator: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                allowNull: false,
             },
 
             status: {
                 type: Sequelize.STRING,
-                defaultValue: 'active'
             },
 
             createdAt: {
@@ -63,6 +57,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Discounts');
+        await queryInterface.dropTable('coupons');
     }
 };
