@@ -8,9 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     };
     Coupon.init({
         userId: DataTypes.INTEGER,
+        discountId: DataTypes.INTEGER,
+        discountCode: DataTypes.STRING,
         info: DataTypes.STRING,
         applyTo: DataTypes.INTEGER,
-        code: DataTypes.STRING,
         discount: DataTypes.INTEGER,
         discountStart: DataTypes.STRING,
         discountEnd: DataTypes.STRING,

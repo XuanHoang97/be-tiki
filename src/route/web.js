@@ -51,12 +51,13 @@ let initWebRouter = (app) => {
     // get all rating
     router.get('/get-rating', productController.getAllRating);
 
-    // discount
+    // discount-admin
     router.post('/add-discount', discountController.addDiscount);
     router.get('/get-discount', discountController.getDiscount);
 
     // user add discount
     router.post('/save-discount', verifyToken, discountController.addDiscountUser);
+    router.get('/get-discount-user', verifyToken, discountController.getDiscountUser);
 
 
 
@@ -118,6 +119,7 @@ let initWebRouter = (app) => {
 
     // send bill
     router.post('/send-bill', billController.sendBill);
+    router.get('/get-bill', billController.getBill);
 
     // Category
     router.get('/get-all-category', productController.GetAllCategory);

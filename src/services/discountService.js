@@ -12,7 +12,17 @@ let addDiscount = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let discount = await db.Discount.create({
-                ...data
+                discountCode: 'DC' + Math.floor(Math.random() * 1000000),
+                type: data.type,
+                info: data.info,
+                discount: data.discount,
+                Max: data.Max,
+                Used: 0,
+                discountStart: data.discountStart,
+                discountEnd: data.discountEnd,
+                applyTo: data.applyTo,
+                creator: data.creator,
+                status: 'active',
             });
             resolve(discount);
         } catch (e) {
@@ -48,6 +58,17 @@ let addDiscountUser = (data) => {
             let coupon = await db.Coupon.create({
                 ...data
             });
+
+            // update number discount used
+            let discount = await db.Discount.findOne({
+                where: { 
+                    id: data.discountId,
+                    discountCode: data.discountCode
+                }
+            });
+            discount.Used += 1;
+            await discount.save();
+
             resolve(coupon);
         } catch (e) {
             reject(e);
@@ -55,8 +76,23 @@ let addDiscountUser = (data) => {
     });
 };
 
+// get Discount User
+let getDiscountUser = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let coupons = await db.Coupon.findAll({
+                where: { userId: userId }
+            });
+            resolve(coupons);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
     addDiscount,
     getDiscount,
-    addDiscountUser
+    addDiscountUser,
+    getDiscountUser
 }

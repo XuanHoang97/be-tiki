@@ -38,7 +38,27 @@ let sendBill = (data, file) => {
                     bill
                 });
 
+                // update status order
+                let order = await db.Order.update({
+                    status: 'S4',
+                    bill: '1'
+                }, {
+                    where: {
+                        code: data.code
+                    }
+                });
+
                 // add notification
+                let notify = await db.Notify.create({
+                    userId: data.userId,
+                    title: 'Hoá đơn mua hàng',
+                    content: 'Cảm ơn bạn đã mua hàng tại Tiki, vui lòng kiểm tra lại thông tin hoá đơn đã được gửi đến email của bạn',
+                    status: 'N1',
+                    image : 'https://en.pimg.jp/073/147/759/1/73147759.jpg',
+                    type: 'ORDER',
+                    date: currentDate,
+                })
+
             }else{
                 resolve({
                     errCode: 1,
@@ -51,6 +71,28 @@ let sendBill = (data, file) => {
     })
 }   
 
+// get bill
+let getBill = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let bills = '';
+            if (id === 'ALL') {
+                bills = await db.Bill.findAll({
+                })
+            } 
+            if(id && id !== 'ALL') {
+                bills = await db.Bill.findOne({
+                    where: { id: id }
+                });
+            }
+            resolve(bills);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
-    sendBill
+    sendBill,
+    getBill
 }

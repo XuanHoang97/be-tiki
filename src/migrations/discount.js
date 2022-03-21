@@ -9,6 +9,11 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
+            discountCode: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+
             type: {
                 type: Sequelize.STRING,
             },

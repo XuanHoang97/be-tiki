@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
     Discount.init({
+        discountCode: DataTypes.STRING,
         type: DataTypes.STRING,
         info: DataTypes.STRING,
         discount: DataTypes.INTEGER,

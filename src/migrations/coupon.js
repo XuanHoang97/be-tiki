@@ -14,6 +14,16 @@ module.exports = {
                 allowNull: false,
             },
 
+            discountId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+
+            discountCode: {
+                type: Sequelize.STRING,
+                allowNull: false,   
+            },
+
             info: {
                 type: Sequelize.STRING,
             },
@@ -22,11 +32,6 @@ module.exports = {
                 type: Sequelize.INTEGER,
             },
             
-            code: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-
             discount: {
                 type: Sequelize.INTEGER,
                 allowNull: false,

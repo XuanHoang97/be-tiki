@@ -46,7 +46,7 @@ let createNews = (data, file) => {
                     await db.Notify.create({
                         userId: item.id,
                         title: data.name,
-                        content: data.content,
+                        content: data.description,
                         status: 'N1',
                         image : data.image,
                         type: 'ACTIVITY',
@@ -94,7 +94,6 @@ let editNews = (data, file) => {
             // else {
                 news.name = data.name;
                 news.description = data.description;
-                news.content = data.content;
                 news.category_id = data.category_id;
                 news.productId = data.productId;
                 news.author_id = data.author_id;
