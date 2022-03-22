@@ -22,6 +22,8 @@ let sendBill = (data, file) => {
                 let bill = await db.Bill.create({
                     billCode: 'B' + Math.floor(Math.random() * 10000),
                     userId: data.userId,
+                    address: data.address,
+                    phone: data.phone,
                     code: data.code,
                     username: data.username,
                     name: data.name,

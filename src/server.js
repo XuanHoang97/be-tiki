@@ -12,6 +12,13 @@ let app = express();
 app.use(cors({ credentials:true, origin: process.env.URL_REACT}));
 // app.use(cors({ credentials:true, origin: process.env.URL_REACT_PRODUCT}));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
+  
 // fix CORS
 // const whitelist = [process.env.URL_REACT, process.env.URL_REACT_PRODUCT];
 // app.use(cors({

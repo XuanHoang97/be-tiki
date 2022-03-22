@@ -19,13 +19,39 @@ let getAllProducts = (id) => {
             let products = '';
             if (id === 'ALL') {
                 products = await db.Product.findAll({
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    },
+
+                    include: [{
+                        model: db.Order,
+                        as: 'productSold',
+                        where: {
+                            status: 'S4',
+                        },
+                        attributes: [ 
+                            'qty'
+                            // [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'qtySold'],
+                        ],
+                    }]
                 })
 
             } 
             if(id && id !== 'ALL') {
                 products = await db.Product.findOne({
                     where: { id: id },
+                    // include: [{
+                    //     model: db.Order,
+                    //     as: 'productSold',
+                    //     where: {
+                    //         status: 'S4'
+                    //     },
+                    //     attributes: [
+                    //         [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
+                    //     ],
+                    // }]
                 });
+                
             }
             resolve(products);
         } catch (error) {
@@ -249,7 +275,6 @@ let saveOptionProduct = (data) => {
         }
     })
 }
-
 
 //get detail product
 let getDetailProduct = (inputId) => {
