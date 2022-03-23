@@ -41,10 +41,6 @@ module.exports = {
                 type: Sequelize.STRING
             },
 
-            content: {
-                type: Sequelize.TEXT('long')
-            },
-
             date: {
                 type: Sequelize.STRING
             },

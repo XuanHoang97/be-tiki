@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     Category.init({
         image: DataTypes.STRING,
         name: DataTypes.STRING,
-        keyMap: DataTypes.STRING,
-        type: DataTypes.STRING,
-        value: DataTypes.STRING,
-        categoryId: DataTypes.STRING,
-        statusId: DataTypes.STRING,
         cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,

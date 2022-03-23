@@ -64,7 +64,6 @@ let EditSlide = (data, file) => {
             }
             slide.name = data.name;
             slide.status = data.status;
-            slide.categoryId = data.categoryId;
             slide.image = data.image;
             slide.cloudinary_id = data.cloudinary_id;
             await slide.save(

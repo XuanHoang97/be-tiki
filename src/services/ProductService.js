@@ -23,33 +23,39 @@ let getAllProducts = (id) => {
                         exclude: ['createdAt', 'updatedAt']
                     },
 
-                    include: [{
-                        model: db.Order,
-                        as: 'productSold',
-                        where: {
-                            status: 'S4',
-                        },
-                        attributes: [ 
-                            'qty'
-                            // [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'qtySold'],
-                        ],
-                    }]
+
+                    // include: [{
+                    //     model: db.Order,
+                    //     as: 'productSold',
+                    //     select:[
+                    //         'id',
+                    //         'name',
+                    //         'productSold'
+                    //     ],
+                    //     where: {
+                    //         status: 'S4',
+                    //     },
+                    //     attributes: [ 
+                    //         'qty'
+                    //         // [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'qtySold'],
+                    //     ],
+                    // }],
                 })
 
             } 
             if(id && id !== 'ALL') {
                 products = await db.Product.findOne({
                     where: { id: id },
-                    // include: [{
-                    //     model: db.Order,
-                    //     as: 'productSold',
-                    //     where: {
-                    //         status: 'S4'
-                    //     },
-                    //     attributes: [
-                    //         [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
-                    //     ],
-                    // }]
+                    include: [{
+                        model: db.Order,
+                        as: 'productSold',
+                        where: {
+                            status: 'S4'
+                        },
+                        attributes: [
+                            [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
+                        ],
+                    }]
                 });
                 
             }
@@ -437,9 +443,6 @@ let editCategory = (data, file) => {
             }
 
             category.name = data.name;
-            category.keyMap = data.keyMap;
-            category.type = data.type;
-            category.value = data.value;
             category.image = data.image;
             category.cloudinary_id = data.cloudinary_id;
 

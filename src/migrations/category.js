@@ -18,26 +18,6 @@ module.exports = {
                 allowNull: true,
             },
 
-            keyMap: {
-                type: Sequelize.STRING
-            },
-
-            type: {
-                type: Sequelize.STRING
-            },
-
-            value: {
-                type: Sequelize.STRING
-            },
-
-            categoryId: {
-                type: Sequelize.STRING
-            },
-
-            statusId: {
-                type: Sequelize.STRING
-            },
-
             cloudinary_id: {
                 type: Sequelize.INTEGER
             },

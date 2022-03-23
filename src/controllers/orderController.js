@@ -193,7 +193,8 @@ const orderController = {
     // Filter order by status
     filterOrder : async(req, res) => {
         try{
-            let result = await orderService.filterOrder(req.query.status);
+            let {status, dateOrder} = req.query;
+            let result = await orderService.filterOrder(status, dateOrder);
             res.status(200).json({
                 errCode: 0,
                 errMessage: 'Filter order success',

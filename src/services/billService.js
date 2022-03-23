@@ -6,7 +6,9 @@ const {format, zonedTimeToUtc} = require('date-fns-tz');
 const today =new Date();
 const timeZone = 'Asia/Ho_Chi_Minh';
 const timeInZone = zonedTimeToUtc(today, timeZone);
-const currentDate = today.valueOf() + 7 * 60 * 60
+const currentDate = today.valueOf() + 7 * 60 * 60;
+
+console.log(currentDate)
 
 // Send bill
 let sendBill = (data, file) => {

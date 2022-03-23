@@ -14,7 +14,7 @@ const currentDate = today.valueOf() + 7 * 60 * 60
 //     default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
 //     time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
 //     stringDate: ${today.toISOString ()}
-//     currentDate: ${currentDate}
+//     currentDate2: ${currentDate}
 // `);
 
 //verify email
@@ -471,7 +471,7 @@ let verifyOrder = (data) => {
 };
 
 // Filter order by status
-let filterOrder = (status) => {
+let filterOrder = (status, dateOrder) => {
     return new Promise(async (resolve, reject) => {
         try {
             let orders = '';
@@ -484,6 +484,31 @@ let filterOrder = (status) => {
                     where: { status: status }
                 });
             }
+
+            // filter order by dateOrder: today, this week, this month
+            if(dateOrder && dateOrder !== 'ALL'){
+                let date = new Date();
+                const timeZone = 'Asia/Ho_Chi_Minh';
+                const timeInZone = zonedTimeToUtc(date, timeZone);
+
+                // get range time today from 00:00:00 to 23:59:59
+                let today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+                let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+
+                // convert today to timestamp 
+                let todayTimestamp = today.getTime();
+                let todayEndTimestamp = todayEnd.getTime();
+
+
+                console.log('today: ', today, todayTimestamp, todayEnd, todayEndTimestamp);
+                console.log('today2: ', timeZone, timeInZone);
+
+               
+            }
+
+
+
+
             resolve(orders);
         } catch (error) {
             reject(error);

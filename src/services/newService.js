@@ -46,7 +46,7 @@ let createNews = (data, file) => {
                     await db.Notify.create({
                         userId: item.id,
                         title: data.name,
-                        content: data.description,
+                        description: data.description,
                         status: 'N1',
                         image : data.image,
                         type: 'ACTIVITY',

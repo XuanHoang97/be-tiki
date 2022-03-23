@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Product extends Model {
         static associate(models) {
-            Product.belongsTo(models.Category, {foreignKey: 'category_id', targetKey: 'keyMap', as: 'categoryData'})
+            Product.belongsTo(models.Category, {foreignKey: 'category_id', as: 'categoryData'})
             Product.hasOne(models.Markdown, {foreignKey: 'productId'})
             Product.hasMany(models.New, {foreignKey: 'productId',  as: 'newData'})
             Product.hasOne(models.Order, {foreignKey: 'productId', as: 'productSold'})

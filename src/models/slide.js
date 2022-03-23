@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     Slide.init({
         name: DataTypes.STRING,
         image: DataTypes.STRING,
-        categoryId: DataTypes.INTEGER,
         status: DataTypes.STRING,
         cloudinary_id: DataTypes.INTEGER, 
     }, {

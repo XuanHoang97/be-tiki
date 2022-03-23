@@ -32,6 +32,7 @@ let updateUser = (data, file) => {
                 user.username = data.username;
                 user.age = data.age;
                 user.address = data.address;
+                user.address2 = data.address2;
                 user.phoneNumber = data.phoneNumber;
                 user.roleId = data.roleId;
                 user.positionId = data.positionId;
