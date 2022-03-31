@@ -23,22 +23,16 @@ let getAllProducts = (id) => {
                         exclude: ['createdAt', 'updatedAt']
                     },
 
-
                     // include: [{
                     //     model: db.Order,
+
                     //     as: 'productSold',
-                    //     select:[
-                    //         'id',
-                    //         'name',
-                    //         'productSold'
-                    //     ],
                     //     where: {
                     //         status: 'S4',
                     //     },
-                    //     attributes: [ 
-                    //         'qty'
-                    //         // [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'qtySold'],
-                    //     ],
+                    //     // required:true,
+                    //     // all: true,
+                    //     // nested: false
                     // }],
                 })
 
@@ -192,10 +186,6 @@ let descProduct = (data) => {
                 ...data
             });
             detailProduct.save();
-
-            console.log('description 1:', detailProduct);
-            console.log('description 2:', data);
-
             resolve(detailProduct);
         } catch (e) {
             reject(e);
@@ -252,8 +242,6 @@ let saveOptionProduct = (data) => {
                     })
                 }
 
-                console.log('check data send: ', data);
-                
                 // get all existing data
                 let existing = await db.DetailProduct.findAll({
                     where: {categoryId: data.categoryId, productId: data.productId },
@@ -583,7 +571,7 @@ let ratingProduct = (data) => {
                         productId : data.productId,
                         rating : data.rating,
                         comment : data.comment,
-                        date : currentDate,
+                        date : data.timeTrack,
                         username: user.username,
                         avatar: user.image,
                         joinDate: user.joinDate,

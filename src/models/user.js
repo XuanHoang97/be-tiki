@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.belongsTo(models.Allcode, {foreignKey: 'positionId', targetKey: 'keyMap', as: 'positionData'})
       User.hasOne(models.Point, { foreignKey: 'userId', as: 'userData' });
+      User.hasMany(models.History, { foreignKey: 'userId', as: 'historyData' });
     }
   };
 

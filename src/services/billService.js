@@ -8,8 +8,6 @@ const timeZone = 'Asia/Ho_Chi_Minh';
 const timeInZone = zonedTimeToUtc(today, timeZone);
 const currentDate = today.valueOf() + 7 * 60 * 60;
 
-console.log(currentDate)
-
 // Send bill
 let sendBill = (data, file) => {
     return new Promise(async (resolve, reject) => {
@@ -33,7 +31,8 @@ let sendBill = (data, file) => {
                     total: data.total,
                     status: data.status,
                     payment: data.payment,
-                    datePayment: currentDate,
+                    // datePayment: currentDate,
+                    datePayment: data.datePayment,
                 });
 
                 resolve({

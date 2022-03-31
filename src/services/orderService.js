@@ -187,7 +187,7 @@ let checkout = (data) => {
                         item.total = data.total;
                         item.date = data.date;
                         item.dateDelivery = data.dateDelivery;
-                        item.timeTrack = '';
+                        item.timeTrack = data.timeTrack;
                         item.username = data.username;
                         item.address = data.address;
                         item.phone = data.phone;
@@ -534,14 +534,13 @@ let updateOrder = (data) => {
                 if(order){
                     order.status = data.status;
                     order.action = 'Chưa đánh giá';
-                    order.timeTrack = currentDate;
+                    order.timeTrack = data.timeTrack;
                     await order.save(
                         {
                             fields: ['status', 'timeTrack']
                         }
                     );
 
-                    console.log('update order success', order.timeTrack);
 
                     // add notification
                     let orderStatus = '';
@@ -561,7 +560,7 @@ let updateOrder = (data) => {
                         status: 'N1',
                         image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUvgTq9HrMypyxQNO5Kr1JGQZ-7aLzo9yUfA&usqp=CAU',
                         type: 'ORDER',
-                        date: currentDate,
+                        date: data.timeTrack,
                     });
                     
                     console.log('notification: ', notification, orderStatus)

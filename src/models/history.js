@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class History extends Model {
         static associate(models) {
             History.belongsTo(models.Point, { foreignKey: 'userId', as : 'pointData' });
+            History.belongsTo(models.User, { foreignKey: 'userId', as: 'historyData' });
         }
     };
     History.init({
