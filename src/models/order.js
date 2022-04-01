@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Order extends Model {
         static associate(models) {
             Order.belongsTo(models.Product, {foreignKey: 'productId',  as: 'productSold'})
+            Order.hasOne(models.Rating, {foreignKey: 'orderId', targetKey: 'productId', as: 'ratingOrder'})
         }
     };
     Order.init({

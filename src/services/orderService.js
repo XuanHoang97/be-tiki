@@ -4,6 +4,8 @@ import emailService from '../services/emailService';
 import {v4 as uuidv4} from 'uuid';
 import { raw } from "body-parser";
 const {format, zonedTimeToUtc} = require('date-fns-tz');
+import { Op } from "sequelize";
+
 
 //today's date
 const today =new Date();
@@ -184,7 +186,7 @@ let checkout = (data) => {
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
                         item.action = 'Chưa đánh giá';
-                        item.total = data.total;
+                        // item.total = data.total;
                         item.date = data.date;
                         item.dateDelivery = data.dateDelivery;
                         item.timeTrack = data.timeTrack;
@@ -261,18 +263,17 @@ let getOrderByUser = (userId, req, res) => {
                     errMessage: 'Missing required parameter'
                 })
             }else{
-            let orders = await db.Order.findAll({
-                where: {
-                    userId: userId
-                },
-                order: [
-                    ['id', 'DESC']
-                ],
-                attributes: {
-                    exclude: ['userId', 'token']
-                },
-                raw: true
-            });
+                let orders = await db.Order.findAll({
+                    where: {
+                        userId: userId,
+                    },
+                    order: [
+                        ['id', 'DESC']
+                    ],
+                    attributes: {
+                        exclude: ['userId', 'token']
+                    },
+                });
                 resolve(orders);
             }
         } catch (error) {
@@ -582,6 +583,78 @@ let updateOrder = (data) => {
     });
 };
 
+// get order today
+let getOrderTodays = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let date = new Date();
+
+            // get range time today from 00:00:00 to 23:59:59
+            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+
+            // convert today to timestamp
+            let todayTimestamp = today.getTime();
+            let todayEndTimestamp = todayEnd.getTime();
+
+            console.log('today: ', today, todayTimestamp, todayEnd, todayEndTimestamp);
+
+            let orders = await db.Order.findAll({
+                where: {
+                    date: {
+                        [Op.between]: [todayTimestamp, todayEndTimestamp]
+                    }
+                }
+            });
+
+            resolve(orders);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+// revenue today
+let revenueToday = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let date = new Date();
+
+            // get range time today from 00:00:00 to 23:59:59
+            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+
+            // convert today to timestamp
+            let todayTimestamp = today.getTime();
+            let todayEndTimestamp = todayEnd.getTime();
+
+            console.log('today: ', today, todayTimestamp, todayEnd, todayEndTimestamp);
+
+            let orders = await db.Order.findAll({
+                where: {
+                    timeTrack: {
+                        [Op.between]: [todayTimestamp, todayEndTimestamp]
+                    },
+
+                    status: {
+                        [Op.in]: ['S4']
+                    }
+                }
+            });
+
+            let total = 0;
+            orders.forEach(order => {
+                total += order.total;
+            });
+
+            resolve(total);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+
 
 module.exports = {
     // order with login 
@@ -599,4 +672,6 @@ module.exports = {
     verifyOrder,
     filterOrder,
     updateOrder,
+    getOrderTodays,
+    revenueToday,
 }

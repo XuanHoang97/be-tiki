@@ -117,6 +117,12 @@ let initWebRouter = (app) => {
     router.get('/filter-order', orderController.filterOrder);
     router.put('/update-order', orderController.updateOrder);
 
+    // get order todays
+    router.get('/get-order-today', orderController.getOrderTodays);
+
+    // revenue today
+    router.get('/get-revenue-today', orderController.getRevenueToday);
+
     // send bill
     router.post('/send-bill', billController.sendBill);
     router.get('/get-bill', billController.getBill);

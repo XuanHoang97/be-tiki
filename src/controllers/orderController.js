@@ -231,6 +231,45 @@ const orderController = {
         }
     },
 
+    // get order todays
+    getOrderTodays : async(req, res) => {
+        try{
+            let result = await orderService.getOrderTodays();
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Get order todays success',
+                length: result.length,
+                result
+            });
+        }catch(e){
+            console.log(e);
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: 'Get order todays fail',
+                error: e
+            })
+        }
+    },
+
+    // revenue today
+    getRevenueToday : async(req, res) => {
+        try{
+            let result = await orderService.revenueToday();
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Get revenue today success',
+                result
+            });
+        }catch(e){
+            console.log(e);
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: 'Get revenue today fail',
+                error: e
+            })
+        }
+    },
+
 }
 
 module.exports = orderController

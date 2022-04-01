@@ -31,7 +31,6 @@ let sendBill = (data, file) => {
                     total: data.total,
                     status: data.status,
                     payment: data.payment,
-                    // datePayment: currentDate,
                     datePayment: data.datePayment,
                 });
 
