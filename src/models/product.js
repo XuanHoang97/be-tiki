@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
             Product.belongsTo(models.Category, {foreignKey: 'category_id', as: 'categoryData'})
             Product.hasOne(models.Markdown, {foreignKey: 'productId'})
             Product.hasMany(models.New, {foreignKey: 'productId',  as: 'newData'})
-            Product.hasOne(models.Order, {foreignKey: 'productId', as: 'productSold'})
+            Product.hasMany(models.Order, {foreignKey: 'productId', as: 'productSold'})
             Product.hasMany(models.Rating, {foreignKey: 'productId' , as: 'ratingData'})
             Product.hasMany(models.Image, {foreignKey: 'productId', as: 'picturesData'})
         }
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         image: DataTypes.STRING,
         price: DataTypes.INTEGER,
         sale: DataTypes.INTEGER,
-        warranty: DataTypes.INTEGER,
+        qty: DataTypes.INTEGER,
         cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,

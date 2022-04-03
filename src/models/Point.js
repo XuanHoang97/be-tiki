@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Point extends Model {
         static associate(models) {
             Point.hasMany(models.History, { foreignKey: 'userId', as: 'pointData' });
-            Point.belongsTo(models.User, { foreignKey: 'userId', targetKey: 'id', as: 'userData' });
+            Point.belongsTo(models.User, { foreignKey: 'userId', as: 'userData' });
         }
     };
     Point.init({

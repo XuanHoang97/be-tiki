@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 const salt = bcrypt.genSaltSync(10);
 const { cloudinary } = require('../ultils/cloudinary');
 
-
 //hash password
 let hashUserPassword = (password) => {
     return new Promise(async (resolve, reject) => {
@@ -245,22 +244,27 @@ let getAllCodeService = (typeInput) => {
 let getPointUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let point = await db.Point.findOne({
-                where: { 
-                    userId: userId 
+            let user = await db.User.findOne({
+                where: { id: userId },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password', 'refresh_token', 'cloudinary_id']
                 },
-                nest: true,
-                include :[
+
+                include: [{
+                        model: db.Point,
+                        as: 'userData',
+                        attributes: ['id', 'point', 'userId'],
+                    },
                     {
                         model: db.History,
-                        as: 'pointData',
+                        as: 'historyData',
                         attributes: {
                             exclude: ['createdAt', 'updatedAt']
-                        },
-                    },
-                ]
+                        }
+                    }
+                ],
             })
-            resolve(point);
+            resolve(user);
         } catch (e) {
             reject(e);
         }

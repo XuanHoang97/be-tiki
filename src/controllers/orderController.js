@@ -93,24 +93,6 @@ const orderController = {
     },
 
     // get order by userId
-    getOrderByUser: async(req, res) => {
-        try {
-            let {userId} = req.query;
-            let result = await orderService.getOrderByUser(userId);
-            res.status(200).json({
-                errCode: 0,
-                errMessage: 'Get order success',
-                result
-            });
-        } catch (error) {
-            res.status(500).json({
-                errMessage: 'Get order fail',
-                error: error
-            });
-        }
-    },
-
-    // filter myOrder by status
     filterMyOrder: async(req, res) => {
         try {
             let {status, userId} = req.query;
@@ -118,6 +100,7 @@ const orderController = {
             res.status(200).json({
                 errCode: 0,
                 errMessage: 'Filter my order success',
+                length: result.length,
                 result
             });
         } catch (error) {
@@ -265,6 +248,25 @@ const orderController = {
             return res.status(500).json({
                 errCode: 1,
                 errMessage: 'Get revenue today fail',
+                error: e
+            })
+        }
+    },
+
+    // new customer month
+    getCustomerMonth : async(req, res) => {
+        try{
+            let result = await orderService.customerMonth();
+            res.status(200).json({
+                errCode: 0,
+                errMessage: 'Get customer month success',
+                result
+            });
+        }catch(e){
+            console.log(e);
+            return res.status(500).json({
+                errCode: 1,
+                errMessage: 'Get customer month fail',
                 error: e
             })
         }

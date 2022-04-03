@@ -46,6 +46,10 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
+            sale: {
+                type: Sequelize.INTEGER
+            },
+
             qty: {
                 type: Sequelize.INTEGER
             },

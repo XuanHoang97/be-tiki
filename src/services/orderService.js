@@ -9,15 +9,6 @@ import { Op } from "sequelize";
 
 //today's date
 const today =new Date();
-const timeZone = 'Asia/Ho_Chi_Minh';
-const timeInZone = zonedTimeToUtc(today, timeZone);
-const currentDate = today.valueOf() + 7 * 60 * 60
-// console.log(`
-//     default timezone: ${format(today, 'yyyy-MM-dd HH:mm:ss')}
-//     time in zone: ${format(timeInZone, 'yyyy-MM-dd HH:mm:ss')}
-//     stringDate: ${today.toISOString ()}
-//     currentDate2: ${currentDate}
-// `);
 
 //verify email
 let buildUrlEmail = (productId, token) => {
@@ -75,7 +66,6 @@ let addToCart = (data, productId, qty, userId) => {
                                 qty: qty,
                                 name: product.name,
                                 image: product.image,
-                                price: product.price,
                                 sale: product.sale,
                             });
                             resolve(result);
@@ -186,7 +176,6 @@ let checkout = (data) => {
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
                         item.action = 'Chưa đánh giá';
-                        // item.total = data.total;
                         item.date = data.date;
                         item.dateDelivery = data.dateDelivery;
                         item.timeTrack = data.timeTrack;
@@ -226,21 +215,17 @@ let checkout = (data) => {
                         }
                     });
 
-                    // add notification
+                    // add notify
                     let notification = await db.Notify.create({
                         userId: order[0].userId,
                         title: 'Đơn hàng mới',
                         content: 'Bạn có đơn hàng mới',
                         status: 'N1',
                         type: 'ORDER',
-                        date: currentDate,
+                        link: process.env.MY_ORDER,
+                        date: data.date,
                         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUvgTq9HrMypyxQNO5Kr1JGQZ-7aLzo9yUfA&usqp=CAU',
-
-                        where: {
-                            userId: order[0].userId
-                        }
                     });
-                    console.log(notification);
                 }
                 resolve({
                     errCode: 0,
@@ -253,36 +238,7 @@ let checkout = (data) => {
     });
 };
 
-// get order by userId
-let getOrderByUser = (userId, req, res) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if(!userId){
-                resolve({
-                    errCode: 1,
-                    errMessage: 'Missing required parameter'
-                })
-            }else{
-                let orders = await db.Order.findAll({
-                    where: {
-                        userId: userId,
-                    },
-                    order: [
-                        ['id', 'DESC']
-                    ],
-                    attributes: {
-                        exclude: ['userId', 'token']
-                    },
-                });
-                resolve(orders);
-            }
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
-
-// filter my order
+// my order
 let filterMyOrder = (status, userId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -298,20 +254,35 @@ let filterMyOrder = (status, userId) => {
                         where: {
                             userId: userId,
                         },
+
+                        nest: true,
+                        include :{
+                            model: db.Rating,
+                            as: 'ratingOrder',
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt']
+                            },
+                        }
                     })
-                }else{
+                }
+                else{
                     orders = await db.Order.findAll({
                         where: {
                             status: status,
-                            userId: userId
+                            userId: userId,
                         },
-                        order: [
-                            ['id', 'DESC']
-                        ],
                         attributes: {
                             exclude: ['userId', 'token']
                         },
-                        raw: true
+                        nest: true,
+                        include :{
+                            model: db.Rating,
+                            as: 'ratingOrder',
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt']
+                            },
+                        }
+
                     });
                 }
                 resolve(orders);
@@ -562,6 +533,7 @@ let updateOrder = (data) => {
                         image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUvgTq9HrMypyxQNO5Kr1JGQZ-7aLzo9yUfA&usqp=CAU',
                         type: 'ORDER',
                         date: data.timeTrack,
+                        link: process.env.MY_ORDER
                     });
                     
                     console.log('notification: ', notification, orderStatus)
@@ -583,21 +555,25 @@ let updateOrder = (data) => {
     });
 };
 
+
 // get order today
 let getOrderTodays = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let date = new Date();
-
+            const date = new Date();
+            const currentDate = date.toLocaleString();
             // get range time today from 00:00:00 to 23:59:59
-            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
-            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+            const today = new Date(date.getFullYear(), date.getMonth(), date.getDate() , 0, 0, 0);
+            const todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() , 23, 59, 59);
 
             // convert today to timestamp
-            let todayTimestamp = today.getTime();
-            let todayEndTimestamp = todayEnd.getTime();
+            const todayTimestamp = today.getTime();
+            const todayEndTimestamp = todayEnd.getTime();
 
-            console.log('today: ', today, todayTimestamp, todayEnd, todayEndTimestamp);
+            console.log('order today: ',
+                date
+            );
+            console.log('order today 2: ', currentDate, today, todayEnd );
 
             let orders = await db.Order.findAll({
                 where: {
@@ -621,14 +597,14 @@ let revenueToday = () => {
             let date = new Date();
 
             // get range time today from 00:00:00 to 23:59:59
-            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
-            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate() , -7, 0, 0);
+            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() , 16, 59, 59);
 
             // convert today to timestamp
             let todayTimestamp = today.getTime();
             let todayEndTimestamp = todayEnd.getTime();
 
-            console.log('today: ', today, todayTimestamp, todayEnd, todayEndTimestamp);
+            console.log('revenue today: ', today, todayEnd);
 
             let orders = await db.Order.findAll({
                 where: {
@@ -644,10 +620,41 @@ let revenueToday = () => {
 
             let total = 0;
             orders.forEach(order => {
-                total += order.total;
+                total += order.sale * order.qty
             });
 
             resolve(total);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+// new customer month
+let customerMonth = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let date = new Date();
+
+            // get range time month from 1st day of month to last day of month
+            let month = new Date(date.getFullYear(), date.getMonth() - 1, 0, -7, 0, 0);
+            let monthEnd = new Date(date.getFullYear(), date.getMonth(), 0, 16, 59, 59);
+
+            // convert month to timestamp
+            let monthTimestamp = month.getTime();
+            let monthEndTimestamp = monthEnd.getTime();
+
+            console.log('month: ', month, monthEnd);
+
+            let users = await db.User.findAll({
+                where: {
+                    joinDate: {
+                        [Op.between]: [monthTimestamp, monthEndTimestamp]
+                    }
+                }
+            });
+
+            resolve(users.length);
         } catch (error) {
             reject(error);
         }
@@ -663,7 +670,6 @@ module.exports = {
     deleteItemCart,
     updateItemCart,
     checkout,
-    getOrderByUser,
     filterMyOrder,
 
     // order without login
@@ -674,4 +680,5 @@ module.exports = {
     updateOrder,
     getOrderTodays,
     revenueToday,
+    customerMonth,
 }

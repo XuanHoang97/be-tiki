@@ -25,8 +25,13 @@ module.exports = {
             },
 
             rating: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.FLOAT,
                 allowNull: false,
+            },
+
+            satisfactionLevel: {
+                type: Sequelize.STRING,
+                allowNull: true,
             },
 
             comment: {

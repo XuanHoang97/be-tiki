@@ -28,6 +28,7 @@ let sendBill = (data, file) => {
                     username: data.username,
                     name: data.name,
                     qty: data.qty,
+                    sale: data.sale,
                     total: data.total,
                     status: data.status,
                     payment: data.payment,
@@ -58,7 +59,7 @@ let sendBill = (data, file) => {
                     status: 'N1',
                     image : 'https://en.pimg.jp/073/147/759/1/73147759.jpg',
                     type: 'ORDER',
-                    date: currentDate,
+                    date: data.datePayment,
                 })
 
             }else{

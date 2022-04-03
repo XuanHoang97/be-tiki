@@ -36,7 +36,6 @@ let initWebRouter = (app) => {
     router.delete('/delete-item-cart',verifyToken, orderController.deleteItemCart);
     router.put('/update-item-cart',verifyToken, orderController.updateItemCart);
     router.post('/checkout',verifyToken, orderController.checkout);
-    router.get('/get-order-by-user',verifyToken, orderController.getOrderByUser);
     router.get('/filterMyOrder',verifyToken, orderController.filterMyOrder);
 
     // Notify
@@ -58,11 +57,6 @@ let initWebRouter = (app) => {
     // user add discount
     router.post('/save-discount', verifyToken, discountController.addDiscountUser);
     router.get('/get-discount-user', verifyToken, discountController.getDiscountUser);
-
-
-
-
-
 
     // pagination
     router.get('/news/:page', paginationController.getAllNews);
@@ -122,6 +116,9 @@ let initWebRouter = (app) => {
 
     // revenue today
     router.get('/get-revenue-today', orderController.getRevenueToday);
+
+    // customer month
+    router.get('/new-customer-month', orderController.getCustomerMonth);
 
     // send bill
     router.post('/send-bill', billController.sendBill);

@@ -25,31 +25,29 @@ let getAllProducts = (id) => {
 
                     // include: [{
                     //     model: db.Order,
-
                     //     as: 'productSold',
                     //     where: {
                     //         status: 'S4',
                     //     },
-                    //     // required:true,
-                    //     // all: true,
-                    //     // nested: false
+                    //     attributes: [
+                    //         'qty',
+                    //     ],
                     // }],
                 })
-
             } 
             if(id && id !== 'ALL') {
                 products = await db.Product.findOne({
                     where: { id: id },
-                    include: [{
-                        model: db.Order,
-                        as: 'productSold',
-                        where: {
-                            status: 'S4'
-                        },
-                        attributes: [
-                            [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
-                        ],
-                    }]
+                    // include: [{
+                    //     model: db.Order,
+                    //     as: 'productSold',
+                    //     where: {
+                    //         status: 'S4'
+                    //     },
+                    //     attributes: [
+                    //         [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
+                    //     ],
+                    // }]
                 });
                 
             }
@@ -105,8 +103,7 @@ let editProduct = (data, file) => {
             product.name = data.name;
             product.price = data.price;
             product.sale = data.sale;
-            product.number = data.number;
-            product.warranty = data.warranty;
+            product.qty = data.qty;
             product.category_id = data.category_id;
             product.supplier_id = data.supplier_id;
             product.image = data.image;
@@ -304,6 +301,7 @@ let getDetailProduct = (inputId) => {
                         {
                             model: db.Rating,
                             as: 'ratingData',
+
                             attributes: {
                                 exclude: ['createdAt', 'updatedAt'],
                             },
@@ -570,6 +568,7 @@ let ratingProduct = (data) => {
                         orderId : data.orderId,
                         productId : data.productId,
                         rating : data.rating,
+                        satisfactionLevel: data.satisfactionLevel,
                         comment : data.comment,
                         date : data.timeTrack,
                         username: user.username,
@@ -587,7 +586,6 @@ let ratingProduct = (data) => {
                         newRating
                     })
                 }
-    
                 
                 if(order) {
                     order.action = 'Đã đánh giá';
@@ -597,10 +595,11 @@ let ratingProduct = (data) => {
                 // add notify
                 let newNotify = await db.Notify.create({
                     userId: data.userId,
-                    title: 'Cộng điểm đánh giá sản phẩm',
+                    title: 'Thưởng đánh giá sản phẩm',
                     content: 'Cảm ơn bạn đã đánh giá sản phẩm ' + product.name + ', Tiki tặng bạn ' + data.point + ' điểm tích lũy' ,
                     status: 'N1',
-                    date: currentDate,
+                    date: data.timeTrack,
+                    link: process.env.TIKI_POINT,
                     type: 'ORDER',
                     image : 'https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/paymentfe/75efaf1b556a8e2fac6ab9383e95d4e3.png',
                 });
@@ -617,8 +616,8 @@ let ratingProduct = (data) => {
                     let newPoint = await db.Point.create({
                         userId: data.userId,
                         point: parseInt(data.point),
-                        content: 'Cộng điểm đánh giá sản phẩm',
-                        date: currentDate
+                        content: 'Thưởng đánh giá sản phẩm',
+                        date: data.timeTrack
                     });
                 }
 
@@ -627,10 +626,9 @@ let ratingProduct = (data) => {
                     userId: data.userId,
                     type: 'RATING',
                     point: data.point,
-                    date: currentDate,
+                    date: data.timeTrack,
                     icon: 'https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/paymentfe/75efaf1b556a8e2fac6ab9383e95d4e3.png',
-                    // expiration: '',
-                    content: 'Cộng điểm đánh giá sản phẩm ' + product.name,
+                    content: 'Thưởng đánh giá sản phẩm ' + product.name,
                 });
             resolve({
                 errCode: 0,

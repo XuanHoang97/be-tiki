@@ -33,6 +33,11 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+
+            link : {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             
             image: {
                 type: Sequelize.STRING,

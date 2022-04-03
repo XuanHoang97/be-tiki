@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         date: DataTypes.STRING,
         status: DataTypes.STRING,
         type: DataTypes.STRING,
+        link: DataTypes.STRING,
         image: DataTypes.STRING,
         cloudinary_id: DataTypes.INTEGER,
 

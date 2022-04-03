@@ -34,10 +34,9 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
 
-            warranty: {
+            qty: {
                 type: Sequelize.INTEGER
             },
-
 
             cloudinary_id: {
                 type: Sequelize.INTEGER,

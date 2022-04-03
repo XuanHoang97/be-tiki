@@ -49,6 +49,16 @@ module.exports = {
                 allowNull: false
             },
 
+            price: {
+                type: Sequelize.INTEGER,
+                allowNull: false
+            },
+
+            sale: {
+                type: Sequelize.INTEGER,
+                allowNull: false
+            },
+
             total: {
                 type: Sequelize.INTEGER,
                 allowNull: false
