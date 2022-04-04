@@ -305,7 +305,6 @@ let createOrder = (data) => {
                 })
             }else{ 
                 let order = data.arrOrder;
-                // save array data to database 
                 if(order && order.length > 0){
                     let token = uuidv4();
                     order = order.map((item) => {                
@@ -325,8 +324,6 @@ let createOrder = (data) => {
                         item.token = token;
                         return item;
                     });
-
-                    console.log('data order:' , order);
 
                     // send mail-verify order
                     // await emailService.sendSimpleEmail({
@@ -359,10 +356,8 @@ let createOrder = (data) => {
 
                 //compare arr transmission data
                 let toCreate = _.differenceWith(order, existing, (a, b) => {
-                    // return a.code === b.code && +a.userId === +b.userId;
                     return a.code === b.code
                 });
-
 
                 //create data
                 if (toCreate && toCreate.length > 0) {
@@ -513,7 +508,6 @@ let updateOrder = (data) => {
                         }
                     );
 
-
                     // add notification
                     let orderStatus = '';
                     if(data.status === 'S2'){
@@ -562,17 +556,15 @@ let getOrderTodays = () => {
         try {
             const date = new Date();
             const currentDate = date.toLocaleString();
-            // get range time today from 00:00:00 to 23:59:59
-            const today = new Date(date.getFullYear(), date.getMonth(), date.getDate() , 0, 0, 0);
-            const todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() , 23, 59, 59);
+            // get range time today
+            const today = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, -7, 0, 0);
+            const todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, 16, 59, 59);
 
             // convert today to timestamp
             const todayTimestamp = today.getTime();
             const todayEndTimestamp = todayEnd.getTime();
 
-            console.log('order today: ',
-                date
-            );
+            console.log('order today: ', date );
             console.log('order today 2: ', currentDate, today, todayEnd );
 
             let orders = await db.Order.findAll({
@@ -596,9 +588,9 @@ let revenueToday = () => {
         try {
             let date = new Date();
 
-            // get range time today from 00:00:00 to 23:59:59
-            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate() , -7, 0, 0);
-            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() , 16, 59, 59);
+            // get range time today
+            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, -7, 0, 0);
+            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, 16, 59, 59);
 
             // convert today to timestamp
             let todayTimestamp = today.getTime();
@@ -637,8 +629,8 @@ let customerMonth = () => {
             let date = new Date();
 
             // get range time month from 1st day of month to last day of month
-            let month = new Date(date.getFullYear(), date.getMonth() - 1, 0, -7, 0, 0);
-            let monthEnd = new Date(date.getFullYear(), date.getMonth(), 0, 16, 59, 59);
+            let month = new Date(date.getFullYear(), date.getMonth()-5, 0, -7, 0, 0);
+            let monthEnd = new Date(date.getFullYear(), date.getMonth() +1, 0, 16, 59, 59);
 
             // convert month to timestamp
             let monthTimestamp = month.getTime();

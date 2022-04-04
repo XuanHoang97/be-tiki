@@ -9,6 +9,7 @@ const productController = {
             return res.status(200).json({
                 errCode: 0,
                 errMessage: 'OK',
+                length: products.length,
                 products
             })
         }catch(e){

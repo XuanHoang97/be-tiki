@@ -19,6 +19,11 @@ module.exports = {
                 allowNull: false
             },
 
+            username: {
+                type: Sequelize.STRING,
+                allowNull: false
+            },
+
             address: {
                 type: Sequelize.STRING,
                 allowNull: false
@@ -28,16 +33,16 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false
             },
+            email: {
+                type: Sequelize.STRING,
+                allowNull: true
+            },
 
             code: {
                 type: Sequelize.STRING,
                 allowNull: false
             },
 
-            username: {
-                type: Sequelize.STRING,
-                allowNull: false
-            },
 
             name: {
                 type: Sequelize.STRING,

@@ -1,12 +1,6 @@
 import db from "../models/index";
-const { cloudinary } = require('../ultils/cloudinary');
-const {format, zonedTimeToUtc} = require('date-fns-tz');
-
-//today's date
-const today =new Date();
-const timeZone = 'Asia/Ho_Chi_Minh';
-const timeInZone = zonedTimeToUtc(today, timeZone);
-const currentDate = today.valueOf() + 7 * 60 * 60;
+import emailService from '../services/emailService';
+// const { cloudinary } = require('../ultils/cloudinary');
 
 // Send bill
 let sendBill = (data, file) => {
@@ -22,10 +16,11 @@ let sendBill = (data, file) => {
                 let bill = await db.Bill.create({
                     billCode: 'B' + Math.floor(Math.random() * 10000),
                     userId: data.userId,
+                    username: data.username,
                     address: data.address,
                     phone: data.phone,
+                    email: data.email,
                     code: data.code,
-                    username: data.username,
                     name: data.name,
                     qty: data.qty,
                     sale: data.sale,
@@ -33,6 +28,20 @@ let sendBill = (data, file) => {
                     status: data.status,
                     payment: data.payment,
                     datePayment: data.datePayment,
+                });
+
+                // send mail-verify order
+                await emailService.sendBill({
+                    receiveEmail: data.email,
+                    customer: data.username,
+                    payment: data.payment,
+                    billCode: bill.billCode,
+                    product: data.name,
+                    qty: data.qty,
+
+                    orderValue: data.OrderValueEmail,
+                    total: data.totalEmail,
+                    datePayment: data.datePaymentEmail,
                 });
 
                 resolve({

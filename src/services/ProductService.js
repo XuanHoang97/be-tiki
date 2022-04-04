@@ -23,16 +23,16 @@ let getAllProducts = (id) => {
                         exclude: ['createdAt', 'updatedAt']
                     },
 
-                    // include: [{
-                    //     model: db.Order,
-                    //     as: 'productSold',
-                    //     where: {
-                    //         status: 'S4',
-                    //     },
-                    //     attributes: [
-                    //         'qty',
-                    //     ],
-                    // }],
+                    include: [{
+                        model: db.Order,
+                        as: 'productSold',
+                        // where: {
+                        //     status: 'S4',
+                        // },
+                        attributes: [
+                            'qty',
+                        ],
+                    }],
                 })
             } 
             if(id && id !== 'ALL') {
