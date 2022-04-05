@@ -314,7 +314,7 @@ let getBodyHTMLBill = (dataSend) => {
 
                                                                                     <div
                                                                                         style="color:#737373;margin:0px;font-size:12px;line-height:24px;font-weight:normal">
-                                                                                        Thời gian</div>
+                                                                                        Thời gian thanh toán</div>
 
                                                                                     <div
                                                                                         style="color:#3c4043;display:block;font-family:sans-serif;font-size:14px;font-weight:normal;line-height:18px;margin:0px;padding:0px;text-align:left;text-decoration:none;padding-right:5px">
@@ -395,46 +395,47 @@ let getBodyHTMLBill = (dataSend) => {
                                                                                 </td>
                                                                             </tr>
 
+                                                                            
                                                                             <tr>
                                                                                 <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
                                                                                     width="70%">
                                                                                     <div
-                                                                                        style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px;padding-right:10px">
-                                                                                        Số lượng
+                                                                                    style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px;padding-right:10px">
+                                                                                    Giá tiền
                                                                                     </div>
-                                                                                </td>
-                                                                                <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
+                                                                                    </td>
+                                                                                    <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
                                                                                     width="30%">
                                                                                     <div
-                                                                                        style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px">
-                                                                                        x ${dataSend.qty}
+                                                                                    style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px">
+                                                                                    ${dataSend.orderValue}
                                                                                     </div>
-                                                                                </td>
-                                                                            </tr>
+                                                                                    </td>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
-                                                                                    width="70%">
-                                                                                    <div
-                                                                                        style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px;padding-right:10px">
-                                                                                        Số tiền
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
-                                                                                    width="30%">
-                                                                                    <div
-                                                                                        style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px">
-                                                                                        ${dataSend.orderValue}
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
+                                                                                        width="70%">
+                                                                                        <div
+                                                                                            style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px;padding-right:10px">
+                                                                                            Số lượng
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
+                                                                                        width="30%">
+                                                                                        <div
+                                                                                            style="color:#3c4043;margin:0px;font-size:12px;line-height:22px;font-weight:normal;font-size:15px">
+                                                                                            x ${dataSend.qty}
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
 
                                                                             <tr>
                                                                                 <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
                                                                                     width="70%">
                                                                                     <div
                                                                                         style="color:#3c4043;margin:0px;font-size:12px;line-height:20px;font-weight:normal;font-size:15px;padding-right:10px">
-                                                                                        Thuế GTGT</div>
+                                                                                        Phí giao hàng</div>
                                                                                 </td>
                                                                                 <td style="padding-top:5px;padding-bottom:5px;font-size:14px;font-family:Helvetica Neue,Arial,sans-serif;color:#3c4043;text-align:left;line-height:1.55em"
                                                                                     width="30%">

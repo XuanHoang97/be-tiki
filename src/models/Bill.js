@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
         datePayment: DataTypes.STRING,
         payment: DataTypes.STRING,
         status: DataTypes.STRING,
+        imageBill: DataTypes.STRING,
+        cloudinary_id: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'Bill',

@@ -84,6 +84,16 @@ module.exports = {
                 allowNull: false
             },
 
+            imageBill: {
+                type: Sequelize.STRING,
+                allowNull: true
+            },
+
+            cloudinary_id: {
+                type: Sequelize.INTEGER,
+                allowNull: true
+            },
+
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

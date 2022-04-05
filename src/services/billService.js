@@ -1,17 +1,10 @@
 import db from "../models/index";
 import emailService from '../services/emailService';
-// const { cloudinary } = require('../ultils/cloudinary');
 
 // Send bill
 let sendBill = (data, file) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // if(file){
-            //     const result = await cloudinary.uploader.upload(file.path);
-            //     data.image = result.secure_url;
-            //     data.cloudinary_id = result.public_id;
-            // }
-
             if(data.status === 'S4'){
                 let bill = await db.Bill.create({
                     billCode: 'B' + Math.floor(Math.random() * 10000),
@@ -52,8 +45,8 @@ let sendBill = (data, file) => {
 
                 // update status order
                 let order = await db.Order.update({
+                    bill: '1',
                     status: 'S4',
-                    bill: '1'
                 }, {
                     where: {
                         code: data.code
@@ -69,6 +62,7 @@ let sendBill = (data, file) => {
                     image : 'https://en.pimg.jp/073/147/759/1/73147759.jpg',
                     type: 'ORDER',
                     date: data.datePayment,
+                    link: 'https://mail.google.com/mail/u/0/#inbox'
                 })
 
             }else{

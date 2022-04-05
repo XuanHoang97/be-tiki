@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authService from '../services/authService';
 
+const date = new Date();
+const joinDate = date.valueOf() + 7 * 60 * 60;
+
 // Get user after login
 export const getUser = async(req, res) => {
     try {
@@ -54,7 +57,10 @@ export const Register = async(req, res) => {
             const user = await db.User.create({
                 username,
                 email,
-                password: hashPassword
+                password: hashPassword,
+                joinDate: joinDate,
+                roleId: 'Người dùng',
+                positionId: 'User'
             });
             
             res.json({

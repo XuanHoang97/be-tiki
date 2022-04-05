@@ -140,6 +140,7 @@ const orderController = {
             res.status(200).json({
                 errCode: 0,
                 errMessage: 'Get all order success',
+                length: result.length,
                 result
             });
         }catch(e){
@@ -176,8 +177,8 @@ const orderController = {
     // Filter order by status
     filterOrder : async(req, res) => {
         try{
-            let {status, dateOrder} = req.query;
-            let result = await orderService.filterOrder(status, dateOrder);
+            let {status} = req.query;
+            let result = await orderService.filterOrder(status);
             res.status(200).json({
                 errCode: 0,
                 errMessage: 'Filter order success',
