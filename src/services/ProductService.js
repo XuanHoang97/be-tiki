@@ -38,16 +38,16 @@ let getAllProducts = (id) => {
             if(id && id !== 'ALL') {
                 products = await db.Product.findOne({
                     where: { id: id },
-                    // include: [{
-                    //     model: db.Order,
-                    //     as: 'productSold',
-                    //     where: {
-                    //         status: 'S4'
-                    //     },
-                    //     attributes: [
-                    //         [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
-                    //     ],
-                    // }]
+                    include: [{
+                        model: db.Order,
+                        as: 'productSold',
+                        where: {
+                            status: 'S4'
+                        },
+                        attributes: [
+                            [db.sequelize.fn('SUM', db.sequelize.col('qty')), 'count']
+                        ],
+                    }]
                 });
                 
             }
@@ -315,7 +315,6 @@ let getDetailProduct = (inputId) => {
                                 exclude: ['createdAt', 'updatedAt'],
                             },
                         },
-
                     ],
                     raw: false,            
                     nest: true

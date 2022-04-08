@@ -171,7 +171,6 @@ let checkout = (data) => {
             }else{ 
                 let order = data.arrOrder;
                 if(order && order.length > 0){
-                    let token = uuidv4();
                     order = order.map((item) => {                
                         item.code = 'OD' + Math.floor(Math.random() * 10000);
                         item.status = 'S1';
@@ -185,7 +184,6 @@ let checkout = (data) => {
                         item.email = data.email;
                         item.delivery = data.delivery;
                         item.payment = data.payment;
-                        item.token = token;
                         return item;
                     });
                 }
@@ -202,7 +200,6 @@ let checkout = (data) => {
                 let toCreate = _.differenceWith(order, existing, (a, b) => {
                     return a.code === b.code
                 });
-
 
                 //create data
                 if (toCreate && toCreate.length > 0) {
@@ -506,7 +503,6 @@ let updateOrder = (data) => {
                         link: process.env.MY_ORDER
                     });
                     
-                    console.log('notification: ', notification, orderStatus)
                     resolve({
                         errCode: 0,
                         errMessage: 'update order success',
@@ -525,32 +521,52 @@ let updateOrder = (data) => {
     });
 };
 
+const beginingOfDay = (options = {}) => {
+    const { date = new Date(), timeZone } = options;
+    const parts = Intl.DateTimeFormat("en-US", {
+      timeZone,
+      hourCycle: "h23",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    }).formatToParts(date);
+    const hour = parseInt(parts.find((i) => i.type === "hour").value);
+    const minute = parseInt(parts.find((i) => i.type === "minute").value);
+    const second = parseInt(parts.find((i) => i.type === "second").value);
+    return new Date(
+      1000 *
+        Math.floor(
+          (date - hour * 3600000 - minute * 60000 - second * 1000) / 1000
+        )
+    );
+  };
+  
+  const endOfDay = (...args) =>
+    new Date(beginingOfDay(...args).getTime() + 86399999);
+
+    // convert beginningofDay to timeStamp
+    const timeStampDateStart = beginingOfDay({ timeZone: "GMT" }).getTime();
+    const timeStampDateEnd = endOfDay({ timeZone: "GMT" }).getTime();
+
+    // console.log('timestampDateStart: ', timeStampDateStart)
+    // console.log('timestampDateEnd: ', timeStampDateEnd)
+  
+    // console.log('ngay bat dau:',  beginingOfDay({ timeZone: "GMT" }));
+    // console.log('ngay ket thuc:', endOfDay({ timeZone: "GMT" }));
+    // console.log(beginingOfDay({ timeZone: "Asia/ho_chi_minh" }));
+    // console.log(endOfDay({ timeZone: "Asia/ho_chi_minh" }));
 
 // get order today
 let getOrderTodays = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const date = new Date();
-            const currentDate = date.toLocaleString();
-            // get range time today
-            const today = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, -7, 0, 0);
-            const todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, 16, 59, 59);
-
-            // convert today to timestamp
-            const todayTimestamp = today.getTime();
-            const todayEndTimestamp = todayEnd.getTime();
-
-            console.log('order today: ', date );
-            console.log('order today 2: ', currentDate, today, todayEnd );
-
             let orders = await db.Order.findAll({
                 where: {
                     date: {
-                        [Op.between]: [todayTimestamp, todayEndTimestamp]
+                        [Op.between]: [timeStampDateStart, timeStampDateEnd]
                     }
                 }
             });
-
             resolve(orders);
         } catch (error) {
             reject(error);
@@ -562,24 +578,11 @@ let getOrderTodays = () => {
 let revenueToday = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let date = new Date();
-
-            // get range time today
-            let today = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, -7, 0, 0);
-            let todayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() +1, 16, 59, 59);
-
-            // convert today to timestamp
-            let todayTimestamp = today.getTime();
-            let todayEndTimestamp = todayEnd.getTime();
-
-            console.log('revenue today: ', today, todayEnd);
-
             let orders = await db.Order.findAll({
                 where: {
                     timeTrack: {
-                        [Op.between]: [todayTimestamp, todayEndTimestamp]
+                        [Op.between]: [timeStampDateStart, timeStampDateEnd]
                     },
-
                     status: {
                         [Op.in]: ['S4']
                     }
@@ -628,8 +631,6 @@ let customerMonth = () => {
         }
     });
 };
-
-
 
 module.exports = {
     // order with login 

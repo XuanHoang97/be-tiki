@@ -59,7 +59,7 @@ export const Register = async(req, res) => {
                 email,
                 password: hashPassword,
                 joinDate: joinDate,
-                roleId: 'Người dùng',
+                roleId: 'User',
                 positionId: 'User'
             });
             
